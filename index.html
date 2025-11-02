@@ -6,421 +6,59 @@
     <title>MegaTIP - Apostas e Bolão</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="text-white">
-<header class="sticky top-0 z-50 bg-[#171717] py-3 px-4 border-b border-gray-700">
-    <div class="container mx-auto flex justify-between items-center">
-        <div class="flex items-center">
-            <i class="fas fa-clover text-[#d4af37] text-2xl mr-2"></i>
-            <h1 class="text-2xl font-bold">Mega<span class="text-[#d4af37]">TIP</span></h1>
-        </div>
-
-        <!-- Menu Desktop -->
-        <nav class="hidden md:flex space-x-6">
-            <a href="#inicio" class="nav-link hover:text-[#d4af37] transition font-medium">Início</a>
-            <a href="#resultado" class="nav-link hover:text-[#d4af37] transition font-medium">Resultado</a>
-            <a href="#video" class="nav-link hover:text-[#d4af37] transition font-medium">Ao Vivo</a>
-            <a href="#pagamento" class="nav-link hover:text-[#d4af37] transition font-medium">Pagamento</a>
-            <a href="#bilhetes" class="nav-link hover:text-[#d4af37] transition font-medium">Bilhetes</a>
-            <a href="#contato" class="nav-link hover:text-[#d4af37] transition font-medium">Contato</a>
-        </nav>
-
-        <!-- Botão Menu Mobile - CORRIGIDO -->
-        <button id="mobile-menu-button" class="md:hidden text-xl z-50 flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-300">
-            <i class="fas fa-bars"></i>
-        </button>
-    </div>
-
-    <!-- Menu Mobile Elegante - CORRIGIDO -->
-    <div id="mobile-menu" class="mobile-menu fixed top-0 left-0 w-full h-screen bg-[#171717] bg-opacity-95 backdrop-blur-md z-40 transform transition-transform duration-300 ease-in-out -translate-y-full">
-        <div class="container mx-auto py-6 px-4 h-full flex flex-col">
-            <!-- Cabeçalho do Menu Mobile - SEM BOTÃO X DUPLICADO -->
-            <div class="flex justify-center items-center mb-8">
-                <div class="flex items-center">
-                    <i class="fas fa-clover text-[#d4af37] text-2xl mr-2"></i>
-                    <h2 class="text-xl font-bold">Mega<span class="text-[#d4af37]">TIP</span></h2>
-                </div>
-            </div>
-
-            <!-- Navegação Mobile -->
-            <nav class="flex-1 flex flex-col justify-center space-y-6">
-                <a href="#inicio" class="nav-link-mobile text-lg py-4 font-medium flex items-center justify-center border-b border-gray-700">
-                    <i class="fas fa-home mr-3 text-[#d4af37] w-6 text-center"></i>Início
-                </a>
-                <a href="#resultado" class="nav-link-mobile text-lg py-4 font-medium flex items-center justify-center border-b border-gray-700">
-                    <i class="fas fa-trophy mr-3 text-[#d4af37] w-6 text-center"></i>Resultado
-                </a>
-                <a href="#video" class="nav-link-mobile text-lg py-4 font-medium flex items-center justify-center border-b border-gray-700">
-                    <i class="fas fa-play-circle mr-3 text-[#d4af37] w-6 text-center"></i>Ao Vivo
-                </a>
-                <a href="#pagamento" class="nav-link-mobile text-lg py-4 font-medium flex items-center justify-center border-b border-gray-700">
-                    <i class="fas fa-qrcode mr-3 text-[#d4af37] w-6 text-center"></i>Pagamento
-                </a>
-                <a href="#bilhetes" class="nav-link-mobile text-lg py-4 font-medium flex items-center justify-center border-b border-gray-700">
-                    <i class="fas fa-ticket-alt mr-3 text-[#d4af37] w-6 text-center"></i>Bilhetes
-                </a>
-                <a href="#contato" class="nav-link-mobile text-lg py-4 font-medium flex items-center justify-center">
-                    <i class="fas fa-phone mr-3 text-[#d4af37] w-6 text-center"></i>Contato
-                </a>
-            </nav>
-        </div>
-    </div>
-</header>
-
-    <section id="inicio" class="py-16 px-4">
-        <div class="container mx-auto max-w-4xl hero-section p-8">
-            <div class="text-center">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4">Bolão Mega<span class="text-[#d4af37]">TIP</span></h2>
-                <p class="text-lg md:text-xl mb-8 hero-text">
-                    Participe do MegaTIP — o bolão para quem sabe que juntos vamos mais longe.  
-                    <span class="text-white">Se um acerta, todo o grupo ganha.</span> 
-                    <span class="text-white"> Cada bilhete tem 6 números e custa só </span> 
-                    <span class="text-[#d4af37] font-bold">R$ 6.</span>
-                </p>
-
-                <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-6 mb-10">
-                    <div class="bg-[#262626] p-4 rounded-lg border border-gray-700">
-                        <i class="fas fa-users text-[#d4af37] text-2xl mb-2"></i>
-                        <h3 class="font-bold text-lg mb-2">Comunidade</h3>
-                        <p class="feature-text">
-                            <span class="font-bold">Jogue junto, ganhe junto.</span>
-                            Cada aposta é sua, mas a vitória é de todos. Faça parte da comunidade MegaTIP.
-                        </p>
-                    </div>
-
-                    <div class="bg-[#262626] p-4 rounded-lg border border-gray-700">
-                        <i class="fas fa-trophy text-[#d4af37] text-2xl mb-2"></i>
-                        <h3 class="font-bold text-lg mb-2">Premiação Compartilhada</h3>
-                        <p class="feature-text">
-                            <span class="font-bold">Uma aposta premiada? O grupo inteiro comemora!</span>
-                            Aqui não tem divisão de bolão tradicional — se um acerta, <span class="font-bold">todo mundo leva.</span>
-                        </p>
-                    </div>
-
-                    <div class="bg-[#262626] p-4 rounded-lg border border-gray-700">
-                        <i class="fas fa-shield-alt text-[#d4af37] text-2xl mb-2"></i>
-                        <h3 class="font-bold text-lg mb-2">Segurança</h3>
-                        <p class="feature-text">
-                            <span class="font-bold">Transparência e confiança sempre.</span> 
-                            Todas as apostas são registradas e conferidas de forma segura pelo sistema MegaTIP.
-                        </p>
-                    </div>
-                </div>
-
-                <a href="https://wa.me/5531982042552?text=Oi%2C%20Tip!%20%F0%9F%98%83%20Quero%20muito%20participar%20do%20MegaTIP!%0AT%C3%B4%20animado%20pra%20escolher%20meus%20n%C3%BAmeros%20e%20tentar%20a%20sorte%20%F0%9F%8D%80%F0%9F%92%B0%0AMe%20explica%20direitinho%20como%20fa%C3%A7o%20o%20pagamento%2C%20at%C3%A9%20quando%20posso%20escolher%20ou%20mudar%20meus%20n%C3%BAmeros%2C%20e%20como%20funciona%20se%20eu%20ganhar%20%F0%9F%A4%A9%0AE%20quero%20entrar%20no%20grupo%20pra%20acompanhar%20tudo%20de%20perto!%20%F0%9F%9A%80" class="bg-[#d4af37] hover:bg-[#b8941f] text-[#171717] font-bold py-3 px-8 rounded-full text-lg transition inline-block glow">
-                    Participar Agora
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Seção: Resultado da Mega da Virada -->
-    <section id="resultado" class="py-16 px-4 bg-[#171717]">
-        <div class="container mx-auto max-w-4xl">
-            <h2 class="text-3xl font-bold text-center mb-12">Resultado Mega da Virada 2025</h2>
-            
-            <div class="bg-[#262626] rounded-xl p-6 md:p-8 mb-8 border border-gray-700">
-                <div class="text-center mb-6">
-                    <h3 class="text-2xl font-bold mb-4">Números Oficiais Sorteados</h3>
-                    
-                    <!-- Números oficiais fixos -->
-                    <div class="flex justify-center flex-wrap gap-3 mb-6" id="numeros-oficiais">
-                        <span class="numero-oficial">00</span>
-                        <span class="numero-oficial">00</span>
-                        <span class="numero-oficial">00</span>
-                        <span class="numero-oficial">00</span>
-                        <span class="numero-oficial">00</span>
-                        <span class="numero-oficial">00</span>
-                    </div>
-                    
-                    <div class="flex justify-center mb-6">
-                        <button id="btn-verificar-bilhetes" class="bg-[#10b981] hover:bg-[#059669] text-white font-bold py-3 px-6 md:px-8 rounded-lg transition text-lg">
-                            <i class="fas fa-search mr-2"></i>Verificar Bilhetes
-                        </button>
-                    </div>
-                    
-                    <div id="status-sorteio" class="text-lg">
-                        <p class="text-[#d4af37]"><i class="fas fa-clock mr-2"></i>Aguardando sorteio oficial da Caixa</p>
-                    </div>
-                </div>
-                
-                <div id="resultado-verificacao" class="mt-6 hidden">
-                    <h4 class="text-xl font-bold mb-4 text-center" id="titulo-resultado">🎉 Resultado da Verificação 🎉</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="resultado-cards">
-                        <div class="bg-[#374151] p-4 rounded-lg border border-gray-600">
-                            <p class="font-bold">Bilhete Vencedor:</p>
-                            <p id="bilhete-vencedor" class="text-xl md:text-2xl text-[#10b981]">Não identificado</p>
-                        </div>
-                        <div class="bg-[#374151] p-4 rounded-lg border border-gray-600">
-                            <p class="font-bold">Total de Acertos:</p>
-                            <p id="total-acertos" class="text-xl md:text-2xl text-[#d4af37]">0 acertos</p>
-                        </div>
-                        <div class="bg-[#374151] p-4 rounded-lg border border-gray-600">
-                            <p class="font-bold">Status do Grupo:</p>
-                            <p id="status-grupo" class="text-xl md:text-2xl text-[#3b82f6]">Aguardando</p>
-                        </div>
-                    </div>
-                    <div id="mensagem-resultado" class="mt-4 bg-[#374151] p-6 rounded-lg border border-gray-600">
-                        <p class="text-center font-bold text-lg">🏆 PARABÉNS A TODOS DO GRUPO! 🏆</p>
-                        <p class="text-center mt-2">Um bilhete ganhou? O grupo inteiro comemora! Cada participante recebe seu prêmio individual!</p>
-                    </div>
-                    
-                    <!-- Seção para mostrar detalhes dos acertos -->
-                    <div id="detalhes-acertos" class="mt-6 hidden">
-                        <h5 class="text-lg font-bold mb-3 text-center">📊 Detalhes dos Acertos</h5>
-                        <div id="lista-bilhetes-acertos" class="space-y-3">
-                            <!-- Lista de bilhetes com acertos será preenchida aqui -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-<!-- Seção: Vídeo do Sorteio - PLAYER NORMAL -->
-<section id="video" class="py-8 md:py-12 px-4 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#334155] relative overflow-hidden">
-    <!-- Elementos decorativos de fundo -->
-    <div class="absolute inset-0 opacity-10">
-        <div class="absolute top-10 left-10 w-20 h-20 bg-[#d4af37] rounded-full blur-xl"></div>
-        <div class="absolute bottom-10 right-10 w-32 h-32 bg-[#10b981] rounded-full blur-2xl"></div>
-        <div class="absolute top-1/2 left-1/4 w-16 h-16 bg-[#dc2626] rounded-full blur-lg"></div>
-    </div>
+<body class="bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#334155] text-white">
     
-    <div class="container mx-auto max-w-4xl relative z-10">
-        <div class="text-center mb-6 md:mb-8">
-            <h2 class="text-2xl md:text-4xl font-bold mb-3 text-white">Sorteio ao Vivo</h2>
-            <p class="text-base md:text-xl text-gray-300 max-w-3xl mx-auto">
-                Acompanhe o sorteio oficial da Mega da Virada 2025 em tempo real
-                <span class="block text-[#d4af37] font-semibold mt-1 text-sm md:text-base">Não perca essa emoção!</span>
-            </p>
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-[#171717] py-3 px-4 border-b border-gray-700">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center">
+                <i class="fas fa-clover text-[#d4af37] text-2xl mr-2"></i>
+                <h1 class="text-2xl font-bold">Mega<span class="text-[#d4af37]">TIP</span></h1>
+            </div>
+
+            <!-- Menu Desktop -->
+            <nav class="hidden md:flex space-x-6">
+                <a href="#inicio" class="nav-link">Início</a>
+                <a href="#resultado" class="nav-link">Resultado</a>
+                <a href="#video" class="nav-link">Ao Vivo</a>
+                <a href="#pagamento" class="nav-link">Pagamento</a>
+                <a href="#bilhetes" class="nav-link">Bilhetes</a>
+                <a href="#contato" class="nav-link">Contato</a>
+            </nav>
+
+            <!-- Menu Mobile -->
+            <button id="mobile-menu-button" class="md:hidden text-xl">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
-        
-        <!-- Container do Vídeo Normal -->
-        <div class="bg-[#171717] rounded-xl overflow-hidden shadow-2xl mx-auto max-w-3xl">
-            <div class="video-container-normal">
-                <iframe 
-                    src="https://www.youtube.com/embed/R5XIjk79jos?si=hUfw6bzpklRlpSg3" 
-                    title="Sorteio Mega da Virada" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen
-                    class="w-full h-full">
-                </iframe>
-            </div>
-            
-            <!-- Informações abaixo do vídeo -->
-            <div class="video-info-normal bg-[#171717] bg-opacity-90 backdrop-blur-sm p-4 md:p-6 border-t border-gray-700">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 text-center md:text-left">
-                    <div class="flex flex-col items-center md:items-start">
-                        <i class="fas fa-calendar-alt text-[#d4af37] text-xl md:text-2xl mb-2"></i>
-                        <h3 class="font-bold text-white mb-1 text-sm md:text-base">Data do Sorteio</h3>
-                        <p class="text-gray-300 text-xs md:text-sm">31 de Dezembro de 2025</p>
-                    </div>
-                    <div class="flex flex-col items-center md:items-start">
-                        <i class="fas fa-clock text-[#10b981] text-xl md:text-2xl mb-2"></i>
-                        <h3 class="font-bold text-white mb-1 text-sm md:text-base">Horário</h3>
-                        <p class="text-gray-300 text-xs md:text-sm">20:00 Horas (Brasília)</p>
-                    </div>
-                    <div class="flex flex-col items-center md:items-start">
-                        <i class="fas fa-trophy text-[#dc2626] text-xl md:text-2xl mb-2"></i>
-                        <h3 class="font-bold text-white mb-1 text-sm md:text-base">Prêmio Estimado</h3>
-                        <p class="text-[#d4af37] font-bold text-xs md:text-sm">R$ 850.000.000,00</p>
-                    </div>
-                </div>
-                
-                <div class="mt-4 text-center">
-                    <p class="text-gray-300 text-xs md:text-sm">
-                        <span class="font-bold text-white">Assista ao sorteio oficial da Mega da Virada 2025.</span><br class="hidden md:block">
-                        Acompanhe o resultado em tempo real e veja se o nosso grupo leva o grande prêmio!
-                    </p>
-                </div>
-            </div>
+
+        <!-- Menu Mobile -->
+        <div id="mobile-menu" class="mobile-menu">
+            <!-- Conteúdo do menu mobile -->
         </div>
-    </div>
-</section>
+    </header>
 
-    <!-- Nova Seção: Pagamento -->
-    <section id="pagamento" class="py-16 px-4 bg-[#171717]">
-        <div class="container mx-auto max-w-4xl">
-            <h2 class="text-3xl font-bold text-center mb-12">Pagamento PIX</h2>
-            
-            <div class="pix-container">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <!-- QR Code -->
-                    <div class="text-center">
-                        <h3 class="text-xl font-bold mb-4 text-[#d4af37]">Escaneie o QR Code</h3>
-                        <div class="qrcode-container">
-                            <!-- SUBSTITUA o src pela URL da imagem do QR Code do seu banco -->
-                            <img src="qr-code.png" alt="QR CODE Pix" class="w-64 h-64 object-contain">
-                            <!-- Fallback caso a imagem não carregue -->
-                            <div class="bg-gray-200 w-64 h-64 rounded-lg flex items-center justify-center text-gray-500 hidden">
-                                <div class="text-center">
-                                    <i class="fas fa-qrcode text-6xl mb-2"></i>
-                                    <p class="text-sm">QR Code PIX</p>
-                                    <p class="text-xs">(Imagem do banco)</p>
-                                </div>
-                            </div>
-                        </div> 
-                        <p class="text-sm text-gray-300 mt-4">
-                            Use o app do seu banco para escanear o código
-                        </p>
-                    </div>
+    <!-- Seções -->
+    <section id="inicio">...</section>
+    <section id="resultado">...</section>
+    <section id="video">...</section>
+    <section id="pagamento">...</section>
+    <section id="bilhetes">...</section>
+    <section id="contato">...</section>
 
-                    <!-- Chave PIX -->
-                    <div>
-                        <h3 class="text-xl font-bold mb-4 text-[#d4af37]">Ou copie a chave PIX</h3>
-                        <div class="pix-code mb-6" id="pix-code-container">
-                            <button class="copy-btn" onclick="copiarPix()">
-                                <i class="fas fa-copy mr-1"></i>Copiar
-                            </button>
-                            <p id="pix-key" class="text-white text-sm md:text-base break-all">
-                                00020126580014br.gov.bcb.pix01365ba9125c-f301-48ef-9f7f-d4508777bd830225MegaTIP - Mega da Virada 52040000530398654056.005802BR5924Gabriel da Paz Silva San6009Sao Paulo61080540900062250515MegaTIP2025122152040000530398654046.005802BR5913Gabriel Silva6009Sao Paulo62070503***6304E2CD
-                            </p>
-                        </div>
+    <!-- WhatsApp Float -->
+    <div id="whatsapp-float">...</div>
 
-                        <div class="payment-steps">
-                            <div class="payment-step">
-                                <h4 class="font-bold text-lg mb-2">1. Faça o pagamento</h4>
-                                <p class="text-gray-300 text-sm">Utilize o QR Code ou a chave PIX acima para pagar R$ 6,00</p>
-                            </div>
-                            
-                            <div class="payment-step">
-                                <h4 class="font-bold text-lg mb-2">2. Envie o comprovante</h4>
-                                <p class="text-gray-300 text-sm">Encaminhe o comprovante para o WhatsApp: (31) 98204-2552</p>
-                            </div>
-                            
-                            <div class="payment-step">
-                                <h4 class="font-bold text-lg mb-2">3. Confirmação</h4>
-                                <p class="text-gray-300 text-sm">Seu bilhete será confirmado em até 24 horas</p>
-                            </div>
-                        </div>
+    <!-- Footer -->
+    <footer>...</footer>
 
-                        <div class="mt-6 p-4 bg-yellow-900 bg-opacity-20 rounded-lg border border-yellow-700">
-                            <p class="text-yellow-200 text-sm">
-                                <i class="fas fa-exclamation-circle mr-2"></i>
-                                <strong>Importante:</strong> O prazo final para pagamento é até o dia 20/12/2025
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="bilhetes" class="py-16 px-4 bg-[#171717]">
-        <div class="container mx-auto max-w-6xl">
-            <h2 class="text-3xl font-bold text-center mb-12">Nossos Bilhetes</h2>
-
-            <!-- Barra de busca -->
-            <div class="search-container">
-                <div class="search-box">
-                    <input type="text" id="search-input" class="search-input" placeholder="Buscar por nome do participante...">
-                    <button id="search-btn" class="search-btn">
-                        <i class="fas fa-search mr-2"></i>Buscar
-                    </button>
-                </div>
-                <div id="search-results-info" class="search-results-info"></div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center" id="tickets-gallery">
-                <!-- Os bilhetes serão carregados aqui -->
-            </div>
-
-            <div class="flex justify-center mt-12">
-                <button id="load-more" class="bg-[#d4af37] hover:bg-[#b8941f] text-[#171717] font-bold py-3 px-8 rounded-lg transition">
-                    Carregar Mais Bilhetes
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <section id="contato" class="py-16 px-4 bg-[#171717]">
-        <div class="container mx-auto max-w-4xl">
-            <h2 class="text-3xl font-bold text-center mb-12">Entre em Contato</h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-[#262626] p-6 rounded-lg border border-gray-700">
-                    <h3 class="text-xl font-bold mb-4">Informações de Contato</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center">
-                            <i class="fab fa-whatsapp text-[#10b981] text-xl mr-4"></i>
-                            <div>
-                                <p class="font-bold">WhatsApp</p>
-                                <p>(31) 98204-2552</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center">
-                            <i class="fab fa-instagram text-[#e11d48] text-xl mr-4"></i>
-                            <div>
-                                <p class="font-bold">Instagram</p>
-                                <p>@tipgabriel</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-[#262626] p-6 rounded-lg border border-gray-700">
-                    <h3 class="text-xl font-bold mb-4">Formas de Pagamento</h3>
-                    <div class="flex flex-wrap gap-4 mb-4">
-                        <div class="bg-white p-2 rounded">
-                            <i class="fas fa-mobile-alt text-[#10b981] text-2xl"></i>
-                        </div>
-                        <div class="bg-white p-2 rounded">
-                            <i class="fas fa-university text-[#3b82f6] text-2xl"></i>
-                        </div>
-                    </div>
-                    <p class="mb-4">Aceitamos PIX e transferência bancária.</p>
-                    
-                    <div class="mt-4">
-                        <h3 class="text-xl font-bold mb-4 text-[#d4af37]">Chave PIX</h3>
-                        <div class="pix-code mb-6" id="pix-code-contato">
-                            <button class="copy-btn" onclick="copiarPixContato()">
-                                <i class="fas fa-copy mr-1"></i>Copiar
-                            </button>
-                            <p class="text-white text-sm md:text-base break-all">
-                                00020126580014br.gov.bcb.pix01365ba9125c-f301-48ef-9f7f-d4508777bd830225MegaTIP - Mega da Virada 52040000530398654056.005802BR5924Gabriel da Paz Silva San6009Sao Paulo61080540900062250515MegaTIP2025122152040000530398654046.005802BR5913Gabriel Silva6009Sao Paulo62070503***6304E2CD
-                            </p>
-                        </div>
-                        
-                        <p class="text-xs text-gray-400 mt-2">
-                            <i class="fas fa-info-circle mr-1 text-[#d4af37]"></i>
-                            Copie a chave completa para pagamento via PIX
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Ícone WhatsApp Pulsante -->
-    <div id="whatsapp-float" class="fixed bottom-6 right-6 z-50">
-        <a href="https://wa.me/5531982042552?text=Oi%2C%20Tip!%20%F0%9F%98%83%20Quero%20muito%20participar%20do%20MegaTIP!%0AT%C3%B4%20animado%20pra%20escolher%20meus%20n%C3%BAmeros%20e%20tentar%20a%20sorte%20%F0%9F%8D%80%F0%9F%92%B0%0AMe%20explica%20direitinho%20como%20fa%C3%A7o%20o%20pagamento%2C%20at%C3%A9%20quando%20posso%20escolher%20ou%20mudar%20meus%20n%C3%BAmeros%2C%20e%20como%20funciona%20se%20eu%20ganhar%20%F0%9F%A4%A9%0AE%20quero%20entrar%20no%20grupo%20pra%20acompanhar%20tudo%20de%20perto!%20%F0%9F%9A%80" 
-           target="_blank" 
-           class="whatsapp-float-btn pulse">
-            <i class="fab fa-whatsapp"></i>
-        </a>
-    </div>
-
-    <footer class="footer py-8 px-4">
-        <div class="container mx-auto text-center">
-            <div class="flex justify-center space-x-6 mb-6">
-                <a href="https://www.instagram.com/tipgabriel/" class="text-white hover:text-[#d4af37] transition">
-                    <i class="fab fa-instagram text-2xl"></i>
-                </a>
-                <a href="https://wa.me/5531982042552?text=Oi%2C%20Tip!%20%F0%9F%98%83%20Quero%20muito%20participar%20do%20MegaTIP!%0AT%C3%B4%20animado%20pra%20escolher%20meus%20n%C3%BAmeros%20e%20tentar%20a%20sorte%20%F0%9F%8D%80%F0%9F%92%B0%0AMe%20explica%20direitinho%20como%20fa%C3%A7o%20o%20pagamento%2C%20at%C3%A9%20quando%20posso%20escolher%20ou%20mudar%20meus%20n%C3%BAmeros%2C%20e%20como%20funciona%20se%20eu%20ganhar%20%F0%9F%A4%A9%0AE%20quero%20entrar%20no%20grupo%20pra%20acompanhar%20tudo%20de%20perto!%20%F0%9F%9A%80" class="text-white hover:text-[#d4af37] transition">
-                    <i class="fab fa-whatsapp text-2xl"></i>
-                </a>
-            </div>
-
-            <p class="mb-2">MegaTIP - Apostas e Bolão</p>
-            <p class="text-sm opacity-75" id="copyright">
-                <!-- Copyright será preenchido via JavaScript -->
-            </p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
+    <!-- Scripts -->
+    <script src="js/menu.js"></script>
+    <script src="js/tickets.js"></script>
+    <script src="js/checker.js"></script>
+    <script src="js/pix.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

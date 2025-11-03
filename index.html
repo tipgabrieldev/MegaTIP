@@ -6,12 +6,936 @@
     <title>MegaTIP - Apostas e Bolão</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body class="bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#334155] text-white min-h-screen">
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
+
+        :root {
+            --color-primary: #171717;
+            --color-secondary: #d4af37;
+            --color-accent: #10b981;
+            --color-text: #ffffff;
+            --color-card: #262626;
+            --color-highlight: #dc2626;
+        }
+
+        /* CORREÇÃO: EVITAR SCROLL HORIZONTAL */
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
+            min-height: 100vh;
+            color: var(--color-text);
+            margin: 0;
+            padding: 0;
+        }
+
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        /* NOVO ESTILO ELEGANTE DE TICKET COM COR AZUL */
+        .ticket {
+            background: radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
+radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
+            border-radius: 16px;
+            padding: 0;
+            margin: 0 auto; /* CENTRALIZADO */
+            box-shadow: 
+                0 10px 25px rgba(0,0,0,0.15),
+                0 5px 10px rgba(0,0,0,0.05),
+                inset 0 1px 0 rgba(255,255,255,0.8);
+            color: #1e293b;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #c5d9f1;
+            width: 100%; /* LARGURA TOTAL DO CONTAINER */
+            max-width: 320px;
+            min-height: 440px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ticket::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #d4af37, #fbbf24, #d4af37);
+            z-index: 2;
+        }
+
+        .ticket-header {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .ticket-header::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+        }
+
+        .ticket-body {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
+            position: relative;
+        }
+
+        .ticket-body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 20px;
+            right: 20px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+        }
+
+        .ticket-footer {
+            background: rgba(31, 35, 39, 0.7) !important;
+            backdrop-filter: blur(8px);
+            padding: 15px 20px;
+            text-align: center;
+            font-weight: 600;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            color: #d4af37 !important;
+            font-size: 0.9rem;
+        }
+
+        .ticket.premiado {
+            background: linear-gradient(145deg, #d1fae5, #ecfdf5);
+            border-color: #10b981;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .ticket-stripes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(45deg, transparent 48%, rgba(212, 175, 55, 0.03) 50%, transparent 52%),
+                linear-gradient(-45deg, transparent 48%, rgba(16, 185, 129, 0.03) 50%, transparent 52%);
+            background-size: 20px 20px;
+            pointer-events: none;
+        }
+
+        .hero-section {
+            background: rgba(23, 23, 23, 0.85);
+            border-radius: 20px;
+            border: 1px solid #374151;
+            background-image: url('https://images.unsplash.com/photo-1531581147769-2ec2ae9ba937?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: overlay;
+        }
+
+        .glow {
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .footer {
+            background: rgba(23, 23, 23, 0.95);
+            border-top: 1px solid #374151;
+        }
+
+        /* Estilos para o menu mobile */
+        .mobile-menu {
+            transition: all 0.3s ease-in-out;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+        }
+
+        .mobile-menu.active {
+            max-height: 300px;
+            opacity: 1;
+        }
+
+/* NÚMEROS OFICIAIS - 1 linha no desktop, 2 linhas no mobile */
+#numeros-oficiais {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    max-width: 150px;
+    margin: 0 auto 20px auto; /* ← ADICIONADO margin-bottom */
+}
+
+        .numero-oficial {
+            display: inline-flex;
+            width: 45px;
+            height: 45px;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            color: #1e293b;
+            transition: all 0.3s ease;
+            margin: 0;
+        }
+
+        .numero-oficial.sorteado {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border-color: #10b981;
+            transform: scale(1.1);
+        }
+
+        /* NÚMEROS DOS TICKETS - 3 por linha */
+        .numeros-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            max-width: 150px;
+            margin: 0 auto;
+        }
+
+        .numero-sorteio {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(31, 35, 39, 0.6), rgba(31, 35, 39, 0.4)) !important;
+            border-radius: 50%;
+            font-weight: bold;
+            box-shadow: 
+                0 4px 6px rgba(0,0,0,0.1),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+            color: #f1f5f9 !important;
+            border: 1px solid rgba(255,255,255,0.2) !important;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            backdrop-filter: blur(5px);
+            margin: 0;
+            
+            /* Tamanho base */
+            width: 40px;
+            height: 40px;
+            font-size: 15px;
+        }
+
+        .numero-sorteio:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .numero-acerto {
+            background: linear-gradient(135deg, #d4af37, #fbbf24);
+            animation: bounce 0.5s;
+            color: #1e293b;
+            border-color: #d4af37;
+            border-radius: 50%;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 60%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-8px); }
+            80% { transform: translateY(-4px); }
+        }
+
+        .badge-premiado {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #d4af37, #fbbf24);
+            color: #1e293b;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 12px;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+            z-index: 10;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .badge-vencedor {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 12px;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+            z-index: 10;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+/* DESKTOP - Números oficiais em 1 linha */
+@media (min-width: 768px) {
+    #numeros-oficiais {
+        flex-wrap: nowrap; /* ← MUDEI: agora não quebra linha */
+        max-width: 400px; /* ← AUMENTADO para caber 6 números em linha */
+        gap: 12px;
+        margin: 0 auto 25px auto; /* ← MAIS ESPAÇO com o botão */
+    }
+            
+    .numero-oficial {
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
+    }
+            
+    .numeros-container {
+        max-width: 150px;
+        gap: 10px;
+    }
     
-    <!-- Header -->
-    <header class="sticky top-0 z-50 bg-[#171717] py-3 px-4 border-b border-gray-700">
+    .numero-sorteio {
+        width: 42px;
+        height: 42px;
+        font-size: 16px;
+    }
+}
+
+/* MOBILE - Mantém 3 por linha */
+@media (max-width: 767px) {
+    #numeros-oficiais {
+        max-width: 150px;
+        gap: 8px;
+        margin: 0 auto 20px auto; /* ← ESPAÇO no mobile também */
+    }
+    
+    .numero-oficial {
+        width: 42px;
+        height: 42px;
+        font-size: 15px;
+    }
+    
+    .numeros-container {
+        max-width: 150px;
+        gap: 8px;
+    }
+    
+    .numero-sorteio {
+        width: 38px;
+        height: 38px;
+        font-size: 14px;
+    }
+}
+
+        /* Novos estilos para melhorar clareza dos resultados */
+        .resultado-vencedor {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border: 2px solid #10b981;
+            color: white;
+        }
+
+        .resultado-perdedor {
+            background: linear-gradient(135deg, #d4af37, #fbbf24);
+            border: 2px solid #d4af37;
+            color: #1e293b;
+        }
+
+        .mensagem-vencedor {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
+            color: white;
+        }
+
+        .mensagem-perdedor {
+            background: rgba(212, 175, 55, 0.1);
+            border-left: 4px solid #d4af37;
+            color: white;
+        }
+
+        .bilhete-acertou {
+            border: 2px solid #10b981;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Estilo para o vídeo */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* CORREÇÃO: MELHORIAS PARA MOBILE */
+        @media (max-width: 768px) {
+            .ticket {
+                max-width: 100%;
+                margin: 0 auto;
+                width: 90%;
+            }
+            
+            .hero-text {
+                font-size: 1.1rem;
+                line-height: 1.6;
+            }
+            
+            .feature-text {
+                font-size: 0.9rem;
+                line-height: 1.5;
+            }
+
+            .search-container {
+                padding: 15px;
+                margin: 0 10px 30px 10px;
+                width: calc(100% - 20px);
+            }
+
+            .search-box {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            .search-btn {
+                width: 100%;
+            }
+        }
+
+        /* Estilo específico para o design elegante de ticket */
+        .ticket-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 22px;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .ticket-subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 5px;
+            font-weight: 400;
+        }
+
+        .ticket-logo {
+            font-size: 28px;
+            margin-bottom: 12px;
+            color: #d4af37;
+        }
+
+        .ticket-concurso {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 8px;
+            display: inline-block;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .ticket-participante {
+            background: rgba(31, 35, 39, 0.4) !important;
+            backdrop-filter: blur(10px);
+            color: #fefefe !important;
+            padding: 16px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .ticket-numeros-title {
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 16px;
+            color: #d4af37 !important;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .ticket-data {
+            text-align: center;
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 16px;
+            line-height: 1.5;
+        }
+
+        .ticket-valor {
+            font-size: 18px;
+            font-weight: bold;
+            color: #d4af37;
+        }
+
+        .ticket-codigo {
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            background: rgba(31, 35, 39, 0.5) !important;
+            backdrop-filter: blur(5px);
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-top: 16px;
+            text-align: center;
+            color: #cbd5e1 !important;
+            border: 1px solid rgba(255,255,255,0.15) !important;
+            letter-spacing: 0.5px;
+        }
+
+        .ticket-garantia {
+            text-align: center;
+            font-size: 11px;
+            color: #94a3b8;
+            font-style: italic;
+            margin-top: 12px;
+            line-height: 1.4;
+        }
+
+        .ticket-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+            margin: 20px 0;
+        }
+
+        .ticket-watermark {
+            position: absolute;
+            bottom: 60px;
+            right: 20px;
+            font-size: 60px;
+            opacity: 0.03;
+            color: #1e293b;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            transform: rotate(-15deg);
+            pointer-events: none;
+        }
+
+        /* Estilos para a seção de pagamento */
+        .pix-container {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid #374151;
+        }
+
+.pix-code {
+    background: #0f172a;
+    border: 1px dashed #d4af37;
+    border-radius: 8px;
+    padding: 15px;
+    font-family: 'Courier New', monospace;
+    word-break: break-all;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+        .pix-code:hover {
+            background: #1e293b;
+            transform: translateY(-2px);
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #d4af37;
+            color: #1e293b;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: #fbbf24;
+            transform: scale(1.05);
+        }
+
+.qrcode-container {
+    background: white;
+    border-radius: 8px;
+    padding: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #d4af37;
+    margin: 0 auto;
+    max-width: 260px;
+}
+
+        .qrcode-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+        .payment-steps {
+            counter-reset: step;
+        }
+
+        .payment-step {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 25px;
+        }
+
+        .payment-step::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background: #d4af37;
+            color: #1e293b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* CORREÇÃO: BARRA DE BUSCA RESPONSIVA */
+        .search-container {
+            background: #262626;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid #374151;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            max-width: 100%;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex-grow: 1;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 2px solid #d4af37;
+            background: #1e293b;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            min-width: 200px;
+            box-sizing: border-box;
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3);
+        }
+
+        .search-btn {
+            background: #d4af37;
+            color: #1e293b;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .search-btn:hover {
+            background: #fbbf24;
+            transform: translateY(-2px);
+        }
+
+        .search-results-info {
+            text-align: center;
+            margin-top: 15px;
+            color: #d4af37;
+            font-weight: 600;
+            width: 100%;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #94a3b8;
+            font-size: 18px;
+            width: 100%;
+        }
+
+        /* CORREÇÃO: ESPAÇAMENTO ENTRE BILHETES */
+        #tickets-gallery {
+            gap: 2rem;
+            justify-content: center;
+            padding: 0 10px;
+        }
+
+        @media (max-width: 768px) {
+            #tickets-gallery {
+                gap: 1.5rem;
+                padding: 0 5px;
+            }
+        }
+
+        /* CORREÇÃO: CONTAINER PRINCIPAL */
+        .container {
+            width: 100%;
+            max-width: 100%;
+            padding-left: 15px;
+            padding-right: 15px;
+            margin-left: auto;
+            margin-right: auto;
+            box-sizing: border-box;
+        }
+
+        /* CORREÇÃO: SEÇÕES PRINCIPAIS */
+        section {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* CORREÇÃO: BILHETES OTIMIZADOS PARA MOBILE */
+@media (max-width: 768px) {
+    .ticket {
+        min-height: 380px;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .ticket-header {
+        padding: 15px 12px;
+    }
+    
+    .ticket-body {
+        padding: 15px;
+    }
+    
+    .ticket-participante {
+        padding: 12px;
+        margin: 15px 0;
+    }
+    
+    .ticket-watermark {
+        font-size: 45px;
+        bottom: 50px;
+        right: 15px;
+    }
+    
+    .ticket-title {
+        font-size: 20px;
+        margin-bottom: 6px;
+    }
+    
+    .ticket-subtitle {
+        font-size: 13px;
+    }
+    
+    .ticket-numeros-title {
+        font-size: 15px;
+        margin-bottom: 12px;
+    }
+    
+    .ticket-data {
+        font-size: 12px;
+        margin-top: 12px;
+        line-height: 1.4;
+    }
+    
+    .ticket-valor {
+        font-size: 16px;
+    }
+    
+    .ticket-codigo {
+        font-size: 10px;
+        padding: 6px 10px;
+        margin-top: 12px;
+    }
+    
+    .ticket-garantia {
+        font-size: 10px;
+        margin-top: 10px;
+        line-height: 1.3;
+    }
+    
+    .ticket-divider {
+        margin: 15px 0;
+    }
+    
+    .badge-premiado,
+    .badge-vencedor {
+        padding: 6px 12px;
+        font-size: 10px;
+        top: 10px;
+    }
+    
+    .badge-premiado {
+        right: 10px;
+    }
+    
+    .badge-vencedor {
+        left: 10px;
+    }
+}
+
+/* Ajuste extra para telas muito pequenas */
+@media (max-width: 480px) {
+    .ticket {
+        min-height: 370px;
+        max-width: 280px;
+    }
+    
+    .ticket-body {
+        padding: 12px;
+    }
+    
+    .ticket-participante {
+        margin: 12px 0;
+        padding: 10px;
+    }
+    
+    .ticket-participante p {
+        margin: 2px 0;
+    }
+}
+
+/* Garantir que o texto sempre seja legível */
+.ticket-participante p {
+    margin: 4px 0;
+    line-height: 1.3;
+}
+
+.ticket-data p {
+    margin: 2px 0;
+}
+
+/* Manter hierarquia visual clara */
+.ticket-header {
+    z-index: 5;
+}
+
+.ticket-body {
+    z-index: 2;
+}
+
+/* CORREÇÃO DEFINITIVA: VÍDEO GRANDE NO MOBILE */
+@media (max-width: 768px) {
+    #video .container {
+        max-width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    
+    #video .bg-\[\#262626\] {
+        background: transparent !important;
+        border: none !important;
+        padding: 10px 15px;
+        border-radius: 0;
+    }
+    
+    .video-container {
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        margin: 0;
+    }
+    
+    #video .bg-\[\#262626\] p {
+        padding: 0 15px;
+        margin-top: 15px;
+    }
+}
+
+/* SOBRESCREVER QUALQUER MEDIA QUERY QUE ALTERE CORES NO MOBILE */
+@media (max-width: 768px) {
+    .ticket-body {
+        color: #1a202c !important;
+    }
+    
+    .ticket-participante {
+        color: #fefefe !important;
+    }
+    
+    .ticket-numeros-title {
+        color: #d4af37 !important;
+    }
+    
+    .ticket-data {
+        color: #4a5568 !important;
+    }
+    
+    .numero-sorteio {
+        color: #f1f5f9 !important;
+        background: linear-gradient(135deg, rgba(31, 35, 39, 0.6), rgba(31, 35, 39, 0.4)) !important;
+    }
+    
+    .ticket-codigo {
+        color: #cbd5e1 !important;
+        background: rgba(31, 35, 39, 0.5) !important;
+    }
+    
+    .ticket-footer {
+        color: #d4af37 !important;
+        background: rgba(31, 35, 39, 0.7) !important;
+    }
+}
+</style>
+</head>
+<body class="text-white">
+    <header class="sticky top-0 z-50 bg-[#171717] py-4 px-6 border-b border-gray-700">
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center">
                 <i class="fas fa-clover text-[#d4af37] text-2xl mr-2"></i>
@@ -20,57 +944,35 @@
 
             <!-- Menu Desktop -->
             <nav class="hidden md:flex space-x-6">
-                <a href="#inicio" class="nav-link hover:text-[#d4af37] transition font-medium">Início</a>
-                <a href="#resultado" class="nav-link hover:text-[#d4af37] transition font-medium">Resultado</a>
-                <a href="#video" class="nav-link hover:text-[#d4af37] transition font-medium">Ao Vivo</a>
-                <a href="#pagamento" class="nav-link hover:text-[#d4af37] transition font-medium">Pagamento</a>
-                <a href="#bilhetes" class="nav-link hover:text-[#d4af37] transition font-medium">Bilhetes</a>
-                <a href="#contato" class="nav-link hover:text-[#d4af37] transition font-medium">Contato</a>
+                <a href="#inicio" class="hover:text-[#d4af37] transition font-medium">Início</a>
+                <a href="#resultado" class="hover:text-[#d4af37] transition font-medium">Resultado</a>
+                <a href="#video" class="hover:text-[#d4af37] transition font-medium">Ao Vivo</a>
+                <a href="#pagamento" class="hover:text-[#d4af37] transition font-medium">Pagamento</a>
+                <a href="#bilhetes" class="hover:text-[#d4af37] transition font-medium">Bilhetes</a>
+                <a href="#contato" class="hover:text-[#d4af37] transition font-medium">Contato</a>
             </nav>
 
             <!-- Botão Menu Mobile -->
-            <button id="mobile-menu-button" class="md:hidden text-xl z-50 flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-300">
+            <button id="mobile-menu-button" class="md:hidden text-xl z-50">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
 
         <!-- Menu Mobile -->
-        <div id="mobile-menu" class="mobile-menu fixed top-0 left-0 w-full h-screen bg-[#171717] bg-opacity-95 backdrop-blur-md z-40 transform transition-transform duration-300 ease-in-out -translate-y-full">
-            <div class="container mx-auto py-6 px-4 h-full flex flex-col">
-                <div class="flex justify-center items-center mb-8">
-                    <div class="flex items-center">
-                        <i class="fas fa-clover text-[#d4af37] text-2xl mr-2"></i>
-                        <h2 class="text-xl font-bold">Mega<span class="text-[#d4af37]">TIP</span></h2>
-                    </div>
-                </div>
-
-                <nav class="flex-1 flex flex-col justify-center space-y-6">
-                    <a href="#inicio" class="nav-link-mobile text-lg py-4 font-medium flex items-center justify-center border-b border-gray-700">
-                        <i class="fas fa-home mr-3 text-[#d4af37] w-6 text-center"></i>Início
-                    </a>
-                    <a href="#resultado" class="nav-link-mobile text-lg py-4 font-medium flex items-center justify-center border-b border-gray-700">
-                        <i class="fas fa-trophy mr-3 text-[#d4af37] w-6 text-center"></i>Resultado
-                    </a>
-                    <a href="#video" class="nav-link-mobile text-lg py-4 font-medium flex items-center justify-center border-b border-gray-700">
-                        <i class="fas fa-play-circle mr-3 text-[#d4af37] w-6 text-center"></i>Ao Vivo
-                    </a>
-                    <a href="#pagamento" class="nav-link-mobile text-lg py-4 font-medium flex items-center justify-center border-b border-gray-700">
-                        <i class="fas fa-qrcode mr-3 text-[#d4af37] w-6 text-center"></i>Pagamento
-                    </a>
-                    <a href="#bilhetes" class="nav-link-mobile text-lg py-4 font-medium flex items-center justify-center border-b border-gray-700">
-                        <i class="fas fa-ticket-alt mr-3 text-[#d4af37] w-6 text-center"></i>Bilhetes
-                    </a>
-                    <a href="#contato" class="nav-link-mobile text-lg py-4 font-medium flex items-center justify-center">
-                        <i class="fas fa-phone mr-3 text-[#d4af37] w-6 text-center"></i>Contato
-                    </a>
-                </nav>
-            </div>
+        <div id="mobile-menu" class="mobile-menu absolute top-full left-0 w-full bg-[#171717] py-4 px-6 md:hidden border-b border-gray-700">
+            <nav class="flex flex-col space-y-4">
+                <a href="#inicio" class="hover:text-[#d4af37] transition py-2 border-b border-gray-700 font-medium">Início</a>
+                <a href="#resultado" class="hover:text-[#d4af37] transition py-2 border-b border-gray-700 font-medium">Resultado</a>
+                <a href="#video" class="hover:text-[#d4af37] transition py-2 border-b border-gray-700 font-medium">Ao Vivo</a>
+                <a href="#pagamento" class="hover:text-[#d4af37] transition py-2 border-b border-gray-700 font-medium">Pagamento</a>
+                <a href="#bilhetes" class="hover:text-[#d4af37] transition py-2 border-b border-gray-700 font-medium">Bilhetes</a>
+                <a href="#contato" class="hover:text-[#d4af37] transition py-2 font-medium">Contato</a>
+            </nav>
         </div>
     </header>
 
-    <!-- Seção Início -->
     <section id="inicio" class="py-16 px-4">
-        <div class="container mx-auto max-w-4xl hero-section p-8 rounded-2xl">
+        <div class="container mx-auto max-w-4xl hero-section p-8">
             <div class="text-center">
                 <h2 class="text-4xl md:text-5xl font-bold mb-4">Bolão Mega<span class="text-[#d4af37]">TIP</span></h2>
                 <p class="text-lg md:text-xl mb-8 hero-text">
@@ -81,7 +983,7 @@
                 </p>
 
                 <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-6 mb-10">
-                    <div class="bg-[#262626] p-4 rounded-lg border border-gray-700 card-hover">
+                    <div class="bg-[#262626] p-4 rounded-lg border border-gray-700">
                         <i class="fas fa-users text-[#d4af37] text-2xl mb-2"></i>
                         <h3 class="font-bold text-lg mb-2">Comunidade</h3>
                         <p class="feature-text">
@@ -90,7 +992,7 @@
                         </p>
                     </div>
 
-                    <div class="bg-[#262626] p-4 rounded-lg border border-gray-700 card-hover">
+                    <div class="bg-[#262626] p-4 rounded-lg border border-gray-700">
                         <i class="fas fa-trophy text-[#d4af37] text-2xl mb-2"></i>
                         <h3 class="font-bold text-lg mb-2">Premiação Compartilhada</h3>
                         <p class="feature-text">
@@ -99,7 +1001,7 @@
                         </p>
                     </div>
 
-                    <div class="bg-[#262626] p-4 rounded-lg border border-gray-700 card-hover">
+                    <div class="bg-[#262626] p-4 rounded-lg border border-gray-700">
                         <i class="fas fa-shield-alt text-[#d4af37] text-2xl mb-2"></i>
                         <h3 class="font-bold text-lg mb-2">Segurança</h3>
                         <p class="feature-text">
@@ -109,15 +1011,14 @@
                     </div>
                 </div>
 
-                <a href="https://wa.me/5531982042552?text=Oi%2C%20Tip!%20%F0%9F%98%83%20Quero%20muito%20participar%20do%20MegaTIP!%0AT%C3%B4%20animado%20pra%20escolher%20meus%20n%C3%BAmeros%20e%20tentar%20a%20sorte%20%F0%9F%8D%80%F0%9F%92%B0%0AMe%20explica%20direitinho%20como%20fa%C3%A7o%20o%20pagamento%2C%20at%C3%A9%20quando%20posso%20escolher%20ou%20mudar%20meus%20n%C3%BAmeros%2C%20e%20como%20funciona%20se%20eu%20ganhar%20%F0%9F%A4%A9%0AE%20quero%20entrar%20no%20grupo%20pra%20acompanhar%20tudo%20de%20perto!%20%F0%9F%9A%80" 
-                   class="bg-[#d4af37] hover:bg-[#b8941f] text-[#171717] font-bold py-3 px-8 rounded-full text-lg transition inline-block glow">
+                <a href="https://wa.me/5531982042552?text=Oi%2C%20Tip!%20%F0%9F%98%83%20Quero%20muito%20participar%20do%20MegaTIP!%0AT%C3%B4%20animado%20pra%20escolher%20meus%20n%C3%BAmeros%20e%20tentar%20a%20sorte%20%F0%9F%8D%80%F0%9F%92%B0%0AMe%20explica%20direitinho%20como%20fa%C3%A7o%20o%20pagamento%2C%20at%C3%A9%20quando%20posso%20escolher%20ou%20mudar%20meus%20n%C3%BAmeros%2C%20e%20como%20funciona%20se%20eu%20ganhar%20%F0%9F%A4%A9%0AE%20quero%20entrar%20no%20grupo%20pra%20acompanhar%20tudo%20de%20perto!%20%F0%9F%9A%80" class="bg-[#d4af37] hover:bg-[#b8941f] text-[#171717] font-bold py-3 px-8 rounded-full text-lg transition inline-block glow">
                     Participar Agora
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- Seção Resultado -->
+    <!-- Seção: Resultado da Mega da Virada -->
     <section id="resultado" class="py-16 px-4 bg-[#171717]">
         <div class="container mx-auto max-w-4xl">
             <h2 class="text-3xl font-bold text-center mb-12">Resultado Mega da Virada 2025</h2>
@@ -126,6 +1027,7 @@
                 <div class="text-center mb-6">
                     <h3 class="text-2xl font-bold mb-4">Números Oficiais Sorteados</h3>
                     
+                    <!-- Números oficiais fixos -->
                     <div class="flex justify-center flex-wrap gap-3 mb-6" id="numeros-oficiais">
                         <span class="numero-oficial">00</span>
                         <span class="numero-oficial">00</span>
@@ -167,6 +1069,7 @@
                         <p class="text-center mt-2">Um bilhete ganhou? O grupo inteiro comemora! Cada participante recebe seu prêmio individual!</p>
                     </div>
                     
+                    <!-- Seção para mostrar detalhes dos acertos -->
                     <div id="detalhes-acertos" class="mt-6 hidden">
                         <h5 class="text-lg font-bold mb-3 text-center">📊 Detalhes dos Acertos</h5>
                         <div id="lista-bilhetes-acertos" class="space-y-3">
@@ -178,49 +1081,50 @@
         </div>
     </section>
 
-    <!-- Seção Vídeo -->
-    <section id="video" class="py-16 px-4 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#334155]">
+    <!-- Seção: Vídeo do Sorteio -->
+    <section id="video" class="py-16 px-4 bg-[#171717]">
         <div class="container mx-auto max-w-4xl">
-            <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold mb-4">Sorteio ao Vivo</h2>
-                <p class="text-xl text-gray-300">Acompanhe o sorteio oficial da Mega da Virada 2025</p>
-            </div>
+            <h2 class="text-3xl font-bold text-center mb-12">Sorteio ao vivo</h2>
             
-            <div class="video-container bg-black rounded-xl overflow-hidden shadow-2xl">
-                <div class="video-wrapper">
-                    <iframe 
-                        src="https://www.youtube.com/embed/R5XIjk79jos" 
-                        title="Sorteio Mega da Virada" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen
-                        class="w-full h-full">
+            <div class="bg-[#262626] rounded-xl p-6 border border-gray-700">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/R5XIjk79jos?si=hUfw6bzpklRlpSg3" 
+                            title="Sorteio Mega da Virada" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
                     </iframe>
                 </div>
+                <p class="text-center mt-4 text-gray-300 text-sm md:text-base">
+                    <span class="font-bold">Assista ao sorteio oficial da Mega da Virada 2025.</span><br class="hidden md:block">
+                    Acompanhe o resultado em tempo real e veja se o nosso grupo leva o grande prêmio!
+                </p>
             </div>
         </div>
     </section>
 
-    <!-- Seção Pagamento -->
+    <!-- Nova Seção: Pagamento -->
     <section id="pagamento" class="py-16 px-4 bg-[#171717]">
         <div class="container mx-auto max-w-4xl">
             <h2 class="text-3xl font-bold text-center mb-12">Pagamento PIX</h2>
             
-            <div class="pix-container bg-[#262626] rounded-xl p-8 border border-gray-700">
+            <div class="pix-container">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <!-- QR Code -->
                     <div class="text-center">
                         <h3 class="text-xl font-bold mb-4 text-[#d4af37]">Escaneie o QR Code</h3>
-                        <div class="qrcode-container bg-white p-4 rounded-lg inline-block">
-                            <img src="qr-code.png" alt="QR CODE Pix" class="w-64 h-64 object-contain" onerror="this.style.display='none'">
-                            <div class="qrcode-fallback w-64 h-64 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500">
+                        <div class="qrcode-container">
+                            <!-- SUBSTITUA o src pela URL da imagem do QR Code do seu banco -->
+                            <img src="qr-code.png" alt="QR CODE Pix" class="w-64 h-64 object-contain">
+                            <!-- Fallback caso a imagem não carregue -->
+                            <div class="bg-gray-200 w-64 h-64 rounded-lg flex items-center justify-center text-gray-500 hidden">
                                 <div class="text-center">
                                     <i class="fas fa-qrcode text-6xl mb-2"></i>
                                     <p class="text-sm">QR Code PIX</p>
                                     <p class="text-xs">(Imagem do banco)</p>
                                 </div>
                             </div>
-                        </div>
+                        </div> 
                         <p class="text-sm text-gray-300 mt-4">
                             Use o app do seu banco para escanear o código
                         </p>
@@ -229,38 +1133,29 @@
                     <!-- Chave PIX -->
                     <div>
                         <h3 class="text-xl font-bold mb-4 text-[#d4af37]">Ou copie a chave PIX</h3>
-                        <div class="pix-code mb-6 relative bg-[#1e293b] p-4 rounded-lg border border-dashed border-[#d4af37]">
-                            <button class="copy-btn absolute top-3 right-3 bg-[#d4af37] text-[#171717] px-3 py-1 rounded text-sm font-bold">
-                                <i class="fas fa-copy mr-1"></i>Copiar
-                            </button>
-                            <p class="pix-key text-white text-sm break-all pr-20">
-                                00020126580014br.gov.bcb.pix01365ba9125c-f301-48ef-9f7f-d4508777bd830225MegaTIP - Mega da Virada 52040000530398654056.005802BR5924Gabriel da Paz Silva San6009Sao Paulo61080540900062250515MegaTIP2025122152040000530398654046.005802BR5913Gabriel Silva6009Sao Paulo62070503***6304E2CD
-                            </p>
-                        </div>
+<div class="pix-code mb-6">
+    <button class="copy-btn" onclick="copiarPix()">
+        <i class="fas fa-copy mr-1"></i>Copiar
+    </button>
+    <p id="pix-key" class="text-white text-sm md:text-base break-all">
+        00020126870014br.gov.bcb.pix01365ba9125c-f301-48ef-9f7f-d4508777bd830225MegaTIP - Mega da Virada 52040000530398654046.005802BR5924Gabriel da Paz Silva San6009Sao Paulo610901227-20062240520daqr12907710421070486304A68C
+    </p>
+</div>
 
-                        <div class="payment-steps space-y-6">
-                            <div class="payment-step flex items-start">
-                                <div class="step-number bg-[#d4af37] text-[#171717] w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">1</div>
-                                <div>
-                                    <h4 class="font-bold text-lg mb-2">Faça o pagamento</h4>
-                                    <p class="text-gray-300">Utilize o QR Code ou a chave PIX para pagar R$ 6,00</p>
-                                </div>
+                        <div class="payment-steps">
+                            <div class="payment-step">
+                                <h4 class="font-bold text-lg mb-2">1. Faça o pagamento</h4>
+                                <p class="text-gray-300 text-sm">Utilize o QR Code ou a chave PIX acima para pagar R$ 6,00</p>
                             </div>
                             
-                            <div class="payment-step flex items-start">
-                                <div class="step-number bg-[#d4af37] text-[#171717] w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">2</div>
-                                <div>
-                                    <h4 class="font-bold text-lg mb-2">Envie o comprovante</h4>
-                                    <p class="text-gray-300">Encaminhe o comprovante para o WhatsApp: (31) 98204-2552</p>
-                                </div>
+                            <div class="payment-step">
+                                <h4 class="font-bold text-lg mb-2">2. Envie o comprovante</h4>
+                                <p class="text-gray-300 text-sm">Encaminhe o comprovante para o WhatsApp: (31) 98204-2552</p>
                             </div>
                             
-                            <div class="payment-step flex items-start">
-                                <div class="step-number bg-[#d4af37] text-[#171717] w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">3</div>
-                                <div>
-                                    <h4 class="font-bold text-lg mb-2">Confirmação</h4>
-                                    <p class="text-gray-300">Seu bilhete será confirmado em até 24 horas</p>
-                                </div>
+                            <div class="payment-step">
+                                <h4 class="font-bold text-lg mb-2">3. Confirmação</h4>
+                                <p class="text-gray-300 text-sm">Seu bilhete será confirmado em até 24 horas</p>
                             </div>
                         </div>
 
@@ -276,24 +1171,23 @@
         </div>
     </section>
 
-    <!-- Seção Bilhetes -->
     <section id="bilhetes" class="py-16 px-4 bg-[#171717]">
         <div class="container mx-auto max-w-6xl">
             <h2 class="text-3xl font-bold text-center mb-12">Nossos Bilhetes</h2>
 
             <!-- Barra de busca -->
-            <div class="search-container bg-[#262626] rounded-xl p-6 mb-8 border border-gray-700">
-                <div class="search-box flex gap-4 max-w-2xl mx-auto">
-                    <input type="text" id="search-input" class="search-input flex-1 px-4 py-3 bg-[#1e293b] border-2 border-[#d4af37] rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d4af37]" placeholder="Buscar por nome do participante...">
-                    <button id="search-btn" class="search-btn bg-[#d4af37] text-[#171717] px-6 py-3 rounded-lg font-bold hover:bg-[#b8941f] transition">
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="search-input" class="search-input" placeholder="Buscar por nome ou número do bilhete (use sem zero, ex: 15)...">
+                    <button id="search-btn" class="search-btn">
                         <i class="fas fa-search mr-2"></i>Buscar
                     </button>
                 </div>
-                <div id="search-results-info" class="search-results-info text-center mt-4 text-[#d4af37] font-bold hidden"></div>
+                <div id="search-results-info" class="search-results-info"></div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center" id="tickets-gallery">
-                <!-- Os bilhetes serão carregados aqui pelo JavaScript -->
+                <!-- Os bilhetes serão carregados aqui -->
             </div>
 
             <div class="flex justify-center mt-12">
@@ -304,94 +1198,735 @@
         </div>
     </section>
 
-    <!-- Seção Contato -->
     <section id="contato" class="py-16 px-4 bg-[#171717]">
-        <div class="container mx-auto max-w-4xl">
-            <h2 class="text-3xl font-bold text-center mb-12">Entre em Contato</h2>
+    <div class="container mx-auto max-w-4xl">
+        <h2 class="text-3xl font-bold text-center mb-12">Entre em Contato</h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-[#262626] p-6 rounded-lg border border-gray-700">
-                    <h3 class="text-xl font-bold mb-4">Informações de Contato</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center">
-                            <i class="fab fa-whatsapp text-[#10b981] text-xl mr-4"></i>
-                            <div>
-                                <p class="font-bold">WhatsApp</p>
-                                <p>(31) 98204-2552</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center">
-                            <i class="fab fa-instagram text-[#e11d48] text-xl mr-4"></i>
-                            <div>
-                                <p class="font-bold">Instagram</p>
-                                <p>@tipgabriel</p>
-                            </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-[#262626] p-6 rounded-lg border border-gray-700">
+                <h3 class="text-xl font-bold mb-4">Informações de Contato</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center">
+                        <i class="fab fa-whatsapp text-[#10b981] text-xl mr-4"></i>
+                        <div>
+                            <p class="font-bold">WhatsApp</p>
+                            <p>(31) 98204-2552</p>
                         </div>
                     </div>
-                </div>
 
-                <div class="bg-[#262626] p-6 rounded-lg border border-gray-700">
-                    <h3 class="text-xl font-bold mb-4">Formas de Pagamento</h3>
-                    <div class="flex flex-wrap gap-4 mb-4">
-                        <div class="bg-white p-3 rounded-lg">
-                            <i class="fas fa-mobile-alt text-[#10b981] text-2xl"></i>
+                    <div class="flex items-center">
+                        <i class="fab fa-instagram text-[#e11d48] text-xl mr-4"></i>
+                        <div>
+                            <p class="font-bold">Instagram</p>
+                            <p>@tipgabriel</p>
                         </div>
-                        <div class="bg-white p-3 rounded-lg">
-                            <i class="fas fa-university text-[#3b82f6] text-2xl"></i>
-                        </div>
-                    </div>
-                    <p class="mb-4 text-gray-300">Aceitamos PIX e transferência bancária.</p>
-                    
-                    <div class="mt-6">
-                        <h3 class="text-xl font-bold mb-4 text-[#d4af37]">Chave PIX</h3>
-                        <div class="pix-code relative bg-[#1e293b] p-4 rounded-lg border border-dashed border-[#d4af37]">
-                            <button class="copy-btn absolute top-3 right-3 bg-[#d4af37] text-[#171717] px-3 py-1 rounded text-sm font-bold">
-                                <i class="fas fa-copy mr-1"></i>Copiar
-                            </button>
-                            <p class="pix-key text-white text-sm break-all pr-20">
-                                00020126580014br.gov.bcb.pix01365ba9125c-f301-48ef-9f7f-d4508777bd830225MegaTIP - Mega da Virada 52040000530398654056.005802BR5924Gabriel da Paz Silva San6009Sao Paulo61080540900062250515MegaTIP2025122152040000530398654046.005802BR5913Gabriel Silva6009Sao Paulo62070503***6304E2CD
-                            </p>
-                        </div>
-                        
-                        <p class="text-xs text-gray-400 mt-2">
-                            <i class="fas fa-info-circle mr-1 text-[#d4af37]"></i>
-                            Copie a chave completa para pagamento via PIX
-                        </p>
                     </div>
                 </div>
             </div>
+
+<div class="bg-[#262626] p-6 rounded-lg border border-gray-700">
+    <h3 class="text-xl font-bold mb-4">Formas de Pagamento</h3>
+    <div class="flex flex-wrap gap-4 mb-4">
+        <div class="bg-white p-2 rounded">
+            <i class="fas fa-mobile-alt text-[#10b981] text-2xl"></i>
         </div>
+        <div class="bg-white p-2 rounded">
+            <i class="fas fa-university text-[#3b82f6] text-2xl"></i>
+        </div>
+    </div>
+    <p class="mb-4">Aceitamos PIX e transferência bancária.</p>
+    
+    <div class="mt-4">
+        <h3 class="text-xl font-bold mb-4 text-[#d4af37]">Chave PIX</h3>
+        <div class="pix-code mb-6">
+            <button class="copy-btn" onclick="copiarPixContato()">
+                <i class="fas fa-copy mr-1"></i>Copiar
+            </button>
+            <p class="text-white text-sm md:text-base break-all">
+                00020126870014br.gov.bcb.pix01365ba9125c-f301-48ef-9f7f-d4508777bd830225MegaTIP - Mega da Virada 52040000530398654046.005802BR5924Gabriel da Paz Silva San6009Sao Paulo610901227-20062240520daqr12907710421070486304A68C
+            </p>
+        </div>
+        
+        <p class="text-xs text-gray-400 mt-2">
+            <i class="fas fa-info-circle mr-1 text-[#d4af37]"></i>
+            Copie a chave completa para pagamento via PIX
+        </p>
+    </div>
+</div>
+</div>
     </section>
 
-    <!-- Ícone WhatsApp -->
-    <div id="whatsapp-float" class="fixed bottom-6 right-6 z-50">
-        <a href="https://wa.me/5531982042552?text=Oi%2C%20Tip!%20%F0%9F%98%83%20Quero%20muito%20participar%20do%20MegaTIP!%0AT%C3%B4%20animado%20pra%20escolher%20meus%20n%C3%BAmeros%20e%20tentar%20a%20sorte%20%F0%9F%8D%80%F0%9F%92%B0%0AMe%20explica%20direitinho%20como%20fa%C3%A7o%20o%20pagamento%2C%20at%C3%A9%20quando%20posso%20escolher%20ou%20mudar%20meus%20n%C3%BAmeros%2C%20e%20como%20funciona%20se%20eu%20ganhar%20%F0%9F%A4%A9%0AE%20quero%20entrar%20no%20grupo%20pra%20acompanhar%20tudo%20de%20perto!%20%F0%9F%9A%80" 
-           target="_blank" 
-           class="whatsapp-float-btn pulse flex items-center justify-center w-14 h-14 bg-[#25D366] text-white rounded-full text-2xl shadow-lg hover:scale-110 transition-transform">
-            <i class="fab fa-whatsapp"></i>
-        </a>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-[#171717] py-8 px-4 border-t border-gray-700">
+    <footer class="footer py-8 px-4">
         <div class="container mx-auto text-center">
             <div class="flex justify-center space-x-6 mb-6">
-                <a href="https://www.instagram.com/tipgabriel/" class="text-white hover:text-[#d4af37] transition text-2xl">
-                    <i class="fab fa-instagram"></i>
+                <a href="https://www.instagram.com/tipgabriel/" class="text-white hover:text-[#d4af37] transition">
+                    <i class="fab fa-instagram text-2xl"></i>
                 </a>
-                <a href="https://wa.me/5531982042552" class="text-white hover:text-[#d4af37] transition text-2xl">
-                    <i class="fab fa-whatsapp"></i>
+                <a href="https://wa.me/5531982042552?text=Oi%2C%20Tip!%20%F0%9F%98%83%20Quero%20muito%20participar%20do%20MegaTIP!%0AT%C3%B4%20animado%20pra%20escolher%20meus%20n%C3%BAmeros%20e%20tentar%20a%20sorte%20%F0%9F%8D%80%F0%9F%92%B0%0AMe%20explica%20direitinho%20como%20fa%C3%A7o%20o%20pagamento%2C%20at%C3%A9%20quando%20posso%20escolher%20ou%20mudar%20meus%20n%C3%BAmeros%2C%20e%20como%20funciona%20se%20eu%20ganhar%20%F0%9F%A4%A9%0AE%20quero%20entrar%20no%20grupo%20pra%20acompanhar%20tudo%20de%20perto!%20%F0%9F%9A%80" class="text-white hover:text-[#d4af37] transition">
+                    <i class="fab fa-whatsapp text-2xl"></i>
                 </a>
             </div>
 
             <p class="mb-2">MegaTIP - Apostas e Bolão</p>
             <p class="text-sm opacity-75" id="copyright">
-                © 2024 MegaTIP - Todos os direitos reservados.
+                <!-- Copyright será preenchido via JavaScript -->
             </p>
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+// Função para copiar chave PIX - CORRIGIDA mantendo a chave completa
+    function copiarPix() {
+        // Manter a chave PIX completa com parâmetros pré-preenchidos
+        const pixKey = "00020126870014br.gov.bcb.pix01365ba9125c-f301-48ef-9f7f-d4508777bd830225MegaTIP - Mega da Virada 52040000530398654046.005802BR5924Gabriel da Paz Silva San6009Sao Paulo610901227-20062240520daqr12907710421070486304A68C";
+        
+        navigator.clipboard.writeText(pixKey).then(() => {
+            // Feedback visual melhorado
+            const btn = event.target.closest('.copy-btn');
+            const originalText = btn.innerHTML;
+            const originalBackground = btn.style.background;
+            
+            btn.innerHTML = '<i class="fas fa-check mr-1"></i>Copiado!';
+            btn.style.background = '#10b981';
+            btn.style.transform = 'scale(1.05)';
+            
+            // Também dar feedback no próprio campo do PIX
+            const pixCodeElement = document.querySelector('.pix-code');
+            pixCodeElement.style.border = '2px solid #10b981';
+            pixCodeElement.style.background = '#1a472a';
+            
+            // Adicionar mensagem flutuante de confirmação
+            const floatingMessage = document.createElement('div');
+            floatingMessage.innerHTML = '<i class="fas fa-check-circle mr-2"></i>Chave PIX copiada com sucesso!';
+            floatingMessage.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #10b981;
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                font-weight: bold;
+                z-index: 10000;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                animation: slideIn 0.3s ease;
+            `;
+            
+            document.body.appendChild(floatingMessage);
+            
+            // Remover mensagem flutuante após 3 segundos
+            setTimeout(() => {
+                floatingMessage.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (floatingMessage.parentNode) {
+                        floatingMessage.parentNode.removeChild(floatingMessage);
+                    }
+                }, 300);
+            }, 3000);
+            
+            // Restaurar estado original do botão após 2 segundos
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = originalBackground;
+                btn.style.transform = 'scale(1)';
+                
+                // Restaurar campo PIX
+                pixCodeElement.style.border = '1px dashed #d4af37';
+                pixCodeElement.style.background = '#0f172a';
+            }, 2000);
+            
+        }).catch(err => {
+            console.error('Erro ao copiar: ', err);
+            
+            // Feedback de erro
+            const btn = event.target.closest('.copy-btn');
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-times mr-1"></i>Erro!';
+            btn.style.background = '#dc2626';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '#d4af37';
+            }, 2000);
+        });
+    }
+
+    // Adicionar estilos CSS para as animações
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        
+        .pix-code {
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn {
+            transition: all 0.3s ease;
+        }
+    `;
+    document.head.appendChild(style);
+        // Função para copiar chave PIX da seção de contato
+function copiarPixContato() {
+    const pixKey = "00020126870014br.gov.bcb.pix01365ba9125c-f301-48ef-9f7f-d4508777bd830225MegaTIP - Mega da Virada 52040000530398654046.005802BR5924Gabriel da Paz Silva San6009Sao Paulo610901227-20062240520daqr12907710421070486304A68C";
+    
+    navigator.clipboard.writeText(pixKey).then(() => {
+        const btn = event.target.closest('.copy-btn');
+        const originalText = btn.innerHTML;
+        const originalBackground = btn.style.background;
+        
+        btn.innerHTML = '<i class="fas fa-check mr-1"></i>Copiado!';
+        btn.style.background = '#10b981';
+        btn.style.transform = 'scale(1.05)';
+        
+        // Feedback visual no container
+        const pixContainer = event.target.closest('.pix-code');
+        pixContainer.style.border = '2px solid #10b981';
+        pixContainer.style.background = '#1a472a';
+        
+        // Mensagem flutuante
+        const floatingMessage = document.createElement('div');
+        floatingMessage.innerHTML = '<i class="fas fa-check-circle mr-2"></i>Chave PIX copiada com sucesso!';
+        floatingMessage.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            z-index: 10000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s ease;
+        `;
+        
+        document.body.appendChild(floatingMessage);
+        
+        setTimeout(() => {
+            floatingMessage.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => {
+                if (floatingMessage.parentNode) {
+                    floatingMessage.parentNode.removeChild(floatingMessage);
+                }
+            }, 300);
+        }, 3000);
+        
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.style.background = originalBackground;
+            btn.style.transform = 'scale(1)';
+            
+            pixContainer.style.border = '1px dashed #d4af37';
+            pixContainer.style.background = '#0f172a';
+        }, 2000);
+        
+    }).catch(err => {
+        console.error('Erro ao copiar: ', err);
+        const btn = event.target.closest('.copy-btn');
+        const originalText = btn.innerHTML;
+        
+        btn.innerHTML = '<i class="fas fa-times mr-1"></i>Erro!';
+        btn.style.background = '#dc2626';
+        
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.style.background = '#d4af37';
+        }, 2000);
+    });
+}
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // ========== VARIÁVEIS GLOBAIS ==========
+            // Números oficiais da Mega da Virada - serão atualizados após o sorteio
+            let numerosSorteados = [0, 0, 0, 0, 0, 0]; // Inicialmente todos zeros
+            let bilheteVencedor = null;
+            let grupoGanhou = false;
+
+            // ========== MENU MOBILE ==========
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            let isMenuOpen = false;
+
+            function toggleMobileMenu() {
+                isMenuOpen = !isMenuOpen;
+                
+                if (isMenuOpen) {
+                    mobileMenu.classList.add('active');
+                    mobileMenuButton.innerHTML = '<i class="fas fa-times"></i>';
+                } else {
+                    mobileMenu.classList.remove('active');
+                    mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            }
+
+            mobileMenuButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleMobileMenu();
+            });
+
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                    mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
+                    isMenuOpen = false;
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                if (isMenuOpen && !mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target)) {
+                    mobileMenu.classList.remove('active');
+                    mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
+                    isMenuOpen = false;
+                }
+            });
+
+            // ========== COPYRIGHT ==========
+            const year = new Date().getFullYear();
+            document.getElementById('copyright').innerHTML = `&copy; ${year} MegaTIP. Não somos filiados à Caixa Econômica Federal.`;
+
+            // ========== SISTEMA DE VERIFICAÇÃO ==========
+            const btnVerificarBilhetes = document.getElementById('btn-verificar-bilhetes');
+            const statusSorteio = document.getElementById('status-sorteio');
+            const resultadoVerificacao = document.getElementById('resultado-verificacao');
+            const bilheteVencedorElement = document.getElementById('bilhete-vencedor');
+            const totalAcertosElement = document.getElementById('total-acertos');
+            const statusGrupoElement = document.getElementById('status-grupo');
+            const tituloResultado = document.getElementById('titulo-resultado');
+            const mensagemResultado = document.getElementById('mensagem-resultado');
+            const resultadoCards = document.getElementById('resultado-cards');
+            const detalhesAcertos = document.getElementById('detalhes-acertos');
+            const listaBilhetesAcertos = document.getElementById('lista-bilhetes-acertos');
+
+            // Função para verificar se há números válidos (acima de 0)
+            function temNumerosValidos(numeros) {
+                return numeros.some(num => num > 0);
+            }
+
+            // Função para atualizar números oficiais (será chamada após o sorteio)
+            function atualizarNumerosOficiais(novosNumeros) {
+                numerosSorteados = novosNumeros;
+                const numerosElementos = document.querySelectorAll('.numero-oficial');
+                
+                numerosElementos.forEach((elemento, index) => {
+                    if (index < novosNumeros.length) {
+                        elemento.textContent = novosNumeros[index].toString().padStart(2, '0');
+                        // Só adiciona a classe "sorteado" se o número for maior que 0
+                        if (novosNumeros[index] > 0) {
+                            elemento.classList.add('sorteado');
+                        } else {
+                            elemento.classList.remove('sorteado');
+                        }
+                    }
+                });
+                
+                // Atualiza mensagem de status baseado nos números
+                if (temNumerosValidos(novosNumeros)) {
+                    statusSorteio.innerHTML = '<p class="text-[#10b981]"><i class="fas fa-check mr-2"></i>Sorteio oficial realizado!</p>';
+                } else {
+                    statusSorteio.innerHTML = '<p class="text-[#d4af37]"><i class="fas fa-clock mr-2"></i>Aguardando sorteio oficial da Caixa</p>';
+                }
+            }
+
+            // Função para verificar se um bilhete é vencedor (6 acertos)
+            function verificarVencedor(bilheteNumeros) {
+                if (!temNumerosValidos(numerosSorteados)) return 0;
+                
+                const numerosBilhete = bilheteNumeros.split(',').map(num => parseInt(num.trim()));
+                return numerosBilhete.filter(num => numerosSorteados.includes(num)).length;
+            }
+
+            // Função para atualizar a interface com os resultados
+            function atualizarInterfaceResultados(grupoGanhou, bilheteVencedor, maxAcertos, bilhetesComAcertos) {
+                // Limpar detalhes anteriores
+                listaBilhetesAcertos.innerHTML = '';
+                
+                if (grupoGanhou && bilheteVencedor) {
+                    // Caso de vitória
+                    tituloResultado.innerHTML = '🎉 PARABÉNS! VOCÊS GANHARAM! 🎉';
+                    tituloResultado.className = 'text-xl font-bold mb-4 text-center text-[#10b981]';
+                    
+                    bilheteVencedorElement.textContent = `#${bilheteVencedor.id.toString().padStart(4, '0')} - ${bilheteVencedor.assignedName}`;
+                    totalAcertosElement.textContent = "6 ACERTOS!";
+                    statusGrupoElement.textContent = "VENCEDOR!";
+                    statusGrupoElement.className = "text-2xl text-[#10b981]";
+                    
+                    // Atualizar cards com estilo de vencedor
+                    resultadoCards.className = 'grid grid-cols-1 md:grid-cols-3 gap-4 resultado-vencedor p-4 rounded-lg';
+                    
+                    // Atualizar mensagem
+                    mensagemResultado.innerHTML = `
+                        <p class="text-center font-bold text-2xl text-[#10b981]">🏆 PARABÉNS A TODOS DO GRUPO! 🎉</p>
+                        <p class="text-center mt-4 text-lg">🎯 <strong>${bilheteVencedor.assignedName}</strong> acertou os 6 números!</p>
+                        <p class="text-center mt-2">🎉 O grupo inteiro comemora! Cada participante recebe seu prêmio individual!</p>
+                        <p class="text-center mt-4 text-[#d4af37] font-bold">💰 PRÊMIO GARANTIDO! 💰</p>
+                    `;
+                    mensagemResultado.className = 'mt-4 p-6 rounded-lg mensagem-vencedor';
+                    
+                    // Esconder detalhes de acertos parciais
+                    detalhesAcertos.classList.add('hidden');
+                } else {
+                    // Caso de não vitória
+                    tituloResultado.innerHTML = '📊 RESULTADO DA VERIFICAÇÃO';
+                    tituloResultado.className = 'text-xl font-bold mb-4 text-center text-[#d4af37]';
+                    
+                    bilheteVencedorElement.textContent = "Nenhum bilhete com 6 acertos";
+                    totalAcertosElement.textContent = `${maxAcertos} acertos (máximo)`;
+                    statusGrupoElement.textContent = "Aguardando próximo sorteio";
+                    statusGrupoElement.className = "text-2xl text-[#d4af37]";
+                    
+                    // Atualizar cards com estilo de não vencedor
+                    resultadoCards.className = 'grid grid-cols-1 md:grid-cols-3 gap-4 resultado-perdedor p-4 rounded-lg';
+                    
+                    // Atualizar mensagem
+                    mensagemResultado.innerHTML = `
+                        <p class="text-center font-bold text-xl text-[#d4af37]">😔 INFELIZMENTE NÃO FOI DESSA VEZ</p>
+                        <p class="text-center mt-2">Nenhum bilhete acertou os 6 números sorteados.</p>
+                        <p class="text-center mt-4 text-[#10b981]">📈 Continue participando para aumentar suas chances!</p>
+                    `;
+                    mensagemResultado.className = 'mt-4 p-6 rounded-lg mensagem-perdedor';
+                    
+                    // Mostrar detalhes de acertos parciais
+                    if (bilhetesComAcertos.length > 0) {
+                        detalhesAcertos.classList.remove('hidden');
+                        
+                        // Adicionar bilhetes com acertos à lista
+                        bilhetesComAcertos.forEach(bilhete => {
+                            const bilheteItem = document.createElement('div');
+                            bilheteItem.className = 'bg-[#374151] p-4 rounded-lg bilhete-acertou border border-gray-600';
+                            bilheteItem.innerHTML = `
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <p class="font-bold">${bilhete.assignedName}</p>
+                                        <p class="text-sm">Bilhete #${bilhete.id.toString().padStart(4, '0')}</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-[#10b981] font-bold text-lg">${bilhete.acertos} acerto(s)</p>
+                                        <p class="text-xs">Números: ${bilhete.numbers}</p>
+                                    </div>
+                                </div>
+                            `;
+                            listaBilhetesAcertos.appendChild(bilheteItem);
+                        });
+                    } else {
+                        detalhesAcertos.classList.add('hidden');
+                    }
+                }
+            }
+
+            // Função para verificar todos os bilhetes
+            btnVerificarBilhetes.addEventListener('click', function() {
+                if (!temNumerosValidos(numerosSorteados)) {
+                    statusSorteio.innerHTML = '<p class="text-[#dc2626]"><i class="fas fa-exclamation-triangle mr-2"></i>Aguardando sorteio oficial da Caixa!</p>';
+                    return;
+                }
+
+                bilheteVencedor = null;
+                grupoGanhou = false;
+                let maxAcertos = 0;
+                let bilhetesComAcertos = [];
+
+                // Verificar cada bilhete
+                sampleTickets.forEach(ticket => {
+                    const acertos = verificarVencedor(ticket.numbers);
+                    if (acertos > maxAcertos) {
+                        maxAcertos = acertos;
+                    }
+                    if (acertos === 6) {
+                        bilheteVencedor = ticket;
+                        grupoGanhou = true;
+                    }
+                    if (acertos > 0) {
+                        bilhetesComAcertos.push({
+                            ...ticket,
+                            acertos: acertos
+                        });
+                    }
+                });
+
+                // Ordenar bilhetes por número de acertos (maior primeiro)
+                bilhetesComAcertos.sort((a, b) => b.acertos - a.acertos);
+
+                // Atualizar interface com resultados
+                atualizarInterfaceResultados(grupoGanhou, bilheteVencedor, maxAcertos, bilhetesComAcertos);
+
+                resultadoVerificacao.classList.remove('hidden');
+                atualizarBilhetes();
+            });
+
+            // ========== GALERIA DE BILHETES ==========
+            const ticketsGallery = document.getElementById('tickets-gallery');
+            const loadMoreButton = document.getElementById('load-more');
+
+const participantNames = [
+    "Ana Paula",      // ← Bilhete 1
+    "Beatriz",        // ← Bilhete 2
+    "Bryan",          // ← Bilhete 3
+    "Erlinda",        // ← Bilhete 4
+    "Elton",          // ← Bilhete 5
+    "Gabriel",        // ← Bilhete 6
+    "Guedes",         // ← Bilhete 7
+    "John",           // ← Bilhete 8
+    "Kimyo",          // ← Bilhete 9
+    "Lora",           // ← Bilhete 10
+    "Melissa",        // ← Bilhete 11
+    "Mufasa Empório", // ← Bilhete 12
+    "Olivier",        // ← Bilhete 13
+    "Paloma",         // ← Bilhete 14
+    "Ronaldo",         // ← Bilhete 15
+    "TH Romerito",    // ← Bilhete 16
+    "Tiago",          // ← Bilhete 17
+    "Vitória Mandy",  // ← Bilhete 18
+    "Willian"         // ← Bilhete 19
+];
+
+
+            // ATUALIZAÇÃO: Todos os números iniciais são 00
+const sampleTickets = [
+    { id: 1, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Ana Paula" },
+    { id: 2, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Beatriz" },
+    { id: 3, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Bryan" },
+    { id: 4, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Erlinda" },
+    { id: 5, event: "Mega da Virada", date: "31/12/2025", numbers: "31, 17, 34, 24, 09, 47", assignedName: "Elton" },
+    { id: 6, event: "Mega da Virada", date: "31/12/2025", numbers: "01, 03, 33, 50, 47, 42", assignedName: "Gabriel" },
+    { id: 7, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Guedes" },
+    { id: 8, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "John" },
+    { id: 9, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Kimyo" },
+    { id: 10, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Lora" },
+    { id: 11, event: "Mega da Virada", date: "31/12/2025", numbers: "45, 30, 21, 40, 60, 10", assignedName: "Melissa" },
+    { id: 12, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Mufasa Empório" },
+    { id: 13, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Olivier" },
+    { id: 14, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Paloma" },
+    { id: 15, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Ronaldo" },
+    { id: 16, event: "Mega da Virada", date: "31/12/2025", numbers: "10, 19, 05, 34, 27, 25", assignedName: "TH Romerito" },
+    { id: 17, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Tiago" },
+    { id: 18, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Vitória Mandy" },
+    { id: 19, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Willian" }
+];
+
+            let displayedTickets = window.innerWidth < 768 ? 6 : 8;
+            let filteredTickets = [...sampleTickets]; // Cópia para filtragem
+
+            // ========== SISTEMA DE BUSCA EM TEMPO REAL ==========
+            const searchInput = document.getElementById('search-input');
+            const searchBtn = document.getElementById('search-btn');
+            const searchResultsInfo = document.getElementById('search-results-info');
+
+            // Variável para controlar o timeout da busca
+            let searchTimeout;
+
+            // Função para filtrar bilhetes
+            function filtrarBilhetes(termo) {
+                if (!termo) {
+                    return [...sampleTickets];
+                }
+                
+                const termoLower = termo.toLowerCase();
+                return sampleTickets.filter(ticket => {
+                    // Buscar por nome do participante
+                    if (ticket.assignedName.toLowerCase().includes(termoLower)) {
+                        return true;
+                    }
+                    
+                    // Buscar por número do bilhete
+                    if (ticket.id.toString().includes(termo)) {
+                        return true;
+                    }
+                    
+                    // Buscar por números da sorte
+                    if (ticket.numbers.includes(termo)) {
+                        return true;
+                    }
+                    
+                    return false;
+                });
+            }
+
+            // Função para executar a busca
+            function executarBusca() {
+                const termo = searchInput.value.trim();
+                filteredTickets = filtrarBilhetes(termo);
+                displayedTickets = filteredTickets.length; // Mostrar todos os resultados da busca
+                atualizarBilhetes();
+            }
+
+            // Função para atualizar a exibição dos bilhetes com base no filtro
+            function atualizarBilhetes() {
+                ticketsGallery.innerHTML = '';
+
+                if (filteredTickets.length === 0) {
+                    ticketsGallery.innerHTML = `
+                        <div class="no-results col-span-full">
+                            <i class="fas fa-search text-4xl mb-4"></i>
+                            <p>Nenhum bilhete encontrado para sua busca.</p>
+                            <p class="text-sm mt-2">Tente buscar por nome ou número do bilhete</p>
+                        </div>
+                    `;
+                    loadMoreButton.style.display = 'none';
+                    return;
+                }
+
+                for (let i = 0; i < displayedTickets && i < filteredTickets.length; i++) {
+                    const ticket = filteredTickets[i];
+                    const acertos = verificarVencedor(ticket.numbers);
+                    const isVencedor = grupoGanhou && bilheteVencedor && bilheteVencedor.id === ticket.id;
+                    const isGrupoVencedor = grupoGanhou;
+
+                    const ticketElement = document.createElement('div');
+                    ticketElement.className = `ticket card-hover ${isGrupoVencedor ? 'premiado' : ''}`;
+                    
+                    const numerosArray = ticket.numbers.split(', ');
+                    const numerosHTML = numerosArray.map(num => {
+                        const numero = parseInt(num);
+                        const isAcerto = temNumerosValidos(numerosSorteados) && numerosSorteados.includes(numero);
+                        return `<span class="numero-sorteio ${isAcerto ? 'numero-acerto' : ''}">${num.padStart(2, '0')}</span>`;
+                    }).join('');
+
+                    // Gerar um código aleatório para o ticket
+                    const ticketCode = Math.random().toString(36).substring(2, 10).toUpperCase();
+
+                    ticketElement.innerHTML = `
+                        <div class="ticket-stripes"></div>
+                        ${isVencedor ? '<div class="badge-vencedor">🎯 BILHETE VENCEDOR</div>' : ''}
+                        ${isGrupoVencedor && !isVencedor ? '<div class="badge-premiado">🏆 GRUPO VENCEDOR</div>' : ''}
+                        
+                        <div class="ticket-header">
+                            <div class="ticket-logo">
+                                <i class="fas fa-clover"></i>
+                            </div>
+                            <div class="ticket-title">Mega Sena</div>
+                            <div class="ticket-subtitle">Da Virada 2025</div>
+                            <div class="ticket-concurso">Concurso Especial</div>
+                        </div>
+                        
+                        <div class="ticket-body">
+                            <div class="ticket-watermark">MEGATIP</div>
+                            
+                            <div class="ticket-participante">
+                                <p class="font-bold text-lg text-[#fefefe]">${ticket.assignedName}</p>
+                                <p class="text-sm text-gray-600">Participante #${ticket.id.toString().padStart(4, '0')}</p>
+                            </div>
+                            
+                            <div class="ticket-numeros-title">Números da Sorte</div>
+                            <div class="numeros-container">
+                                ${numerosHTML}
+                            </div>
+                            
+                            ${acertos > 0 ? `<p class="text-center mt-4 text-green-600 font-bold text-lg">${acertos} ACERTO(S)!</p>` : ''}
+                            
+                            <div class="ticket-divider"></div>
+                            
+                            <div class="ticket-data">
+                                <p>Sorteio: <strong>31/12/2025</strong></p>
+                                <p class="mt-2">Valor: <span class="ticket-valor">R$ 6,00</span></p>
+                            </div>
+                            
+                            <div class="ticket-codigo">
+                                Código: ${ticketCode}
+                            </div>
+                            
+                            <div class="ticket-garantia">
+                                Participação garantida no bolão coletivo MegaTIP
+                            </div>
+                        </div>
+                        
+                        <div class="ticket-footer">
+                            Bolão Coletivo • MegaTIP
+                        </div>
+                    `;
+
+                    ticketsGallery.appendChild(ticketElement);
+                }
+
+                // Atualizar informações de resultados da busca
+                if (searchInput.value.trim() !== '') {
+                    searchResultsInfo.textContent = `${filteredTickets.length} bilhete(s) encontrado(s) para "${searchInput.value}"`;
+                } else {
+                    searchResultsInfo.textContent = '';
+                }
+
+                // Mostrar ou esconder botão "Carregar Mais" (só mostra quando não está buscando)
+                if (searchInput.value.trim() === '' && displayedTickets < sampleTickets.length) {
+                    loadMoreButton.style.display = 'block';
+                } else {
+                    loadMoreButton.style.display = 'none';
+                }
+            }
+
+            // Evento de busca em tempo real
+            searchInput.addEventListener('input', function() {
+                const termo = this.value.trim();
+                
+                // Limpar timeout anterior
+                clearTimeout(searchTimeout);
+                
+                // Se o campo estiver vazio, mostrar todos os bilhetes
+                if (termo === '') {
+                    filteredTickets = [...sampleTickets];
+                    displayedTickets = 8;
+                    atualizarBilhetes();
+                    return;
+                }
+                
+                // Aguardar 300ms após a última digitação para executar a busca
+                searchTimeout = setTimeout(() => {
+                    executarBusca();
+                }, 300);
+            });
+
+            // Evento de busca ao clicar no botão
+            searchBtn.addEventListener('click', function() {
+                executarBusca();
+            });
+
+            // Buscar ao pressionar Enter
+            searchInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    executarBusca();
+                }
+            });
+
+            loadMoreButton.addEventListener('click', function() {
+                displayedTickets = sampleTickets.length;
+                atualizarBilhetes();
+            });
+
+            // Exibir bilhetes iniciais
+            filteredTickets = [...sampleTickets];
+            atualizarBilhetes();
+
+            // ========== SCROLL SUAVE ==========
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    if (this.id === 'mobile-menu-button') return;
+                    
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // ========== EXEMPLO: Como atualizar os números após o sorteio oficial ==========
+            // Para usar após o sorteio oficial, descomente a linha abaixo e atualize com os números reais:
+            // atualizarNumerosOficiais([5, 12, 23, 34, 45, 56]);
+        });
+    </script>
 </body>
 </html>

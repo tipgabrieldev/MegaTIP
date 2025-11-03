@@ -1,4 +1,7 @@
-/* ===== RESET E CONFIGURAÇÕES GERAIS ===== */
+/* Importação de fontes */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
+
+/* Reset e configurações gerais */
 * {
     margin: 0;
     padding: 0;
@@ -8,21 +11,18 @@
 html, body {
     overflow-x: hidden;
     width: 100%;
+    position: relative;
+    scroll-behavior: smooth;
+}
+
+body {
     font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
+    min-height: 100vh;
+    color: #ffffff;
 }
 
-/* ===== VARIÁVEIS DE CORES ===== */
-:root {
-    --primary: #171717;
-    --secondary: #d4af37;
-    --accent: #10b981;
-    --danger: #dc2626;
-    --text: #ffffff;
-    --card: #262626;
-    --gray: #374151;
-}
-
-/* ===== COMPONENTES REUTILIZÁVEIS ===== */
+/* Container principal */
 .container {
     width: 100%;
     max-width: 1200px;
@@ -30,84 +30,49 @@ html, body {
     padding: 0 15px;
 }
 
-.btn-primary {
-    background: var(--secondary);
-    color: var(--primary);
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    border: none;
-    cursor: pointer;
+/* Hero Section */
+.hero-section {
+    background: rgba(23, 23, 23, 0.85);
+    border-radius: 20px;
+    border: 1px solid #374151;
+    background-image: url('https://images.unsplash.com/photo-1531581147769-2ec2ae9ba937?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: overlay;
 }
 
-.btn-primary:hover {
-    background: #b8941f;
-    transform: translateY(-2px);
+.glow {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
 }
 
-.card {
-    background: var(--card);
-    border-radius: 12px;
-    border: 1px solid var(--gray);
-    padding: 20px;
+.card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* ===== HEADER E NAVEGAÇÃO ===== */
-.nav-link {
-    position: relative;
-    padding: 8px 0;
-    transition: all 0.3s ease;
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
 }
 
-.nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--secondary), #fbbf24);
-    transition: width 0.3s ease;
-}
-
-.nav-link:hover::after {
-    width: 100%;
-}
-
-/* Menu Mobile */
-.mobile-menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: rgba(23, 23, 23, 0.98);
-    backdrop-filter: blur(10px);
-    transform: translateY(-100%);
-    transition: transform 0.3s ease-in-out;
-    z-index: 40;
-}
-
-.mobile-menu.active {
-    transform: translateY(0);
-}
-
-/* ===== TICKETS ESTILIZADOS ===== */
+/* TICKETS - Design Elegante */
 .ticket {
-    background: linear-gradient(135deg, #1e293b, #0f172a);
+    background: radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
     border-radius: 16px;
     padding: 0;
     margin: 0 auto;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15),
+                0 5px 10px rgba(0,0,0,0.05),
+                inset 0 1px 0 rgba(255,255,255,0.8);
+    color: #1e293b;
+    position: relative;
+    overflow: hidden;
     border: 2px solid #c5d9f1;
     width: 100%;
     max-width: 320px;
     min-height: 440px;
     display: flex;
     flex-direction: column;
-    position: relative;
-    overflow: hidden;
 }
 
 .ticket::before {
@@ -117,7 +82,7 @@ html, body {
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, var(--secondary), #fbbf24, var(--secondary));
+    background: linear-gradient(90deg, #d4af37, #fbbf24, #d4af37);
     z-index: 2;
 }
 
@@ -127,6 +92,18 @@ html, body {
     padding: 20px;
     text-align: center;
     position: relative;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.ticket-header::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #d4af37, transparent);
 }
 
 .ticket-body {
@@ -135,19 +112,140 @@ html, body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    background: radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
+    position: relative;
+}
+
+.ticket-body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
 }
 
 .ticket-footer {
-    background: rgba(31, 35, 39, 0.7);
+    background: rgba(31, 35, 39, 0.7) !important;
     backdrop-filter: blur(8px);
     padding: 15px 20px;
     text-align: center;
     font-weight: 600;
     border-top: 1px solid rgba(255, 255, 255, 0.15);
-    color: var(--secondary);
+    color: #d4af37 !important;
+    font-size: 0.9rem;
 }
 
-/* Números do Ticket */
+/* Elementos do Ticket */
+.ticket-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 22px;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+.ticket-subtitle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    opacity: 0.8;
+    margin-bottom: 5px;
+    font-weight: 400;
+}
+
+.ticket-logo {
+    font-size: 28px;
+    margin-bottom: 12px;
+    color: #d4af37;
+}
+
+.ticket-concurso {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-top: 8px;
+    display: inline-block;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.ticket-participante {
+    background: rgba(31, 35, 39, 0.4) !important;
+    backdrop-filter: blur(10px);
+    color: #fefefe !important;
+    padding: 16px;
+    border-radius: 12px;
+    margin: 20px 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.ticket-numeros-title {
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 16px;
+    color: #d4af37 !important;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+}
+
+.ticket-data {
+    text-align: center;
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 16px;
+    line-height: 1.5;
+}
+
+.ticket-valor {
+    font-size: 18px;
+    font-weight: bold;
+    color: #d4af37;
+}
+
+.ticket-codigo {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    background: rgba(31, 35, 39, 0.5) !important;
+    backdrop-filter: blur(5px);
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-top: 16px;
+    text-align: center;
+    color: #cbd5e1 !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
+    letter-spacing: 0.5px;
+}
+
+.ticket-watermark {
+    position: absolute;
+    bottom: 60px;
+    right: 20px;
+    font-size: 60px;
+    opacity: 0.03;
+    color: #1e293b;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    transform: rotate(-15deg);
+    pointer-events: none;
+}
+
+.ticket-stripes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 48%, rgba(212, 175, 55, 0.03) 50%, transparent 52%),
+                linear-gradient(-45deg, transparent 48%, rgba(16, 185, 129, 0.03) 50%, transparent 52%);
+    background-size: 20px 20px;
+    pointer-events: none;
+}
+
+/* Números */
 .numeros-container {
     display: flex;
     flex-wrap: wrap;
@@ -161,21 +259,32 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, rgba(31, 35, 39, 0.6), rgba(31, 35, 39, 0.4));
+    background: linear-gradient(135deg, rgba(31, 35, 39, 0.6), rgba(31, 35, 39, 0.4)) !important;
     border-radius: 50%;
     font-weight: bold;
-    color: #f1f5f9;
-    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+    color: #f1f5f9 !important;
+    border: 1px solid rgba(255,255,255,0.2) !important;
     transition: all 0.3s ease;
+    flex-shrink: 0;
+    backdrop-filter: blur(5px);
+    margin: 0;
     width: 40px;
     height: 40px;
     font-size: 15px;
 }
 
+.numero-sorteio:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
 .numero-sorteio.acerto {
-    background: linear-gradient(135deg, var(--secondary), #fbbf24);
-    color: var(--primary);
+    background: linear-gradient(135deg, #d4af37, #fbbf24);
     animation: bounce 0.5s;
+    color: #1e293b;
+    border-color: #d4af37;
 }
 
 @keyframes bounce {
@@ -184,71 +293,143 @@ html, body {
     80% { transform: translateY(-4px); }
 }
 
-/* ===== SEÇÃO DE PAGAMENTO ===== */
-.pix-container {
-    background: linear-gradient(135deg, #1e293b, #0f172a);
-    border-radius: 16px;
-    padding: 30px;
-    border: 1px solid var(--gray);
-}
-
-.pix-code {
-    background: #0f172a;
-    border: 1px dashed var(--secondary);
-    border-radius: 8px;
-    padding: 15px;
-    font-family: 'Courier New', monospace;
-    word-break: break-all;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.copy-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: var(--secondary);
-    color: var(--primary);
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.copy-btn:hover {
-    background: #fbbf24;
-}
-
-/* ===== WHATSAPP FLOAT ===== */
-.whatsapp-float-btn {
+/* Números Oficiais */
+#numeros-oficiais {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    max-width: 150px;
+    margin: 0 auto 20px auto;
+}
+
+.numero-oficial {
+    display: inline-flex;
+    width: 45px;
+    height: 45px;
     align-items: center;
     justify-content: center;
-    width: 60px;
-    height: 60px;
-    background-color: #25D366;
-    color: white;
+    background: white;
+    border: 2px solid #e2e8f0;
     border-radius: 50%;
-    font-size: 30px;
-    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 100;
+    font-weight: bold;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    color: #1e293b;
     transition: all 0.3s ease;
-    animation: pulse 2s infinite;
+    margin: 0;
 }
 
-.whatsapp-float-btn:hover {
+.numero-oficial.sorteado {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border-color: #10b981;
     transform: scale(1.1);
-    box-shadow: 0 6px 25px rgba(37, 211, 102, 0.6);
 }
 
-@keyframes pulse {
+/* Badges */
+.badge-premiado {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: linear-gradient(135deg, #d4af37, #fbbf24);
+    color: #1e293b;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 12px;
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+    z-index: 10;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.badge-vencedor {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 12px;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+    z-index: 10;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+/* Vídeo */
+.video-container {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    background: #000;
+}
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+    background: #000;
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: 16px;
+}
+
+/* Menu Mobile */
+.mobile-menu {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+}
+
+.mobile-menu.active {
+    transform: translateY(0);
+}
+
+.nav-link-mobile {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-link-mobile::before {
+    content: '';
+    position: absolute;
+    left: -100%;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.nav-link-mobile:hover::before {
+    left: 100%;
+}
+
+.nav-link-mobile:hover {
+    transform: translateX(8px);
+    color: #d4af37 !important;
+}
+
+/* WhatsApp Float */
+.pulse {
+    animation: pulse-animation 2s infinite;
+}
+
+@keyframes pulse-animation {
     0% {
         box-shadow: 0 0 0 0px rgba(37, 211, 102, 0.7);
     }
@@ -257,7 +438,22 @@ html, body {
     }
 }
 
-/* ===== RESPONSIVIDADE ===== */
+/* QR Code Fallback */
+.qrcode-fallback {
+    display: none;
+}
+
+.qrcode-container img[src=""],
+.qrcode-container img:not([src]) {
+    display: none;
+}
+
+.qrcode-container img[src=""] + .qrcode-fallback,
+.qrcode-container img:not([src]) + .qrcode-fallback {
+    display: flex;
+}
+
+/* Responsividade */
 @media (max-width: 768px) {
     .ticket {
         min-height: 380px;
@@ -272,13 +468,85 @@ html, body {
         padding: 15px;
     }
     
-    .container {
-        padding: 0 10px;
+    .hero-text {
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+    
+    .feature-text {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    .search-box {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .search-input {
+        width: 100%;
+    }
+
+    .search-btn {
+        width: 100%;
+    }
+    
+    #numeros-oficiais {
+        max-width: 150px;
+        gap: 8px;
+    }
+    
+    .numero-oficial {
+        width: 42px;
+        height: 42px;
+        font-size: 15px;
+    }
+    
+    .numeros-container {
+        max-width: 150px;
+        gap: 8px;
+    }
+    
+    .numero-sorteio {
+        width: 38px;
+        height: 38px;
+        font-size: 14px;
     }
 }
 
-@media (min-width: 769px) and (max-width: 1024px) {
-    .container {
-        padding: 0 20px;
+@media (min-width: 768px) {
+    #numeros-oficiais {
+        flex-wrap: nowrap;
+        max-width: 400px;
+        gap: 12px;
+        margin: 0 auto 25px auto;
+    }
+            
+    .numero-oficial {
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
+    }
+            
+    .numeros-container {
+        max-width: 150px;
+        gap: 10px;
+    }
+    
+    .numero-sorteio {
+        width: 42px;
+        height: 42px;
+        font-size: 16px;
+    }
+}
+
+/* Garantir que o menu mobile não apareça no desktop */
+@media (min-width: 768px) {
+    #mobile-menu-button {
+        display: none !important;
+    }
+    
+    .mobile-menu {
+        display: none !important;
     }
 }

@@ -1304,45 +1304,15 @@ function copiarPix(elementId) {
         btn.style.background = '#10b981';
         btn.style.transform = 'scale(1.05)';
         
-        // Criar mensagem de feedback próximo ao código PIX
-        const existingMessage = pixContainer.querySelector('.copy-success-message');
-        
-        if (existingMessage) {
-            existingMessage.remove();
-        }
-        
-        const successMessage = document.createElement('div');
-        successMessage.className = 'copy-success-message';
-        successMessage.innerHTML = '<i class="fas fa-check-circle mr-2"></i>Chave pix copiada com sucesso!';
-        successMessage.style.cssText = `
-            background: #10b981;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-top: 10px;
-            text-align: center;
-            animation: fadeIn 0.3s ease;
-            border: 1px solid #059669;
-        `;
-        
-        pixContainer.appendChild(successMessage);
-        
-        // Remover mensagem após 3 segundos
-        setTimeout(() => {
-            if (successMessage.parentNode) {
-                successMessage.style.animation = 'fadeOut 0.3s ease';
-                setTimeout(() => {
-                    successMessage.remove();
-                }, 300);
-            }
-            
-            // Restaurar botão
-            btn.innerHTML = originalText;
-            btn.style.background = originalBackground;
-            btn.style.transform = 'scale(1)';
-        }, 3000);
+// Apenas feedback no botão, sem mensagem
+btn.innerHTML = '<i class="fas fa-check mr-1"></i>Copiado!';
+btn.style.background = '#10b981';
+
+setTimeout(() => {
+    btn.innerHTML = originalText;
+    btn.style.background = originalBackground;
+    btn.style.transform = 'scale(1)';
+}, 2000);
         
     }).catch(err => {
         console.error('Erro ao copiar: ', err);

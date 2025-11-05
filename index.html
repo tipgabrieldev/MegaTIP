@@ -1148,11 +1148,11 @@ radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%)
                     <!-- Chave PIX -->
                     <div>
                         <h3 class="text-xl font-bold mb-4 text-[#d4af37]">Ou copie a chave PIX</h3>
-<div class="pix-code mb-6">
-    <button class="copy-btn" onclick="copiarPix()">
+<div class="pix-code mb-6" id="pix-code-pagamento">
+    <button class="copy-btn" onclick="copiarPix('pix-code-pagamento')">
         <i class="fas fa-copy mr-1"></i>Copiar
     </button>
-    <p id="pix-key" class="text-white text-sm md:text-base break-all">
+    <p class="text-white text-sm md:text-base break-all">
         00020126870014br.gov.bcb.pix01365ba9125c-f301-48ef-9f7f-d4508777bd830225MegaTIP - Mega da Virada 52040000530398654046.005802BR5924Gabriel da Paz Silva San6009Sao Paulo610901227-20062240520daqr12907710421070486304A68C
     </p>
 </div>
@@ -1253,8 +1253,8 @@ radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%)
     
     <div class="mt-4">
         <h3 class="text-xl font-bold mb-4 text-[#d4af37]">Chave PIX</h3>
-        <div class="pix-code mb-6">
-            <button class="copy-btn" onclick="copiarPixContato()">
+        <div class="pix-code mb-6" id="pix-code-contato">
+            <button class="copy-btn" onclick="copiarPix('pix-code-contato')">
                 <i class="fas fa-copy mr-1"></i>Copiar
             </button>
             <p class="text-white text-sm md:text-base break-all">
@@ -1290,12 +1290,13 @@ radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%)
     </footer>
 
     <script>
-// Função para copiar chave PIX - ATUALIZADA com feedback visual
-function copiarPix() {
+// Função para copiar chave PIX - CORRIGIDA
+function copiarPix(elementId) {
     const pixKey = "00020126870014br.gov.bcb.pix01365ba9125c-f301-48ef-9f7f-d4508777bd830225MegaTIP - Mega da Virada 52040000530398654046.005802BR5924Gabriel da Paz Silva San6009Sao Paulo610901227-20062240520daqr12907710421070486304A68C";
     
     navigator.clipboard.writeText(pixKey).then(() => {
-        const btn = event.target.closest('.copy-btn');
+        const pixContainer = document.getElementById(elementId);
+        const btn = pixContainer.querySelector('.copy-btn');
         const originalText = btn.innerHTML;
         const originalBackground = btn.style.background;
         
@@ -1304,76 +1305,6 @@ function copiarPix() {
         btn.style.transform = 'scale(1.05)';
         
         // Criar mensagem de feedback próximo ao código PIX
-        const pixCodeElement = document.querySelector('.pix-code');
-        const existingMessage = pixCodeElement.querySelector('.copy-success-message');
-        
-        if (existingMessage) {
-            existingMessage.remove();
-        }
-        
-        const successMessage = document.createElement('div');
-        successMessage.className = 'copy-success-message';
-        successMessage.innerHTML = '<i class="fas fa-check-circle mr-2"></i>Chave pix copiada com sucesso!';
-        successMessage.style.cssText = `
-            background: #10b981;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-top: 10px;
-            text-align: center;
-            animation: fadeIn 0.3s ease;
-            border: 1px solid #059669;
-        `;
-        
-        pixCodeElement.appendChild(successMessage);
-        
-        // Remover mensagem após 3 segundos
-        setTimeout(() => {
-            if (successMessage.parentNode) {
-                successMessage.style.animation = 'fadeOut 0.3s ease';
-                setTimeout(() => {
-                    successMessage.remove();
-                }, 300);
-            }
-            
-            // Restaurar botão
-            btn.innerHTML = originalText;
-            btn.style.background = originalBackground;
-            btn.style.transform = 'scale(1)';
-        }, 3000);
-        
-    }).catch(err => {
-        console.error('Erro ao copiar: ', err);
-        const btn = event.target.closest('.copy-btn');
-        const originalText = btn.innerHTML;
-        
-        btn.innerHTML = '<i class="fas fa-times mr-1"></i>Erro!';
-        btn.style.background = '#dc2626';
-        
-        setTimeout(() => {
-            btn.innerHTML = originalText;
-            btn.style.background = '#d4af37';
-        }, 2000);
-    });
-}
-
-// Função para copiar chave PIX da seção de contato - ATUALIZADA
-function copiarPixContato() {
-    const pixKey = "00020126870014br.gov.bcb.pix01365ba9125c-f301-48ef-9f7f-d4508777bd830225MegaTIP - Mega da Virada 52040000530398654046.005802BR5924Gabriel da Paz Silva San6009Sao Paulo610901227-20062240520daqr12907710421070486304A68C";
-    
-    navigator.clipboard.writeText(pixKey).then(() => {
-        const btn = event.target.closest('.copy-btn');
-        const originalText = btn.innerHTML;
-        const originalBackground = btn.style.background;
-        
-        btn.innerHTML = '<i class="fas fa-check mr-1"></i>Copiado!';
-        btn.style.background = '#10b981';
-        btn.style.transform = 'scale(1.05)';
-        
-        // Criar mensagem de feedback próximo ao código PIX
-        const pixContainer = event.target.closest('.pix-code');
         const existingMessage = pixContainer.querySelector('.copy-success-message');
         
         if (existingMessage) {
@@ -1415,7 +1346,8 @@ function copiarPixContato() {
         
     }).catch(err => {
         console.error('Erro ao copiar: ', err);
-        const btn = event.target.closest('.copy-btn');
+        const pixContainer = document.getElementById(elementId);
+        const btn = pixContainer.querySelector('.copy-btn');
         const originalText = btn.innerHTML;
         
         btn.innerHTML = '<i class="fas fa-times mr-1"></i>Erro!';

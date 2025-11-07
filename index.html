@@ -1156,7 +1156,7 @@ radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%)
         <i class="fas fa-copy mr-1"></i>Copiar
     </button>
     <p class="text-white text-sm md:text-base break-all">
-        00020126870014br.gov.bcb.pix01365ba9125c-f301-48ef-9f7f-d4508777bd830225MegaTIP - Mega da Virada 52040000530398654046.005802BR5924Gabriel da Paz Silva San6009Sao Paulo610901227-20062240520daqr12907710421070486304A68C
+        (31) 98204-2552
     </p>
 </div>
 
@@ -1261,7 +1261,7 @@ radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%)
                 <i class="fas fa-copy mr-1"></i>Copiar
             </button>
             <p class="text-white text-sm md:text-base break-all">
-                00020126870014br.gov.bcb.pix01365ba9125c-f301-48ef-9f7f-d4508777bd830225MegaTIP - Mega da Virada 52040000530398654046.005802BR5924Gabriel da Paz Silva San6009Sao Paulo610901227-20062240520daqr12907710421070486304A68C
+                (31) 98204-2552
             </p>
         </div>
         
@@ -1295,7 +1295,7 @@ radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%)
     <script>
 // Função para copiar chave PIX - CORRIGIDA
 function copiarPix(elementId) {
-    const pixKey = "00020126870014br.gov.bcb.pix01365ba9125c-f301-48ef-9f7f-d4508777bd830225MegaTIP - Mega da Virada 52040000530398654046.005802BR5924Gabriel da Paz Silva San6009Sao Paulo610901227-20062240520daqr12907710421070486304A68C";
+    const pixKey = "(31) 98204-2552";
     
     navigator.clipboard.writeText(pixKey).then(() => {
         const pixContainer = document.getElementById(elementId);
@@ -1384,174 +1384,231 @@ setTimeout(() => {
             const year = new Date().getFullYear();
             document.getElementById('copyright').innerHTML = `&copy; ${year} MegaTIP. Não somos filiados à Caixa Econômica Federal.`;
 
-            // ========== SISTEMA DE VERIFICAÇÃO ==========
-            const btnVerificarBilhetes = document.getElementById('btn-verificar-bilhetes');
-            const statusSorteio = document.getElementById('status-sorteio');
-            const resultadoVerificacao = document.getElementById('resultado-verificacao');
-            const bilheteVencedorElement = document.getElementById('bilhete-vencedor');
-            const totalAcertosElement = document.getElementById('total-acertos');
-            const statusGrupoElement = document.getElementById('status-grupo');
-            const tituloResultado = document.getElementById('titulo-resultado');
-            const mensagemResultado = document.getElementById('mensagem-resultado');
-            const resultadoCards = document.getElementById('resultado-cards');
-            const detalhesAcertos = document.getElementById('detalhes-acertos');
-            const listaBilhetesAcertos = document.getElementById('lista-bilhetes-acertos');
+// ========== SISTEMA DE VERIFICAÇÃO ==========
+const btnVerificarBilhetes = document.getElementById('btn-verificar-bilhetes');
+const statusSorteio = document.getElementById('status-sorteio');
+const resultadoVerificacao = document.getElementById('resultado-verificacao');
+const bilheteVencedorElement = document.getElementById('bilhete-vencedor');
+const totalAcertosElement = document.getElementById('total-acertos');
+const statusGrupoElement = document.getElementById('status-grupo');
+const tituloResultado = document.getElementById('titulo-resultado');
+const mensagemResultado = document.getElementById('mensagem-resultado');
+const resultadoCards = document.getElementById('resultado-cards');
+const detalhesAcertos = document.getElementById('detalhes-acertos');
+const listaBilhetesAcertos = document.getElementById('lista-bilhetes-acertos');
 
-            // Função para verificar se há números válidos (acima de 0)
-            function temNumerosValidos(numeros) {
-                return numeros.some(num => num > 0);
+// Função para verificar se há números válidos (acima de 0)
+function temNumerosValidos(numeros) {
+    return numeros.some(num => num > 0);
+}
+
+// Função para atualizar números oficiais (será chamada após o sorteio)
+function atualizarNumerosOficiais(novosNumeros) {
+    numerosSorteados = novosNumeros;
+    const numerosElementos = document.querySelectorAll('.numero-oficial');
+    
+    numerosElementos.forEach((elemento, index) => {
+        if (index < novosNumeros.length) {
+            elemento.textContent = novosNumeros[index].toString().padStart(2, '0');
+            // Só adiciona a classe "sorteado" se o número for maior que 0
+            if (novosNumeros[index] > 0) {
+                elemento.classList.add('sorteado');
+            } else {
+                elemento.classList.remove('sorteado');
             }
+        }
+    });
+    
+    // Atualiza mensagem de status baseado nos números
+    if (temNumerosValidos(novosNumeros)) {
+        statusSorteio.innerHTML = '<p class="text-[#10b981]"><i class="fas fa-check mr-2"></i>Sorteio oficial realizado!</p>';
+    } else {
+        statusSorteio.innerHTML = '<p class="text-[#d4af37]"><i class="fas fa-clock mr-2"></i>Aguardando sorteio oficial da Caixa</p>';
+    }
+}
 
-            // Função para atualizar números oficiais (será chamada após o sorteio)
-            function atualizarNumerosOficiais(novosNumeros) {
-                numerosSorteados = novosNumeros;
-                const numerosElementos = document.querySelectorAll('.numero-oficial');
-                
-                numerosElementos.forEach((elemento, index) => {
-                    if (index < novosNumeros.length) {
-                        elemento.textContent = novosNumeros[index].toString().padStart(2, '0');
-                        // Só adiciona a classe "sorteado" se o número for maior que 0
-                        if (novosNumeros[index] > 0) {
-                            elemento.classList.add('sorteado');
-                        } else {
-                            elemento.classList.remove('sorteado');
-                        }
-                    }
-                });
-                
-                // Atualiza mensagem de status baseado nos números
-                if (temNumerosValidos(novosNumeros)) {
-                    statusSorteio.innerHTML = '<p class="text-[#10b981]"><i class="fas fa-check mr-2"></i>Sorteio oficial realizado!</p>';
-                } else {
-                    statusSorteio.innerHTML = '<p class="text-[#d4af37]"><i class="fas fa-clock mr-2"></i>Aguardando sorteio oficial da Caixa</p>';
-                }
-            }
+// Função para verificar acertos de um bilhete
+function verificarAcertos(bilheteNumeros) {
+    if (!temNumerosValidos(numerosSorteados)) return 0;
+    
+    const numerosBilhete = bilheteNumeros.split(',').map(num => parseInt(num.trim()));
+    return numerosBilhete.filter(num => numerosSorteados.includes(num)).length;
+}
 
-            // Função para verificar se um bilhete é vencedor (6 acertos)
-            function verificarVencedor(bilheteNumeros) {
-                if (!temNumerosValidos(numerosSorteados)) return 0;
-                
-                const numerosBilhete = bilheteNumeros.split(',').map(num => parseInt(num.trim()));
-                return numerosBilhete.filter(num => numerosSorteados.includes(num)).length;
-            }
+// Função para determinar a faixa de premiação
+function determinarFaixaPremiacao(bilhetesComAcertos) {
+    const bilhetesCom6Acertos = bilhetesComAcertos.filter(b => b.acertos === 6);
+    if (bilhetesCom6Acertos.length > 0) {
+        return { faixa: 'sena', bilhetes: bilhetesCom6Acertos };
+    }
+    
+    const bilhetesCom5Acertos = bilhetesComAcertos.filter(b => b.acertos === 5);
+    if (bilhetesCom5Acertos.length > 0) {
+        return { faixa: 'quina', bilhetes: bilhetesCom5Acertos };
+    }
+    
+    const bilhetesCom4Acertos = bilhetesComAcertos.filter(b => b.acertos === 4);
+    if (bilhetesCom4Acertos.length > 0) {
+        return { faixa: 'quadra', bilhetes: bilhetesCom4Acertos };
+    }
+    
+    return { faixa: 'nenhuma', bilhetes: [] };
+}
 
-            // Função para atualizar a interface com os resultados
-            function atualizarInterfaceResultados(grupoGanhou, bilheteVencedor, maxAcertos, bilhetesComAcertos) {
-                // Limpar detalhes anteriores
-                listaBilhetesAcertos.innerHTML = '';
-                
-                if (grupoGanhou && bilheteVencedor) {
-                    // Caso de vitória
-                    tituloResultado.innerHTML = '🎉 PARABÉNS! VOCÊS GANHARAM! 🎉';
-                    tituloResultado.className = 'text-xl font-bold mb-4 text-center text-[#10b981]';
-                    
-                    bilheteVencedorElement.textContent = `#${bilheteVencedor.id.toString().padStart(4, '0')} - ${bilheteVencedor.assignedName}`;
-                    totalAcertosElement.textContent = "6 ACERTOS!";
-                    statusGrupoElement.textContent = "VENCEDOR!";
-                    statusGrupoElement.className = "text-2xl text-[#10b981]";
-                    
-                    // Atualizar cards com estilo de vencedor
-                    resultadoCards.className = 'grid grid-cols-1 md:grid-cols-3 gap-4 resultado-vencedor p-4 rounded-lg';
-                    
-                    // Atualizar mensagem
-                    mensagemResultado.innerHTML = `
-                        <p class="text-center font-bold text-2xl text-[#10b981]">🏆 PARABÉNS A TODOS DO GRUPO! 🎉</p>
-                        <p class="text-center mt-4 text-lg">🎯 <strong>${bilheteVencedor.assignedName}</strong> acertou os 6 números!</p>
-                        <p class="text-center mt-2">🎉 O grupo inteiro comemora! Cada participante recebe seu prêmio individual!</p>
-                        <p class="text-center mt-4 text-[#d4af37] font-bold">💰 PRÊMIO GARANTIDO! 💰</p>
-                    `;
-                    mensagemResultado.className = 'mt-4 p-6 rounded-lg mensagem-vencedor';
-                    
-                    // Esconder detalhes de acertos parciais
-                    detalhesAcertos.classList.add('hidden');
-                } else {
-                    // Caso de não vitória
-                    tituloResultado.innerHTML = '📊 RESULTADO DA VERIFICAÇÃO';
-                    tituloResultado.className = 'text-xl font-bold mb-4 text-center text-[#d4af37]';
-                    
-                    bilheteVencedorElement.textContent = "Nenhum bilhete com 6 acertos";
-                    totalAcertosElement.textContent = `${maxAcertos} acertos (máximo)`;
-                    statusGrupoElement.textContent = "Aguardando próximo sorteio";
-                    statusGrupoElement.className = "text-2xl text-[#d4af37]";
-                    
-                    // Atualizar cards com estilo de não vencedor
-                    resultadoCards.className = 'grid grid-cols-1 md:grid-cols-3 gap-4 resultado-perdedor p-4 rounded-lg';
-                    
-                    // Atualizar mensagem
-                    mensagemResultado.innerHTML = `
-                        <p class="text-center font-bold text-xl text-[#d4af37]">😔 INFELIZMENTE NÃO FOI DESSA VEZ</p>
-                        <p class="text-center mt-2">Nenhum bilhete acertou os 6 números sorteados.</p>
-                        <p class="text-center mt-4 text-[#10b981]">📈 Continue participando para aumentar suas chances!</p>
-                    `;
-                    mensagemResultado.className = 'mt-4 p-6 rounded-lg mensagem-perdedor';
-                    
-                    // Mostrar detalhes de acertos parciais
-                    if (bilhetesComAcertos.length > 0) {
-                        detalhesAcertos.classList.remove('hidden');
-                        
-                        // Adicionar bilhetes com acertos à lista
-                        bilhetesComAcertos.forEach(bilhete => {
-                            const bilheteItem = document.createElement('div');
-                            bilheteItem.className = 'bg-[#374151] p-4 rounded-lg bilhete-acertou border border-gray-600';
-                            bilheteItem.innerHTML = `
-                                <div class="flex justify-between items-center">
-                                    <div>
-                                        <p class="font-bold">${bilhete.assignedName}</p>
-                                        <p class="text-sm">Bilhete #${bilhete.id.toString().padStart(4, '0')}</p>
-                                    </div>
-                                    <div class="text-right">
-                                        <p class="text-[#10b981] font-bold text-lg">${bilhete.acertos} acerto(s)</p>
-                                        <p class="text-xs">Números: ${bilhete.numbers}</p>
-                                    </div>
-                                </div>
-                            `;
-                            listaBilhetesAcertos.appendChild(bilheteItem);
-                        });
-                    } else {
-                        detalhesAcertos.classList.add('hidden');
-                    }
-                }
-            }
+// Função para obter mensagem da faixa de premiação
+function getMensagemFaixa(faixa, quantidadeBilhetes) {
+    const mensagens = {
+        'sena': {
+            titulo: '🎉 PARABÉNS! SENA (6 ACERTOS)! 🎉',
+            mensagem: `🏆 <strong>${quantidadeBilhetes} bilhete(s)</strong> acertaram os 6 números!<br>
+                      🎉 O grupo inteiro comemora! Cada participante recebe seu prêmio individual!`,
+            cor: '#10b981'
+        },
+        'quina': {
+            titulo: '🎉 PARABÉNS! QUINA (5 ACERTOS)! 🎉',
+            mensagem: `🥈 <strong>${quantidadeBilhetes} bilhete(s)</strong> acertaram 5 números!<br>
+                      💰 Prêmio da quina garantido para o grupo!`,
+            cor: '#3b82f6'
+        },
+        'quadra': {
+            titulo: '🎉 PARABÉNS! QUADRA (4 ACERTOS)! 🎉',
+            mensagem: `🥉 <strong>${quantidadeBilhetes} bilhete(s)</strong> acertaram 4 números!<br>
+                      💰 Prêmio da quadra garantido para o grupo!`,
+            cor: '#8b5cf6'
+        },
+        'nenhuma': {
+            titulo: '📊 RESULTADO DA VERIFICAÇÃO',
+            mensagem: '😔 INFELIZMENTE NÃO FOI DESSA VEZ<br>Nenhum bilhete acertou 4 números ou mais.',
+            cor: '#d4af37'
+        }
+    };
+    
+    return mensagens[faixa];
+}
 
-            // Função para verificar todos os bilhetes
-            btnVerificarBilhetes.addEventListener('click', function() {
-                if (!temNumerosValidos(numerosSorteados)) {
-                    statusSorteio.innerHTML = '<p class="text-[#dc2626]"><i class="fas fa-exclamation-triangle mr-2"></i>Aguardando sorteio oficial da Caixa!</p>';
-                    return;
-                }
-
-                bilheteVencedor = null;
-                grupoGanhou = false;
-                let maxAcertos = 0;
-                let bilhetesComAcertos = [];
-
-                // Verificar cada bilhete
-                sampleTickets.forEach(ticket => {
-                    const acertos = verificarVencedor(ticket.numbers);
-                    if (acertos > maxAcertos) {
-                        maxAcertos = acertos;
-                    }
-                    if (acertos === 6) {
-                        bilheteVencedor = ticket;
-                        grupoGanhou = true;
-                    }
-                    if (acertos > 0) {
-                        bilhetesComAcertos.push({
-                            ...ticket,
-                            acertos: acertos
-                        });
-                    }
-                });
-
-                // Ordenar bilhetes por número de acertos (maior primeiro)
-                bilhetesComAcertos.sort((a, b) => b.acertos - a.acertos);
-
-                // Atualizar interface com resultados
-                atualizarInterfaceResultados(grupoGanhou, bilheteVencedor, maxAcertos, bilhetesComAcertos);
-
-                resultadoVerificacao.classList.remove('hidden');
-                atualizarBilhetes();
+// Função para atualizar a interface com os resultados
+function atualizarInterfaceResultados(resultadoPremiacao, maxAcertos, bilhetesComAcertos) {
+    // Limpar detalhes anteriores
+    listaBilhetesAcertos.innerHTML = '';
+    
+    const { faixa, bilhetes } = resultadoPremiacao;
+    const mensagemFaixa = getMensagemFaixa(faixa, bilhetes.length);
+    
+    if (faixa !== 'nenhuma') {
+        // Caso de vitória em alguma faixa
+        tituloResultado.innerHTML = mensagemFaixa.titulo;
+        tituloResultado.className = 'text-xl font-bold mb-4 text-center';
+        tituloResultado.style.color = mensagemFaixa.cor;
+        
+        // Mostrar primeiro bilhete vencedor ou quantidade de bilhetes
+        if (bilhetes.length === 1) {
+            bilheteVencedorElement.textContent = `#${bilhetes[0].id.toString().padStart(4, '0')} - ${bilhetes[0].assignedName}`;
+        } else {
+            bilheteVencedorElement.textContent = `${bilhetes.length} bilhetes premiados`;
+        }
+        
+        totalAcertosElement.textContent = `${maxAcertos} ACERTOS!`;
+        statusGrupoElement.textContent = "VENCEDOR!";
+        statusGrupoElement.style.color = mensagemFaixa.cor;
+        
+        // Atualizar cards com estilo de vencedor
+        resultadoCards.className = 'grid grid-cols-1 md:grid-cols-3 gap-4 resultado-vencedor p-4 rounded-lg';
+        resultadoCards.style.border = `2px solid ${mensagemFaixa.cor}`;
+        
+        // Atualizar mensagem
+        mensagemResultado.innerHTML = `
+            <p class="text-center font-bold text-2xl mb-4" style="color: ${mensagemFaixa.cor}">${mensagemFaixa.titulo.replace('🎉 ', '').replace(' 🎉', '')}</p>
+            <p class="text-center text-lg">${mensagemFaixa.mensagem}</p>
+            <p class="text-center mt-4 font-bold" style="color: ${mensagemFaixa.cor}">💰 PRÊMIO GARANTIDO! 💰</p>
+        `;
+        mensagemResultado.className = 'mt-4 p-6 rounded-lg mensagem-vencedor';
+        
+        // Esconder detalhes de acertos parciais
+        detalhesAcertos.classList.add('hidden');
+    } else {
+        // Caso de não vitória
+        tituloResultado.innerHTML = mensagemFaixa.titulo;
+        tituloResultado.className = 'text-xl font-bold mb-4 text-center text-[#d4af37]';
+        
+        bilheteVencedorElement.textContent = "Nenhum bilhete com 4+ acertos";
+        totalAcertosElement.textContent = `${maxAcertos} acertos (máximo)`;
+        statusGrupoElement.textContent = "Aguardando próximo sorteio";
+        statusGrupoElement.className = "text-2xl text-[#d4af37]";
+        
+        // Atualizar cards com estilo de não vencedor
+        resultadoCards.className = 'grid grid-cols-1 md:grid-cols-3 gap-4 resultado-perdedor p-4 rounded-lg';
+        
+        // Atualizar mensagem
+        mensagemResultado.innerHTML = `
+            <p class="text-center font-bold text-xl text-[#d4af37]">${mensagemFaixa.mensagem}</p>
+            <p class="text-center mt-4 text-[#10b981]">📈 Continue participando para aumentar suas chances!</p>
+        `;
+        mensagemResultado.className = 'mt-4 p-6 rounded-lg mensagem-perdedor';
+        
+        // Mostrar detalhes de acertos parciais
+        if (bilhetesComAcertos.length > 0) {
+            detalhesAcertos.classList.remove('hidden');
+            
+            // Adicionar bilhetes com acertos à lista
+            bilhetesComAcertos.forEach(bilhete => {
+                const bilheteItem = document.createElement('div');
+                bilheteItem.className = 'bg-[#374151] p-4 rounded-lg bilhete-acertou border border-gray-600';
+                bilheteItem.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-bold">${bilhete.assignedName}</p>
+                            <p class="text-sm">Bilhete #${bilhete.id.toString().padStart(4, '0')}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[#10b981] font-bold text-lg">${bilhete.acertos} acerto(s)</p>
+                            <p class="text-xs">Números: ${bilhete.numbers}</p>
+                        </div>
+                    </div>
+                `;
+                listaBilhetesAcertos.appendChild(bilheteItem);
             });
+        } else {
+            detalhesAcertos.classList.add('hidden');
+        }
+    }
+}
+
+// Função para verificar todos os bilhetes
+btnVerificarBilhetes.addEventListener('click', function() {
+    if (!temNumerosValidos(numerosSorteados)) {
+        statusSorteio.innerHTML = '<p class="text-[#dc2626]"><i class="fas fa-exclamation-triangle mr-2"></i>Aguardando sorteio oficial da Caixa!</p>';
+        return;
+    }
+
+    let maxAcertos = 0;
+    let bilhetesComAcertos = [];
+
+    // Verificar cada bilhete
+    sampleTickets.forEach(ticket => {
+        const acertos = verificarAcertos(ticket.numbers);
+        if (acertos > maxAcertos) {
+            maxAcertos = acertos;
+        }
+        if (acertos >= 4) { // Só considera a partir de 4 acertos para premiação
+            bilhetesComAcertos.push({
+                ...ticket,
+                acertos: acertos
+            });
+        }
+    });
+
+    // Ordenar bilhetes por número de acertos (maior primeiro)
+    bilhetesComAcertos.sort((a, b) => b.acertos - a.acertos);
+
+    // Determinar faixa de premiação
+    const resultadoPremiacao = determinarFaixaPremiacao(bilhetesComAcertos);
+
+    // Atualizar interface com resultados
+    atualizarInterfaceResultados(resultadoPremiacao, maxAcertos, bilhetesComAcertos);
+
+    resultadoVerificacao.classList.remove('hidden');
+    atualizarBilhetes();
+});
 
             // ========== GALERIA DE BILHETES ==========
             const ticketsGallery = document.getElementById('tickets-gallery');
@@ -1561,52 +1618,60 @@ const participantNames = [
     "Ana Paula",      // ← Bilhete 1
     "Beatriz",        // ← Bilhete 2
     "Bryan",          // ← Bilhete 3
-    "Erlinda",        // ← Bilhete 4
+    "Camila",         // ← Bilhete 4
     "Elton",          // ← Bilhete 5
-    "Gabriel",        // ← Bilhete 6
-    "Guedes",         // ← Bilhete 7
-    "John",           // ← Bilhete 8
-    "Juliano",        // ← Bilhete 9
-    "Kimyo",          // ← Bilhete 10
-    "Léo",            // ← Bilhete 11
-    "Lora",           // ← Bilhete 12
-    "Melissa",        // ← Bilhete 13
-    "Mufasa Empório", // ← Bilhete 14
-    "Olivier",        // ← Bilhete 15
-    "Paloma",         // ← Bilhete 16
-    "Ronaldo",        // ← Bilhete 17
-    "TH Romerito",    // ← Bilhete 18
-    "Tiago",          // ← Bilhete 19
-    "Vitória Mandy",  // ← Bilhete 20
-    "Washington",     // ← Bilhete 21
-    "Willian"         // ← Bilhete 22
+    "Erlinda",        // ← Bilhete 6
+    "Gabriel",        // ← Bilhete 7
+    "Guedes",         // ← Bilhete 8
+    "John",           // ← Bilhete 9
+    "Juliano",        // ← Bilhete 10
+    "Kimyo",          // ← Bilhete 11
+    "Léo",            // ← Bilhete 12
+    "Lora",           // ← Bilhete 13
+    "Lydia",          // ← Bilhete 14
+    "Marco",          // ← Bilhete 15
+    "Melissa",        // ← Bilhete 16
+    "Mufasa Empório", // ← Bilhete 17
+    "Olivier",        // ← Bilhete 18
+    "Paloma",         // ← Bilhete 19
+    "Ronaldo",        // ← Bilhete 20
+    "Sandra",         // ← Bilhete 21
+    "TH Romerito",    // ← Bilhete 22
+    "Tiago",          // ← Bilhete 23
+    "Vitória Mandy",  // ← Bilhete 24
+    "Washington",     // ← Bilhete 25
+    "Willian"         // ← Bilhete 26
 ];
 
 
-            // ATUALIZAÇÃO: Todos os números iniciais são 00
+
 const sampleTickets = [
     { id: 1, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Ana Paula" },
     { id: 2, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Beatriz" },
     { id: 3, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Bryan" },
-    { id: 4, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Erlinda" },
+    { id: 3, event: "Mega da Virada", date: "31/12/2025", numbers: "22, 28, 31, 36, 37, 45", assignedName: "Camila" },
     { id: 5, event: "Mega da Virada", date: "31/12/2025", numbers: "31, 17, 34, 24, 09, 47", assignedName: "Elton" },
+    { id: 4, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Erlinda" },
     { id: 6, event: "Mega da Virada", date: "31/12/2025", numbers: "01, 03, 33, 50, 47, 42", assignedName: "Gabriel" },
     { id: 7, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Guedes" },
     { id: 8, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "John" },
     { id: 9, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Juliano" },
     { id: 10, event: "Mega da Virada", date: "31/12/2025", numbers: "02, 08, 14, 59, 18, 57", assignedName: "Kimyo" },
     { id: 11, event: "Mega da Virada", date: "31/12/2025", numbers: "03, 07, 12, 18, 27, 44", assignedName: "Léo" },
+    { id: 11, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Lydia" },
     { id: 12, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Lora" },
+    { id: 13, event: "Mega da Virada", date: "31/12/2025", numbers: "04, 12, 19, 31, 44, 48", assignedName: "Marco" },
     { id: 13, event: "Mega da Virada", date: "31/12/2025", numbers: "45, 30, 21, 40, 60, 10", assignedName: "Melissa" },
     { id: 14, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Mufasa Empório" },
     { id: 15, event: "Mega da Virada", date: "31/12/2025", numbers: "01, 02, 13, 15, 57, 60", assignedName: "Olivier" },
     { id: 16, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Paloma" },
     { id: 17, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Ronaldo" },
+    { id: 17, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Sandra" },
     { id: 18, event: "Mega da Virada", date: "31/12/2025", numbers: "10, 19, 05, 34, 27, 25", assignedName: "TH Romerito" },
     { id: 19, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Tiago" },
     { id: 20, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Vitória Mandy" },
-    { id: 21, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Washington" }, 
-    { id: 22, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Willian" } 
+    { id: 21, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Washington" },
+    { id: 22, event: "Mega da Virada", date: "31/12/2025", numbers: "00, 00, 00, 00, 00, 00", assignedName: "Willian" }
 ];
 
             let displayedTickets = window.innerWidth < 768 ? 6 : 8;

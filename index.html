@@ -1706,108 +1706,107 @@ const sampleTickets = [
                 atualizarBilhetes();
             }
 
-            // Função para atualizar a exibição dos bilhetes com base no filtro
-            function atualizarBilhetes() {
-                ticketsGallery.innerHTML = '';
+function atualizarBilhetes() {
+    ticketsGallery.innerHTML = '';
 
-                if (filteredTickets.length === 0) {
-                    ticketsGallery.innerHTML = `
-                        <div class="no-results col-span-full">
-                            <i class="fas fa-search text-4xl mb-4"></i>
-                            <p>Nenhum bilhete encontrado para sua busca.</p>
-                            <p class="text-sm mt-2">Tente buscar por nome do participante</p>
-                        </div>
-                    `;
-                    loadMoreButton.style.display = 'none';
-                    return;
-                }
+    if (filteredTickets.length === 0) {
+        ticketsGallery.innerHTML = `
+            <div class="no-results col-span-full">
+                <i class="fas fa-search text-4xl mb-4"></i>
+                <p>Nenhum bilhete encontrado para sua busca.</p>
+                <p class="text-sm mt-2">Tente buscar por nome do participante</p>
+            </div>
+        `;
+        loadMoreButton.style.display = 'none';
+        return;
+    }
 
-                for (let i = 0; i < displayedTickets && i < filteredTickets.length; i++) {
-                    const ticket = filteredTickets[i];
-                    const acertos = verificarVencedor(ticket.numbers);
-                    const isVencedor = grupoGanhou && bilheteVencedor && bilheteVencedor.id === ticket.id;
-                    const isGrupoVencedor = grupoGanhou;
+    for (let i = 0; i < displayedTickets && i < filteredTickets.length; i++) {
+        const ticket = filteredTickets[i];
+        const acertos = verificarAcertos(ticket.numbers); // ← CORREÇÃO AQUI: usar verificarAcertos
+        const isVencedor = grupoGanhou && bilheteVencedor && bilheteVencedor.id === ticket.id;
+        const isGrupoVencedor = grupoGanhou;
 
-                    const ticketElement = document.createElement('div');
-                    ticketElement.className = `ticket card-hover ${isGrupoVencedor ? 'premiado' : ''}`;
-                    
-                    const numerosArray = ticket.numbers.split(', ');
-                    const numerosHTML = numerosArray.map(num => {
-                        const numero = parseInt(num);
-                        const isAcerto = temNumerosValidos(numerosSorteados) && numerosSorteados.includes(numero);
-                        return `<span class="numero-sorteio ${isAcerto ? 'numero-acerto' : ''}">${num.padStart(2, '0')}</span>`;
-                    }).join('');
+        const ticketElement = document.createElement('div');
+        ticketElement.className = `ticket card-hover ${isGrupoVencedor ? 'premiado' : ''}`;
+        
+        const numerosArray = ticket.numbers.split(', ');
+        const numerosHTML = numerosArray.map(num => {
+            const numero = parseInt(num);
+            const isAcerto = temNumerosValidos(numerosSorteados) && numerosSorteados.includes(numero);
+            return `<span class="numero-sorteio ${isAcerto ? 'numero-acerto' : ''}">${num.padStart(2, '0')}</span>`;
+        }).join('');
 
-                    // Gerar um código aleatório para o ticket
-                    const ticketCode = Math.random().toString(36).substring(2, 10).toUpperCase();
+        // Gerar um código aleatório para o ticket
+        const ticketCode = Math.random().toString(36).substring(2, 10).toUpperCase();
 
-                    ticketElement.innerHTML = `
-                        <div class="ticket-stripes"></div>
-                        ${isVencedor ? '<div class="badge-vencedor">🎯 BILHETE VENCEDOR</div>' : ''}
-                        ${isGrupoVencedor && !isVencedor ? '<div class="badge-premiado">🏆 GRUPO VENCEDOR</div>' : ''}
-                        
-                        <div class="ticket-header">
-                            <div class="ticket-logo">
-                                <i class="fas fa-clover"></i>
-                            </div>
-                            <div class="ticket-title">Mega Sena</div>
-                            <div class="ticket-subtitle">Da Virada 2025</div>
-                            <div class="ticket-concurso">Concurso Especial</div>
-                        </div>
-                        
-                        <div class="ticket-body">
-                            <div class="ticket-watermark">MEGATIP</div>
-                            
-                            <div class="ticket-participante">
-                                <p class="font-bold text-lg text-[#fefefe]">${ticket.assignedName}</p>
-                                <p class="text-sm text-gray-600">Participante #${ticket.id.toString().padStart(4, '0')}</p>
-                            </div>
-                            
-                            <div class="ticket-numeros-title">Números da Sorte</div>
-                            <div class="numeros-container">
-                                ${numerosHTML}
-                            </div>
-                            
-                            ${acertos > 0 ? `<p class="text-center mt-4 text-green-600 font-bold text-lg">${acertos} ACERTO(S)!</p>` : ''}
-                            
-                            <div class="ticket-divider"></div>
-                            
-                            <div class="ticket-data">
-                                <p>Sorteio: <strong>31/12/2025</strong></p>
-                                <p class="mt-2">Valor: <span class="ticket-valor">R$ 6,00</span></p>
-                            </div>
-                            
-                            <div class="ticket-codigo">
-                                Código: ${ticketCode}
-                            </div>
-                            
-                            <div class="ticket-garantia">
-                                Participação garantida no bolão coletivo MegaTIP
-                            </div>
-                        </div>
-                        
-                        <div class="ticket-footer">
-                            Bolão Coletivo • MegaTIP
-                        </div>
-                    `;
+        ticketElement.innerHTML = `
+            <div class="ticket-stripes"></div>
+            ${isVencedor ? '<div class="badge-vencedor">🎯 BILHETE VENCEDOR</div>' : ''}
+            ${isGrupoVencedor && !isVencedor ? '<div class="badge-premiado">🏆 GRUPO VENCEDOR</div>' : ''}
+            
+            <div class="ticket-header">
+                <div class="ticket-logo">
+                    <i class="fas fa-clover"></i>
+                </div>
+                <div class="ticket-title">Mega Sena</div>
+                <div class="ticket-subtitle">Da Virada 2025</div>
+                <div class="ticket-concurso">Concurso Especial</div>
+            </div>
+            
+            <div class="ticket-body">
+                <div class="ticket-watermark">MEGATIP</div>
+                
+                <div class="ticket-participante">
+                    <p class="font-bold text-lg text-[#fefefe]">${ticket.assignedName}</p>
+                    <p class="text-sm text-gray-600">Participante #${ticket.id.toString().padStart(4, '0')}</p>
+                </div>
+                
+                <div class="ticket-numeros-title">Números da Sorte</div>
+                <div class="numeros-container">
+                    ${numerosHTML}
+                </div>
+                
+                ${acertos > 0 ? `<p class="text-center mt-4 text-green-600 font-bold text-lg">${acertos} ACERTO(S)!</p>` : ''}
+                
+                <div class="ticket-divider"></div>
+                
+                <div class="ticket-data">
+                    <p>Sorteio: <strong>31/12/2025</strong></p>
+                    <p class="mt-2">Valor: <span class="ticket-valor">R$ 6,00</span></p>
+                </div>
+                
+                <div class="ticket-codigo">
+                    Código: ${ticketCode}
+                </div>
+                
+                <div class="ticket-garantia">
+                    Participação garantida no bolão coletivo MegaTIP
+                </div>
+            </div>
+            
+            <div class="ticket-footer">
+                Bolão Coletivo • MegaTIP
+            </div>
+        `;
 
-                    ticketsGallery.appendChild(ticketElement);
-                }
+        ticketsGallery.appendChild(ticketElement);
+    }
 
-                // Atualizar informações de resultados da busca
-                if (searchInput.value.trim() !== '') {
-                    searchResultsInfo.textContent = `${filteredTickets.length} bilhete(s) encontrado(s) para "${searchInput.value}"`;
-                } else {
-                    searchResultsInfo.textContent = '';
-                }
+    // Atualizar informações de resultados da busca
+    if (searchInput.value.trim() !== '') {
+        searchResultsInfo.textContent = `${filteredTickets.length} bilhete(s) encontrado(s) para "${searchInput.value}"`;
+    } else {
+        searchResultsInfo.textContent = '';
+    }
 
-                // Mostrar ou esconder botão "Carregar Mais" (só mostra quando não está buscando)
-                if (searchInput.value.trim() === '' && displayedTickets < sampleTickets.length) {
-                    loadMoreButton.style.display = 'block';
-                } else {
-                    loadMoreButton.style.display = 'none';
-                }
-            }
+    // Mostrar ou esconder botão "Carregar Mais" (só mostra quando não está buscando)
+    if (searchInput.value.trim() === '' && displayedTickets < sampleTickets.length) {
+        loadMoreButton.style.display = 'block';
+    } else {
+        loadMoreButton.style.display = 'none';
+    }
+}
 
             // Evento de busca em tempo real
             searchInput.addEventListener('input', function() {

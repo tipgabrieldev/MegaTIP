@@ -258,8 +258,11 @@ radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%)
         }
 
         .numero-sorteio:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    transform: none !important;
+    box-shadow: 
+        0 4px 6px rgba(0,0,0,0.1),
+        inset 0 1px 0 rgba(255,255,255,0.2) !important;
+    border: 1px solid rgba(255,255,255,0.2) !important; /* ← MANTÉM A BORDA ORIGINAL */
         }
 
         .numero-acerto {
@@ -947,6 +950,73 @@ radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%)
 .copy-success-message {
     animation: fadeIn 0.3s ease;
 }
+
+/* NOVOS ESTILOS ADICIONADOS - GRADIENTE VERDE COM AMARELO */
+/* Gradiente para resultado da verificação */
+.resultado-gradiente {
+    background: linear-gradient(135deg, #10b981, #fbbf24);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: bold;
+}
+
+/* Gradiente discreto para quantidade de acertos nos bilhetes */
+.acertos-gradiente {
+    background: linear-gradient(135deg, #10b981, #fbbf24);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Estilo para o título do resultado com gradiente */
+.titulo-resultado-gradiente {
+    background: linear-gradient(135deg, #10b981, #fbbf24);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* Gradiente para os cards de resultado */
+.card-gradiente {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(251, 191, 36, 0.1));
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+/* Prevenir movimento dos números no hover */
+.ticket:hover .numero-sorteio {
+    transform: none !important;
+    box-shadow: 
+        0 4px 6px rgba(0,0,0,0.1),
+        inset 0 1px 0 rgba(255,255,255,0.2) !important;
+    border: 1px solid rgba(255,255,255,0.2) !important;
+}
+
+.ticket:hover .numeros-container {
+    transform: none !important;
+}
+
+/* Gradiente para o título do prêmio */
+.titulo-premio-gradiente {
+    background: linear-gradient(135deg, #10b981, #fbbf24);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: bold;
+}
+
+/* Gradiente para detalhes dos acertos */
+.detalhes-gradiente {
+    background: linear-gradient(135deg, #10b981, #fbbf24);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 600;
+}
 </style>
 </head>
 <body class="text-white">
@@ -1064,29 +1134,29 @@ radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%)
                 </div>
                 
                 <div id="resultado-verificacao" class="mt-6 hidden">
-                    <h4 class="text-xl font-bold mb-4 text-center" id="titulo-resultado">🎉 Resultado da Verificação 🎉</h4>
+                    <h4 class="text-xl font-bold mb-4 text-center titulo-resultado-gradiente" id="titulo-resultado">RESULTADO DA VERIFICAÇÃO</h4>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="resultado-cards">
-                        <div class="bg-[#374151] p-4 rounded-lg border border-gray-600">
+                        <div class="bg-[#374151] p-4 rounded-lg border border-gray-600 card-gradiente">
                             <p class="font-bold">Bilhete Vencedor:</p>
-                            <p id="bilhete-vencedor" class="text-xl md:text-2xl text-[#10b981]">Não identificado</p>
+                            <p id="bilhete-vencedor" class="text-xl md:text-2xl resultado-gradiente">Não identificado</p>
                         </div>
-                        <div class="bg-[#374151] p-4 rounded-lg border border-gray-600">
+                        <div class="bg-[#374151] p-4 rounded-lg border border-gray-600 card-gradiente">
                             <p class="font-bold">Total de Acertos:</p>
-                            <p id="total-acertos" class="text-xl md:text-2xl text-[#d4af37]">0 acertos</p>
+                            <p id="total-acertos" class="text-xl md:text-2xl resultado-gradiente">0 acertos</p>
                         </div>
-                        <div class="bg-[#374151] p-4 rounded-lg border border-gray-600">
+                        <div class="bg-[#374151] p-4 rounded-lg border border-gray-600 card-gradiente">
                             <p class="font-bold">Status do Grupo:</p>
-                            <p id="status-grupo" class="text-xl md:text-2xl text-[#3b82f6]">Aguardando</p>
+                            <p id="status-grupo" class="text-xl md:text-2xl resultado-gradiente">Aguardando</p>
                         </div>
                     </div>
-                    <div id="mensagem-resultado" class="mt-4 bg-[#374151] p-6 rounded-lg border border-gray-600">
-                        <p class="text-center font-bold text-lg">🏆 PARABÉNS A TODOS DO GRUPO! 🏆</p>
+                    <div id="mensagem-resultado" class="mt-4 bg-[#374151] p-6 rounded-lg border border-gray-600 card-gradiente">
+                        <p class="text-center font-bold text-lg resultado-gradiente">PARABÉNS A TODOS DO GRUPO!</p>
                         <p class="text-center mt-2">Um bilhete ganhou? O grupo inteiro comemora! Cada participante recebe seu prêmio individual!</p>
                     </div>
                     
                     <!-- Seção para mostrar detalhes dos acertos -->
                     <div id="detalhes-acertos" class="mt-6 hidden">
-                        <h5 class="text-lg font-bold mb-3 text-center">📊 Detalhes dos Acertos</h5>
+                        <h5 class="text-lg font-bold mb-3 text-center titulo-resultado-gradiente">DETALHES DOS ACERTOS</h5>
                         <div id="lista-bilhetes-acertos" class="space-y-3">
                             <!-- Lista de bilhetes com acertos será preenchida aqui -->
                         </div>
@@ -1114,8 +1184,8 @@ radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%)
     <span class="font-bold">NÃO VAI PERDER, VAI?</span><br class="hidden md:block">
     A transmissão oficial será realizada em 31 de dezembro de 2025. É a nossa chance de mudar de vida.
 </p>
-<h3 class="text-center text-green-400 text-xl md:text-2xl font-bold mt-3 bg-gradient-to-r from-green-500 to-yellow-500 bg-clip-text text-transparent">
-    ⚡ BILHÃO DA VIRADA! ⚡ <br> R$ 850 MILHÕES EM JOGO!
+<h3 class="text-center text-xl md:text-2xl font-bold mt-3 titulo-premio-gradiente">
+    BILHÃO DA VIRADA! <br> R$ 850 MILHÕES EM JOGO!
 </h3>
             </div>
         </div>
@@ -1459,26 +1529,26 @@ function determinarFaixaPremiacao(bilhetesComAcertos) {
 function getMensagemFaixa(faixa, quantidadeBilhetes) {
     const mensagens = {
         'sena': {
-            titulo: '🎉 PARABÉNS! SENA (6 ACERTOS)! 🎉',
-            mensagem: `🏆 <strong>${quantidadeBilhetes} bilhete(s)</strong> acertaram os 6 números!<br>
-                      🎉 O grupo inteiro comemora! Cada participante recebe seu prêmio individual!`,
+            titulo: 'PARABÉNS! SENA (6 ACERTOS)!',
+            mensagem: `<strong>${quantidadeBilhetes} bilhete(s)</strong> acertaram os 6 números!<br>
+                      O grupo inteiro comemora! Cada participante recebe seu prêmio individual!`,
             cor: '#10b981'
         },
         'quina': {
-            titulo: '🎉 PARABÉNS! QUINA (5 ACERTOS)! 🎉',
-            mensagem: `🥈 <strong>${quantidadeBilhetes} bilhete(s)</strong> acertaram 5 números!<br>
-                      💰 Prêmio da quina garantido para o grupo!`,
+            titulo: 'PARABÉNS! QUINA (5 ACERTOS)!',
+            mensagem: `<strong>${quantidadeBilhetes} bilhete(s)</strong> acertaram 5 números!<br>
+                      Prêmio da quina garantido para o grupo!`,
             cor: '#3b82f6'
         },
         'quadra': {
-            titulo: '🎉 PARABÉNS! QUADRA (4 ACERTOS)! 🎉',
-            mensagem: `🥉 <strong>${quantidadeBilhetes} bilhete(s)</strong> acertaram 4 números!<br>
-                      💰 Prêmio da quadra garantido para o grupo!`,
+            titulo: 'PARABÉNS! QUADRA (4 ACERTOS)!',
+            mensagem: `<strong>${quantidadeBilhetes} bilhete(s)</strong> acertaram 4 números!<br>
+                      Prêmio da quadra garantido para o grupo!`,
             cor: '#8b5cf6'
         },
         'nenhuma': {
-            titulo: '📊 RESULTADO DA VERIFICAÇÃO',
-            mensagem: '😔 INFELIZMENTE NÃO FOI DESSA VEZ<br>Nenhum bilhete acertou 4 números ou mais.',
+            titulo: 'RESULTADO DA VERIFICAÇÃO',
+            mensagem: 'INFELIZMENTE NÃO FOI DESSA VEZ<br>Nenhum bilhete acertou 4 números ou mais.',
             cor: '#d4af37'
         }
     };
@@ -1497,8 +1567,7 @@ function atualizarInterfaceResultados(resultadoPremiacao, maxAcertos, bilhetesCo
     if (faixa !== 'nenhuma') {
         // Caso de vitória em alguma faixa
         tituloResultado.innerHTML = mensagemFaixa.titulo;
-        tituloResultado.className = 'text-xl font-bold mb-4 text-center';
-        tituloResultado.style.color = mensagemFaixa.cor;
+        tituloResultado.className = 'text-xl font-bold mb-4 text-center titulo-resultado-gradiente';
         
         // Mostrar primeiro bilhete vencedor ou quantidade de bilhetes
         if (bilhetes.length === 1) {
@@ -1509,41 +1578,40 @@ function atualizarInterfaceResultados(resultadoPremiacao, maxAcertos, bilhetesCo
         
         totalAcertosElement.textContent = `${maxAcertos} ACERTOS!`;
         statusGrupoElement.textContent = "VENCEDOR!";
-        statusGrupoElement.style.color = mensagemFaixa.cor;
+        statusGrupoElement.className = "text-xl md:text-2xl resultado-gradiente";
         
         // Atualizar cards com estilo de vencedor
-        resultadoCards.className = 'grid grid-cols-1 md:grid-cols-3 gap-4 resultado-vencedor p-4 rounded-lg';
-        resultadoCards.style.border = `2px solid ${mensagemFaixa.cor}`;
+        resultadoCards.className = 'grid grid-cols-1 md:grid-cols-3 gap-4';
         
         // Atualizar mensagem
         mensagemResultado.innerHTML = `
-            <p class="text-center font-bold text-2xl mb-4" style="color: ${mensagemFaixa.cor}">${mensagemFaixa.titulo.replace('🎉 ', '').replace(' 🎉', '')}</p>
+            <p class="text-center font-bold text-2xl mb-4 resultado-gradiente">${mensagemFaixa.titulo}</p>
             <p class="text-center text-lg">${mensagemFaixa.mensagem}</p>
-            <p class="text-center mt-4 font-bold" style="color: ${mensagemFaixa.cor}">💰 PRÊMIO GARANTIDO! 💰</p>
+            <p class="text-center mt-4 font-bold resultado-gradiente">PRÊMIO GARANTIDO!</p>
         `;
-        mensagemResultado.className = 'mt-4 p-6 rounded-lg mensagem-vencedor';
+        mensagemResultado.className = 'mt-4 p-6 rounded-lg card-gradiente';
         
         // Esconder detalhes de acertos parciais
         detalhesAcertos.classList.add('hidden');
     } else {
         // Caso de não vitória
         tituloResultado.innerHTML = mensagemFaixa.titulo;
-        tituloResultado.className = 'text-xl font-bold mb-4 text-center text-[#d4af37]';
+        tituloResultado.className = 'text-xl font-bold mb-4 text-center titulo-resultado-gradiente';
         
         bilheteVencedorElement.textContent = "Nenhum bilhete com 4+ acertos";
         totalAcertosElement.textContent = `${maxAcertos} acertos (máximo)`;
         statusGrupoElement.textContent = "Aguardando próximo sorteio";
-        statusGrupoElement.className = "text-2xl text-[#d4af37]";
+        statusGrupoElement.className = "text-xl md:text-2xl resultado-gradiente";
         
         // Atualizar cards com estilo de não vencedor
-        resultadoCards.className = 'grid grid-cols-1 md:grid-cols-3 gap-4 resultado-perdedor p-4 rounded-lg';
+        resultadoCards.className = 'grid grid-cols-1 md:grid-cols-3 gap-4';
         
         // Atualizar mensagem
         mensagemResultado.innerHTML = `
-            <p class="text-center font-bold text-xl text-[#d4af37]">${mensagemFaixa.mensagem}</p>
-            <p class="text-center mt-4 text-[#10b981]">📈 Continue participando para aumentar suas chances!</p>
+            <p class="text-center font-bold text-xl resultado-gradiente">${mensagemFaixa.mensagem}</p>
+            <p class="text-center mt-4 text-[#10b981]">Continue participando para aumentar suas chances!</p>
         `;
-        mensagemResultado.className = 'mt-4 p-6 rounded-lg mensagem-perdedor';
+        mensagemResultado.className = 'mt-4 p-6 rounded-lg card-gradiente';
         
         // Mostrar detalhes de acertos parciais
         if (bilhetesComAcertos.length > 0) {
@@ -1552,7 +1620,7 @@ function atualizarInterfaceResultados(resultadoPremiacao, maxAcertos, bilhetesCo
             // Adicionar bilhetes com acertos à lista
             bilhetesComAcertos.forEach(bilhete => {
                 const bilheteItem = document.createElement('div');
-                bilheteItem.className = 'bg-[#374151] p-4 rounded-lg bilhete-acertou border border-gray-600';
+                bilheteItem.className = 'bg-[#374151] p-4 rounded-lg bilhete-acertou border border-gray-600 card-gradiente';
                 bilheteItem.innerHTML = `
                     <div class="flex justify-between items-center">
                         <div>
@@ -1560,7 +1628,7 @@ function atualizarInterfaceResultados(resultadoPremiacao, maxAcertos, bilhetesCo
                             <p class="text-sm">Bilhete #${bilhete.id.toString().padStart(4, '0')}</p>
                         </div>
                         <div class="text-right">
-                            <p class="text-[#10b981] font-bold text-lg">${bilhete.acertos} acerto(s)</p>
+                            <p class="font-bold text-lg acertos-gradiente">${bilhete.acertos} acerto(s)</p>
                             <p class="text-xs">Números: ${bilhete.numbers}</p>
                         </div>
                     </div>
@@ -1742,8 +1810,8 @@ function atualizarBilhetes() {
 
         ticketElement.innerHTML = `
             <div class="ticket-stripes"></div>
-            ${isVencedor ? '<div class="badge-vencedor">🎯 BILHETE VENCEDOR</div>' : ''}
-            ${isGrupoVencedor && !isVencedor ? '<div class="badge-premiado">🏆 GRUPO VENCEDOR</div>' : ''}
+            ${isVencedor ? '<div class="badge-vencedor">BILHETE VENCEDOR</div>' : ''}
+            ${isGrupoVencedor && !isVencedor ? '<div class="badge-premiado">GRUPO VENCEDOR</div>' : ''}
             
             <div class="ticket-header">
                 <div class="ticket-logo">
@@ -1767,7 +1835,7 @@ function atualizarBilhetes() {
                     ${numerosHTML}
                 </div>
                 
-                ${acertos > 0 ? `<p class="text-center mt-4 text-green-600 font-bold text-lg">${acertos} ACERTO(S)!</p>` : ''}
+                ${acertos > 0 ? `<p class="text-center mt-4 acertos-gradiente">${acertos} ACERTO(S)!</p>` : ''}
                 
                 <div class="ticket-divider"></div>
                 
@@ -1870,7 +1938,7 @@ function atualizarBilhetes() {
 
             // ========== EXEMPLO: Como atualizar os números após o sorteio oficial ==========
             // Para usar após o sorteio oficial, descomente a linha abaixo e atualize com os números reais:
-            // atualizarNumerosOficiais([5, 12, 23, 34, 45, 56]);
+            // atualizarNumerosOficiais([45, 30, 21, 40, 60, 10]);
         });
     </script>
 </body>

@@ -395,11 +395,13 @@ radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%)
 /* ESTILOS GERAIS DO VÍDEO */
 .video-container {
     position: relative;
-    padding-bottom: 56.25%;
+    width: 100%;
+    padding-bottom: 56.25%; /* Proporção 16:9 */
     height: 0;
     overflow: hidden;
     border-radius: 12px;
     box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+    background: #000; /* Fundo preto para evitar flash branco durante carregamento */
 }
 
 .video-container iframe {
@@ -409,7 +411,7 @@ radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%)
     width: 100%;
     height: 100%;
     border: 0;
-    object-fit: contain; /* Impede o corte das bordas */
+    /* Sem object-fit - o YouTube controla o dimensionamento */
 }
 
         /* CORREÇÃO: MELHORIAS PARA MOBILE */
@@ -895,19 +897,12 @@ radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%)
         border-radius: 12px;
         box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         margin: 0;
-        /* Ajustes específicos para mobile */
-        padding-bottom: 75%; /* Mais altura para mobile portrait */
-        object-fit: contain;
+        /* O padding-bottom já está definido no estilo geral */
     }
     
     #video .bg-\[\#262626\] p {
         padding: 0 15px;
         margin-top: 15px;
-    }
-    
-    /* Garantir que o iframe não corte bordas no mobile */
-    .video-container iframe {
-        object-fit: contain;
     }
 }
 

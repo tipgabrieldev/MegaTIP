@@ -401,7 +401,7 @@ radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%)
     overflow: hidden;
     border-radius: 12px;
     box-shadow: 0 12px 25px rgba(0,0,0,0.3);
-    background: #000; /* Fundo preto para evitar flash branco durante carregamento */
+    background: #000;
 }
 
 .video-container iframe {
@@ -411,7 +411,6 @@ radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%)
     width: 100%;
     height: 100%;
     border: 0;
-    /* Sem object-fit - o YouTube controla o dimensionamento */
 }
 
         /* CORREÇÃO: MELHORIAS PARA MOBILE */
@@ -878,7 +877,7 @@ radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%)
     z-index: 2;
 }
 
-/* CORREÇÃO DEFINITIVA: VÍDEO GRANDE NO MOBILE */
+/* CORREÇÃO: VÍDEO COMPLETO SEM CORTES NO MOBILE */
 @media (max-width: 768px) {
     #video .container {
         max-width: 100%;
@@ -897,7 +896,8 @@ radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%)
         border-radius: 12px;
         box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         margin: 0;
-        /* O padding-bottom já está definido no estilo geral */
+        /* Garantir proporção segura para mobile */
+        padding-bottom: 60%; /* Um pouco mais alto para evitar cortes */
     }
     
     #video .bg-\[\#262626\] p {
@@ -906,10 +906,10 @@ radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%)
     }
 }
 
-/* AJUSTES ESPECÍFICOS PARA ORIENTAÇÃO */
+/* AJUSTE ESPECÍFICO PARA LANDSCAPE - EVITAR CORTES */
 @media (max-width: 768px) and (orientation: landscape) {
     .video-container {
-        padding-bottom: 45%; /* Menos altura para landscape */
+        padding-bottom: 50%; /* Ajuste balanceado para landscape */
     }
 }
 

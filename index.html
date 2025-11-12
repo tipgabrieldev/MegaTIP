@@ -1793,18 +1793,31 @@ const sampleTickets = [
             // Variável para controlar o timeout da busca
             let searchTimeout;
 
-            // Função para filtrar bilhetes APENAS por nome
-            function filtrarBilhetes(termo) {
-                if (!termo) {
-                    return [...sampleTickets];
-                }
-                
-                const termoLower = termo.toLowerCase();
-                return sampleTickets.filter(ticket => {
-                    // Buscar APENAS por nome do participante
-                    return ticket.assignedName.toLowerCase().includes(termoLower);
-                });
-            }
+// Função para filtrar bilhetes APENAS por nome
+function filtrarBilhetes(termo) {
+    if (!termo) {
+        return [...sampleTickets];
+    }
+    
+    // Normalizar o termo de busca (remover acentos e converter para minúsculas)
+    const termoNormalizado = termo
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+    
+    return sampleTickets.filter(ticket => {
+        // Buscar APENAS por nome do participante
+        // Normalizar o nome também para comparação
+        const nomeNormalizado = ticket.assignedName
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase();
+        
+        return nomeNormalizado.includes(termoNormalizado);
+    });
+}
+
+                                
 
             // Função para executar a busca
             function executarBusca() {

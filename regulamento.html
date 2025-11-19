@@ -18,7 +18,6 @@
             --color-highlight: #dc2626;
         }
 
-        /* CORREÇÃO: EVITAR SCROLL HORIZONTAL */
         * {
             box-sizing: border-box;
         }
@@ -38,6 +37,44 @@
             padding: 0;
         }
 
+        .container {
+            width: 100%;
+            max-width: 100%;
+            padding-left: 15px;
+            padding-right: 15px;
+            margin-left: auto;
+            margin-right: auto;
+            box-sizing: border-box;
+        }
+
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .hero-section {
+            background: rgba(23, 23, 23, 0.85);
+            border-radius: 20px;
+            border: 1px solid #374151;
+            background-image: url('https://images.unsplash.com/photo-1531581147769-2ec2ae9ba937?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: overlay;
+        }
+
+        .glow {
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .footer {
+            background: rgba(23, 23, 23, 0.95);
+            border-top: 1px solid #374151;
+        }
+
         /* Estilos para o menu mobile */
         .mobile-menu {
             transition: all 0.3s ease-in-out;
@@ -51,113 +88,125 @@
             opacity: 1;
         }
 
-        .footer {
-            background: rgba(23, 23, 23, 0.95);
-            border-top: 1px solid #374151;
-        }
-
         /* Estilos para a seção de regulamento */
-        .regulamento-container {
+        .regulamento-section {
             background: rgba(23, 23, 23, 0.85);
             border-radius: 20px;
             border: 1px solid #374151;
-            padding: 30px;
-            margin-bottom: 30px;
+            padding: 40px;
+            margin-bottom: 40px;
         }
 
-        .regulamento-section {
+        .regulamento-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: #d4af37;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .regulamento-item {
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 1px solid #374151;
         }
 
-        .regulamento-section:last-child {
+        .regulamento-item:last-child {
             border-bottom: none;
         }
 
-        .regulamento-title {
+        .regulamento-item h3 {
             color: #d4af37;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             margin-bottom: 15px;
-            font-weight: 700;
-        }
-
-        .regulamento-content {
-            line-height: 1.6;
-        }
-
-        .regulamento-list {
-            list-style-type: disc;
-            padding-left: 20px;
-            margin: 10px 0;
-        }
-
-        .regulamento-list li {
-            margin-bottom: 8px;
-        }
-
-        .highlight {
-            background-color: rgba(212, 175, 55, 0.1);
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 4px solid #d4af37;
-            margin: 15px 0;
-        }
-
-        .admin-section {
-            background: rgba(220, 38, 38, 0.1);
-            border: 1px solid #dc2626;
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 30px;
-        }
-
-        .admin-buttons {
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 15px;
+            align-items: center;
         }
 
-        .admin-btn {
-            background: #dc2626;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .regulamento-item h3 i {
+            margin-right: 10px;
         }
 
-        .admin-btn:hover {
-            background: #b91c1c;
-            transform: translateY(-2px);
+        .regulamento-item p {
+            line-height: 1.6;
+            margin-bottom: 10px;
         }
 
-        .admin-btn.secondary {
-            background: #374151;
+        .regulamento-item ul {
+            padding-left: 20px;
+            margin-top: 10px;
         }
 
-        .admin-btn.secondary:hover {
-            background: #4b5563;
+        .regulamento-item li {
+            margin-bottom: 8px;
+            line-height: 1.5;
         }
 
-        .admin-only {
-            display: none;
+        .regulamento-item li strong {
+            color: #d4af37;
+        }
+
+        .regulamento-highlight {
+            background: rgba(212, 175, 55, 0.1);
+            border-left: 4px solid #d4af37;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .regulamento-warning {
+            background: rgba(220, 38, 38, 0.1);
+            border-left: 4px solid #dc2626;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .regulamento-success {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .regulamento-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .regulamento-table th, .regulamento-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #374151;
+        }
+
+        .regulamento-table th {
+            background-color: rgba(38, 38, 38, 0.7);
+            color: #d4af37;
+            font-weight: 600;
+        }
+
+        .regulamento-table tr:hover {
+            background-color: rgba(38, 38, 38, 0.3);
         }
 
         @media (max-width: 768px) {
-            .regulamento-container {
-                padding: 20px;
+            .regulamento-section {
+                padding: 25px 20px;
             }
             
-            .admin-buttons {
-                flex-direction: column;
+            .regulamento-item h3 {
+                font-size: 1.1rem;
             }
             
-            .admin-btn {
-                width: 100%;
+            .regulamento-table {
+                font-size: 0.85rem;
+            }
+            
+            .regulamento-table th, .regulamento-table td {
+                padding: 8px 10px;
             }
         }
     </style>
@@ -175,9 +224,9 @@
                 <a href="index.html" class="hover:text-[#d4af37] transition font-medium">Início</a>
                 <a href="index.html#resultado" class="hover:text-[#d4af37] transition font-medium">Resultado</a>
                 <a href="index.html#video" class="hover:text-[#d4af37] transition font-medium">Ao Vivo</a>
-                <a href="regulamento.html" class="hover:text-[#d4af37] transition font-medium text-[#d4af37]">Regulamento</a>
                 <a href="index.html#pagamento" class="hover:text-[#d4af37] transition font-medium">Pagamento</a>
                 <a href="index.html#bilhetes" class="hover:text-[#d4af37] transition font-medium">Bilhetes</a>
+                <a href="regulamento.html" class="text-[#d4af37] transition font-medium">Regulamento</a>
                 <a href="index.html#contato" class="hover:text-[#d4af37] transition font-medium">Contato</a>
             </nav>
 
@@ -193,9 +242,9 @@
                 <a href="index.html" class="hover:text-[#d4af37] transition py-2 border-b border-gray-700 font-medium">Início</a>
                 <a href="index.html#resultado" class="hover:text-[#d4af37] transition py-2 border-b border-gray-700 font-medium">Resultado</a>
                 <a href="index.html#video" class="hover:text-[#d4af37] transition py-2 border-b border-gray-700 font-medium">Ao Vivo</a>
-                <a href="regulamento.html" class="hover:text-[#d4af37] transition py-2 border-b border-gray-700 font-medium text-[#d4af37]">Regulamento</a>
                 <a href="index.html#pagamento" class="hover:text-[#d4af37] transition py-2 border-b border-gray-700 font-medium">Pagamento</a>
                 <a href="index.html#bilhetes" class="hover:text-[#d4af37] transition py-2 border-b border-gray-700 font-medium">Bilhetes</a>
+                <a href="regulamento.html" class="text-[#d4af37] transition py-2 border-b border-gray-700 font-medium">Regulamento</a>
                 <a href="index.html#contato" class="hover:text-[#d4af37] transition py-2 font-medium">Contato</a>
             </nav>
         </div>
@@ -203,133 +252,141 @@
 
     <section class="py-16 px-4">
         <div class="container mx-auto max-w-4xl">
-            <h2 class="text-3xl font-bold text-center mb-12">Regulamento Mega<span class="text-[#d4af37]">TIP</span></h2>
-            
-            <div class="regulamento-container">
-                <div class="regulamento-section">
-                    <h3 class="regulamento-title">1. Objetivo do Bolão</h3>
-                    <div class="regulamento-content">
-                        <p>O MegaTIP é um bolão coletivo para apostas na Mega-Sena, especialmente na Mega da Virada, com o objetivo de aumentar as chances de ganhar através da participação em grupo.</p>
+            <div class="regulamento-section">
+                <h2 class="text-3xl md:text-4xl font-bold regulamento-title">Regulamento MegaTIP</h2>
+                
+                <div class="regulamento-item">
+                    <h3><i class="fas fa-info-circle"></i> Sobre o MegaTIP</h3>
+                    <p>O MegaTIP é um bolão colaborativo para apostas na Mega-Sena, especialmente na Mega da Virada, onde os participantes se unem para aumentar suas chances de ganhar.</p>
+                    <p>O conceito principal é: <strong>"Se um acerta, todo o grupo ganha"</strong>. Diferente de bolões tradicionais onde o prêmio é dividido, no MegaTIP cada participante recebe seu prêmio individual caso algum bilhete do grupo seja premiado.</p>
+                </div>
+
+                <div class="regulamento-item">
+                    <h3><i class="fas fa-user-plus"></i> Participação</h3>
+                    <p>Para participar do MegaTIP, é necessário:</p>
+                    <ul>
+                        <li><strong>Ter 18 anos ou mais</strong> - Apenas maiores de idade podem participar</li>
+                        <li><strong>Realizar o pagamento</strong> - Cada bilhete custa R$ 6,00</li>
+                        <li><strong>Enviar o comprovante</strong> - Encaminhar o comprovante de pagamento para o WhatsApp (31) 98204-2552</li>
+                        <li><strong>Escolher os números</strong> - Selecionar 6 números diferentes entre 01 e 60</li>
+                    </ul>
+                    <div class="regulamento-highlight">
+                        <p><strong>Importante:</strong> O prazo final para pagamento e escolha de números é até o dia 20/12/2025.</p>
                     </div>
                 </div>
-                
-                <div class="regulamento-section">
-                    <h3 class="regulamento-title">2. Participação</h3>
-                    <div class="regulamento-content">
-                        <ul class="regulamento-list">
-                            <li>A participação está aberta a qualquer pessoa maior de 18 anos.</li>
-                            <li>Cada participante adquire um bilhete único no valor de R$ 6,00.</li>
-                            <li>Cada bilhete contém 6 números escolhidos aleatoriamente ou conforme disponibilidade.</li>
-                            <li>O pagamento deve ser realizado até a data limite estabelecida (20/12/2025).</li>
-                            <li>A participação só é confirmada após o pagamento e envio do comprovante.</li>
-                        </ul>
+
+                <div class="regulamento-item">
+                    <h3><i class="fas fa-money-bill-wave"></i> Pagamento e Confirmação</h3>
+                    <p>O pagamento deve ser realizado exclusivamente via PIX para a chave: <strong>(31) 98204-2552</strong>.</p>
+                    <p>Após o pagamento:</p>
+                    <ul>
+                        <li>Encaminhe o comprovante para o WhatsApp (31) 98204-2552</li>
+                        <li>Seu bilhete será confirmado em até 24 horas</li>
+                        <li>Você receberá a confirmação de participação</li>
+                        <li>Seu nome será adicionado à lista de participantes no site</li>
+                    </ul>
+                    <div class="regulamento-warning">
+                        <p><strong>Atenção:</strong> Bilhetes não pagos até a data limite serão automaticamente excluídos do bolão.</p>
                     </div>
                 </div>
-                
-                <div class="regulamento-section">
-                    <h3 class="regulamento-title">3. Premiação</h3>
-                    <div class="regulamento-content">
-                        <div class="highlight">
-                            <p><strong>CONDIÇÃO ESPECIAL DO BOLÃO:</strong> Se qualquer bilhete do grupo for premiado, todos os participantes recebem um prêmio individual equivalente ao valor apostado multiplicado por um fator predefinido, conforme a tabela de premiação.</p>
-                        </div>
-                        <ul class="regulamento-list">
-                            <li>Prêmio da Sena (6 acertos): Cada participante recebe R$ 1.000.000,00</li>
-                            <li>Prêmio da Quina (5 acertos): Cada participante recebe R$ 50.000,00</li>
-                            <li>Prêmio da Quadra (4 acertos): Cada participante recebe R$ 1.000,00</li>
-                            <li>Em caso de múltiplos bilhetes premiados, o valor é distribuído igualmente entre todos os participantes.</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="regulamento-section">
-                    <h3 class="regulamento-title">4. Aceitação das Condições</h3>
-                    <div class="regulamento-content">
-                        <p>Ao participar do MegaTIP, o participante declara estar ciente e concorda expressamente com as seguintes condições:</p>
-                        <ul class="regulamento-list">
-                            <li>Reconhece que o prêmio é individual e não há possibilidade de divisão posterior entre os participantes.</li>
-                            <li>Aceita que em caso de premiação, apenas o nome constante no bilhete premiado terá direito ao prêmio individual.</li>
-                            <li>Renuncia expressamente a qualquer direito de reivindicar participação no prêmio de outro bilhete do grupo.</li>
-                            <li>Reconhece que não há vínculo societário ou solidário entre os participantes.</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="regulamento-section">
-                    <h3 class="regulamento-title">5. Desistência e Reembolso</h3>
-                    <div class="regulamento-content">
-                        <ul class="regulamento-list">
-                            <li>Em caso de desistência antes da data do sorteio, o participante terá direito ao reembolso de 80% do valor pago.</li>
-                            <li>O pedido de desistência deve ser formalizado por escrito via WhatsApp para o número (31) 98204-2552.</li>
-                            <li>Após a data limite de pagamento (20/12/2025), não serão aceitas desistências nem realizados reembolsos.</li>
-                            <li>Em caso de cancelamento do bolão por insuficiência de participantes, todos os valores serão integralmente reembolsados.</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="regulamento-section">
-                    <h3 class="regulamento-title">6. Responsabilidades e Isenções</h3>
-                    <div class="regulamento-content">
-                        <ul class="regulamento-list">
-                            <li>O organizador não se responsabiliza por bilhetes extraviados, não entregues ou com informações incorretas fornecidas pelo participante.</li>
-                            <li>É de total responsabilidade do participante verificar a correção de seus dados no bilhete.</li>
-                            <li>O organizador se reserva o direito de recusar participações que não cumpram com as regras estabelecidas.</li>
-                            <li>Eventuais impostos sobre premiação são de responsabilidade do ganhador.</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="regulamento-section">
-                    <h3 class="regulamento-title">7. Proteção Jurídica</h3>
-                    <div class="regulamento-content">
-                        <div class="highlight">
-                            <p><strong>DISPOSIÇÃO LEGAL IMPORTANTE:</strong> Ao participar deste bolão, o participante declara estar ciente de que não há qualquer vínculo jurídico entre os participantes no que diz respeito à premiação. Cada bilhete é uma aposta individual, e o prêmio é devido apenas ao portador do bilhete premiado, sem qualquer direito de participação coletiva no prêmio ou divisão entre os demais participantes.</p>
-                        </div>
-                        <p>O participante renuncia expressamente a qualquer ação judicial ou extrajudicial que vise:</p>
-                        <ul class="regulamento-list">
-                            <li>Reivindicar participação no prêmio de bilhete que não o seu;</li>
-                            <li>Questionar a distribuição individual dos prêmios;</li>
-                            <li>Exigir divisão de prêmio com outros participantes.</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="regulamento-section">
-                    <h3 class="regulamento-title">8. Disposições Finais</h3>
-                    <div class="regulamento-content">
-                        <ul class="regulamento-list">
-                            <li>Os casos omissos serão resolvidos pelo organizador do bolão.</li>
-                            <li>Este regulamento pode ser alterado a qualquer momento, com aviso prévio aos participantes.</li>
-                            <li>A participação no bolão implica na aceitação integral deste regulamento.</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <!-- SEÇÃO ADMINISTRATIVA (VISÍVEL APENAS PARA O ADMIN) -->
-                <div id="admin-section" class="admin-section admin-only">
-                    <h3 class="regulamento-title">Área Administrativa</h3>
-                    <p>Esta seção é visível apenas para administradores do sistema.</p>
+
+                <div class="regulamento-item">
+                    <h3><i class="fas fa-trophy"></i> Sistema de Premiação</h3>
+                    <p>O MegaTIP funciona com um sistema diferenciado de premiação:</p>
+                    <ul>
+                        <li><strong>Prêmio Individual:</strong> Cada participante recebe o prêmio completo referente ao seu bilhete</li>
+                        <li><strong>Efeito Multiplicador:</strong> Se mais de um bilhete for premiado, todos os ganhadores recebem seus prêmios individuais</li>
+                        <li><strong>Sem Divisão:</strong> Não há divisão do prêmio entre os participantes</li>
+                    </ul>
                     
-                    <div class="admin-buttons">
-                        <button class="admin-btn" onclick="editarRegulamento()">
-                            <i class="fas fa-edit mr-2"></i>Editar Regulamento
-                        </button>
-                        <button class="admin-btn secondary" onclick="exportarParticipantes()">
-                            <i class="fas fa-download mr-2"></i>Exportar Lista de Participantes
-                        </button>
-                        <button class="admin-btn secondary" onclick="gerarRelatorio()">
-                            <i class="fas fa-chart-bar mr-2"></i>Gerar Relatório
-                        </button>
-                        <button class="admin-btn" onclick="enviarNotificacao()">
-                            <i class="fas fa-bell mr-2"></i>Enviar Notificação
-                        </button>
+                    <table class="regulamento-table">
+                        <thead>
+                            <tr>
+                                <th>Faixa de Acertos</th>
+                                <th>Prêmio Individual</th>
+                                <th>Condição do Grupo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>6 acertos (Sena)</td>
+                                <td>Prêmio principal da Mega-Sena</td>
+                                <td>Todos com 6 acertos ganham o prêmio máximo</td>
+                            </tr>
+                            <tr>
+                                <td>5 acertos (Quina)</td>
+                                <td>Prêmio da Quina</td>
+                                <td>Todos com 5 acertos ganham o prêmio da Quina</td>
+                            </tr>
+                            <tr>
+                                <td>4 acertos (Quadra)</td>
+                                <td>Prêmio da Quadra</td>
+                                <td>Todos com 4 acertos ganham o prêmio da Quadra</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="regulamento-success">
+                        <p><strong>Exemplo:</strong> Se 3 bilhetes diferentes acertarem a Sena, cada um dos 3 participantes receberá o prêmio máximo individualmente.</p>
                     </div>
                 </div>
-            </div>
-            
-            <div class="text-center mt-8">
-                <a href="index.html" class="bg-[#d4af37] hover:bg-[#b8941f] text-[#171717] font-bold py-3 px-8 rounded-lg transition inline-block">
-                    Voltar para a Página Principal
-                </a>
+
+                <div class="regulamento-item">
+                    <h3><i class="fas fa-calendar-alt"></i> Datas e Prazos</h3>
+                    <ul>
+                        <li><strong>Início das inscrições:</strong> 01/11/2025</li>
+                        <li><strong>Prazo final para pagamento:</strong> 20/12/2025</li>
+                        <li><strong>Prazo para escolha/alteração de números:</strong> 20/12/2025</li>
+                        <li><strong>Data do sorteio:</strong> 31/12/2025</li>
+                        <li><strong>Divulgação dos resultados:</strong> 01/01/2026</li>
+                    </ul>
+                </div>
+
+                <div class="regulamento-item">
+                    <h3><i class="fas fa-shield-alt"></i> Transparência e Segurança</h3>
+                    <p>O MegaTIP garante total transparência em todas as etapas:</p>
+                    <ul>
+                        <li>Todos os bilhetes são registrados e publicados no site</li>
+                        <li>Os números escolhidos por cada participante são divulgados</li>
+                        <li>O processo de verificação dos resultados é aberto e auditável</li>
+                        <li>Comprovantes de pagamento são mantidos em arquivo</li>
+                    </ul>
+                    <div class="regulamento-highlight">
+                        <p><strong>Garantia:</strong> Caso ocorra qualquer problema técnico, os valores pagos serão integralmente reembolsados.</p>
+                    </div>
+                </div>
+
+                <div class="regulamento-item">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Responsabilidades e Isenções</h3>
+                    <p>O MegaTIP atua como organizador do bolão e não tem qualquer vínculo com a Caixa Econômica Federal ou loterias oficiais.</p>
+                    <p>Os participantes declaram estar cientes de que:</p>
+                    <ul>
+                        <li>A participação é voluntária e consciente</li>
+                        <li>Os resultados dependem exclusivamente do sorteio oficial</li>
+                        <li>Não há garantia de retorno financeiro</li>
+                        <li>O organizador não se responsabiliza por decisões da Caixa Econômica Federal</li>
+                    </ul>
+                </div>
+
+                <div class="regulamento-item">
+                    <h3><i class="fas fa-question-circle"></i> Dúvidas e Suporte</h3>
+                    <p>Para esclarecimento de dúvidas ou problemas, entre em contato:</p>
+                    <ul>
+                        <li><strong>WhatsApp:</strong> (31) 98204-2552</li>
+                        <li><strong>Instagram:</strong> @tipgabriel</li>
+                        <li><strong>Horário de atendimento:</strong> Segunda a Sábado, das 9h às 21h</li>
+                    </ul>
+                    <div class="regulamento-highlight">
+                        <p><strong>Importante:</strong> Ao participar do MegaTIP, você automaticamente concorda com todos os termos deste regulamento.</p>
+                    </div>
+                </div>
+
+                <div class="text-center mt-8">
+                    <a href="https://wa.me/5531982042552?text=Olá!%20Li%20o%20regulamento%20do%20MegaTIP%20e%20gostaria%20de%20participar!" 
+                       class="bg-[#d4af37] hover:bg-[#b8941f] text-[#171717] font-bold py-3 px-8 rounded-full text-lg transition inline-block glow">
+                        Participar Agora
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -340,7 +397,7 @@
                 <a href="https://www.instagram.com/tipgabriel/" class="text-white hover:text-[#d4af37] transition">
                     <i class="fab fa-instagram text-2xl"></i>
                 </a>
-                <a href="https://wa.me/5531982042552" class="text-white hover:text-[#d4af37] transition">
+                <a href="https://wa.me/5531982042552?text=Oi%2C%20Tip!%20%F0%9F%98%83%20Quero%20muito%20participar%20do%20MegaTIP!" class="text-white hover:text-[#d4af37] transition">
                     <i class="fab fa-whatsapp text-2xl"></i>
                 </a>
             </div>
@@ -397,50 +454,7 @@
             // ========== COPYRIGHT ==========
             const year = new Date().getFullYear();
             document.getElementById('copyright').innerHTML = `&copy; ${year} MegaTIP. Não somos filiados à Caixa Econômica Federal.`;
-
-            // ========== VERIFICAÇÃO DE ADMIN ==========
-            // Esta é uma verificação simples. Em um ambiente real, você implementaria
-            // um sistema de autenticação mais seguro
-            verificarAdmin();
         });
-
-        // Função para verificar se o usuário é admin
-        function verificarAdmin() {
-            // Em um ambiente real, isso seria feito com autenticação no servidor
-            // Aqui é apenas um exemplo simples baseado em localStorage
-            const isAdmin = localStorage.getItem('megaTipAdmin') === 'true';
-            
-            // Para testar, você pode definir manualmente:
-            // localStorage.setItem('megaTipAdmin', 'true');
-            
-            if (isAdmin) {
-                document.getElementById('admin-section').classList.remove('admin-only');
-            }
-        }
-
-        // Funções administrativas
-        function editarRegulamento() {
-            alert('Funcionalidade de edição do regulamento seria implementada aqui.');
-            // Em um ambiente real, isso abriria um editor de texto rico
-        }
-
-        function exportarParticipantes() {
-            alert('Lista de participantes seria exportada em formato CSV.');
-            // Em um ambiente real, isso geraria e baixaria um arquivo CSV
-        }
-
-        function gerarRelatorio() {
-            alert('Relatório administrativo seria gerado aqui.');
-            // Em um ambiente real, isso mostraria estatísticas e análises
-        }
-
-        function enviarNotificacao() {
-            const mensagem = prompt('Digite a mensagem de notificação para todos os participantes:');
-            if (mensagem) {
-                alert(`Notificação enviada: "${mensagem}"`);
-                // Em um ambiente real, isso enviaria notificações por email ou WhatsApp
-            }
-        }
     </script>
 </body>
 </html>

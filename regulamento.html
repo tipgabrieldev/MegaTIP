@@ -3,106 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regulamento - Bolão MegaTIP | Mega da Virada</title>
+    <title>Regulamento - MegaTIP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ESTILO MEGATIP - Mantendo a Identidade Visual */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
+
         :root {
-            --megatip-primary: #1a5276;
-            --megatip-secondary: #2980b9;
-            --megatip-accent: #e74c3c;
-            --megatip-light: #ecf0f1;
-            --megatip-dark: #2c3e50;
-            --megatip-success: #27ae60;
+            --color-primary: #171717;
+            --color-secondary: #d4af37;
+            --color-accent: #10b981;
+            --color-text: #ffffff;
+            --color-card: #262626;
+            --color-highlight: #dc2626;
         }
 
         * {
-            margin: 0;
-            padding: 0;
             box-sizing: border-box;
         }
 
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            background: linear-gradient(135deg, var(--megatip-primary) 0%, var(--megatip-dark) 100%);
-            color: #333;
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
             min-height: 100vh;
+            color: var(--color-text);
+            margin: 0;
+            padding: 0;
         }
 
         .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
+            width: 100%;
+            max-width: 100%;
+            padding-left: 15px;
+            padding-right: 15px;
+            margin-left: auto;
+            margin-right: auto;
+            box-sizing: border-box;
         }
 
-        /* Header no estilo MegaTIP */
+        /* Header Styles */
         .header {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            text-align: center;
-            border: 3px solid var(--megatip-accent);
+            background: #171717;
+            padding: 20px 0;
+            border-bottom: 1px solid #374151;
+            position: sticky;
+            top: 0;
+            z-index: 50;
         }
 
         .logo {
-            font-size: 2.8em;
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
             font-weight: bold;
-            color: var(--megatip-primary);
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            color: white;
         }
 
         .logo span {
-            color: var(--megatip-accent);
+            color: #d4af37;
         }
 
-        .subtitle {
-            color: var(--megatip-secondary);
-            font-size: 1.3em;
-            margin-bottom: 5px;
+        .nav-desktop {
+            display: none;
         }
 
-        .sorteio-info {
-            background: var(--megatip-light);
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-            border-left: 5px solid var(--megatip-success);
+        .nav-mobile {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: #171717;
+            border-bottom: 1px solid #374151;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
         }
 
-        /* Conteúdo do Regulamento */
-        .regulamento-content {
-            background: white;
-            border-radius: 15px;
-            padding: 40px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            margin-bottom: 25px;
+        .nav-mobile.active {
+            max-height: 300px;
         }
 
-        h1 {
-            color: var(--megatip-primary);
+        .nav-link {
+            padding: 15px 20px;
+            border-bottom: 1px solid #374151;
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #d4af37;
+        }
+
+        .nav-link.regulamento {
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: rgba(23, 23, 23, 0.85);
+            border-radius: 20px;
+            border: 1px solid #374151;
+            padding: 40px 30px;
+            margin: 30px auto;
+            max-width: 1000px;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: bold;
             text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            text-align: center;
+            color: #d4af37;
             margin-bottom: 30px;
-            font-size: 2.2em;
         }
 
-        h2 {
-            color: var(--megatip-secondary);
+        /* Content Styles */
+        .content-section {
+            background: #262626;
+            border-radius: 16px;
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 1000px;
+            border: 1px solid #374151;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: #d4af37;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #d4af37;
+            padding-bottom: 10px;
+        }
+
+        .subsection-title {
+            font-size: 1.3rem;
+            color: #d4af37;
             margin: 25px 0 15px 0;
-            padding-bottom: 8px;
-            border-bottom: 2px solid var(--megatip-light);
-        }
-
-        h3 {
-            color: var(--megatip-dark);
-            margin: 20px 0 10px 0;
         }
 
         p {
             margin-bottom: 15px;
-            text-align: justify;
+            line-height: 1.6;
         }
 
         ul, ol {
@@ -111,148 +168,419 @@
         }
 
         li {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            line-height: 1.5;
         }
 
-        .destaque {
-            background: var(--megatip-light);
+        .highlight-box {
+            background: rgba(212, 175, 55, 0.1);
+            border-left: 4px solid #d4af37;
             padding: 20px;
-            border-radius: 10px;
-            border-left: 5px solid var(--megatip-accent);
             margin: 20px 0;
+            border-radius: 8px;
         }
 
-        .aviso-importante {
-            background: #fff3cd;
-            border: 2px solid #ffeaa7;
-            color: #856404;
+        .warning-box {
+            background: rgba(220, 38, 38, 0.1);
+            border-left: 4px solid #dc2626;
             padding: 20px;
-            border-radius: 10px;
-            margin: 25px 0;
-            text-align: center;
-            font-weight: bold;
+            margin: 20px 0;
+            border-radius: 8px;
         }
 
-        /* Rodapé */
-        .footer {
-            text-align: center;
-            color: white;
+        .success-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
             padding: 20px;
-            font-size: 0.9em;
+            margin: 20px 0;
+            border-radius: 8px;
         }
 
-        .botao-aceitar {
-            display: block;
-            width: 100%;
-            max-width: 300px;
+        /* Acceptance Section */
+        .acceptance-section {
+            text-align: center;
+            padding: 30px;
             margin: 30px auto;
-            padding: 15px 30px;
-            background: linear-gradient(135deg, var(--megatip-success) 0%, #2ecc71 100%);
-            color: white;
+            max-width: 600px;
+        }
+
+        .acceptance-btn {
+            background: #d4af37;
+            color: #171717;
             border: none;
+            padding: 15px 40px;
             border-radius: 50px;
-            font-size: 1.2em;
             font-weight: bold;
+            font-size: 1.1rem;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all 0.3s ease;
+            margin: 20px 0;
+            display: inline-block;
         }
 
-        .botao-aceitar:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.6);
+        .acceptance-btn:hover {
+            background: #b8941f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
         }
 
-        /* Responsivo */
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
+        .acceptance-text {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-top: 15px;
+        }
+
+        /* Footer */
+        .footer {
+            background: #171717;
+            padding: 30px 20px;
+            text-align: center;
+            border-top: 1px solid #374151;
+            margin-top: 50px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .social-link {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: #d4af37;
+        }
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .nav-desktop {
+                display: flex;
+                gap: 25px;
             }
             
-            .regulamento-content {
-                padding: 25px 20px;
+            .nav-mobile {
+                display: none;
             }
             
-            h1 {
-                font-size: 1.8em;
+            .mobile-menu-btn {
+                display: none;
             }
             
-            .logo {
-                font-size: 2.2em;
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .content-section {
+                padding: 40px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .hero-section {
+                padding: 30px 20px;
+                margin: 20px 10px;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .content-section {
+                padding: 20px;
+                margin: 15px 10px;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
             }
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <!-- Cabeçalho -->
-        <header class="header">
-            <div class="logo">Mega<span>TIP</span></div>
-            <div class="subtitle">Bolão Oficial - Mega da Virada</div>
-            <div class="sorteio-info">
-                <strong>Sorteio:</strong> Mega da Virada • <strong>Data:</strong> 31/12/2024 • <strong>Concurso:</strong> 2770
+<body class="text-white">
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <i class="fas fa-clover text-[#d4af37] text-2xl mr-2"></i>
+                    <h1 class="logo">Mega<span>TIP</span></h1>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="nav-desktop">
+                    <a href="index.html" class="nav-link">Início</a>
+                    <a href="index.html#resultado" class="nav-link">Resultado</a>
+                    <a href="index.html#video" class="nav-link">Ao Vivo</a>
+                    <a href="regulamento.html" class="nav-link regulamento">Regulamento</a>
+                    <a href="index.html#pagamento" class="nav-link">Pagamento</a>
+                    <a href="index.html#bilhetes" class="nav-link">Bilhetes</a>
+                    <a href="index.html#contato" class="nav-link">Contato</a>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-btn text-xl">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
-        </header>
 
-        <!-- Conteúdo do Regulamento -->
-        <div class="regulamento-content">
-            <h1>📋 REGULAMENTO OFICIAL DO BOLÃO</h1>
+            <!-- Mobile Navigation -->
+            <nav class="nav-mobile">
+                <a href="index.html" class="nav-link">Início</a>
+                <a href="index.html#resultado" class="nav-link">Resultado</a>
+                <a href="index.html#video" class="nav-link">Ao Vivo</a>
+                <a href="regulamento.html" class="nav-link regulamento">Regulamento</a>
+                <a href="index.html#pagamento" class="nav-link">Pagamento</a>
+                <a href="index.html#bilhetes" class="nav-link">Bilhetes</a>
+                <a href="index.html#contato" class="nav-link">Contato</a>
+            </nav>
+        </div>
+    </header>
 
-            <div class="aviso-importante">
-                ⚠️ AO PARTICIPAR DESTE BOLÃO, VOCÊ CONCORDA INTEGRALMENTE COM TODAS AS CONDIÇÕES ABAIXO
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="text-center">
+            <h1 class="hero-title">REGULAMENTO OFICIAL</h1>
+            <p class="hero-subtitle">Bolão MegaTIP - Mega da Virada 2025</p>
+            <p>Leia atentamente todas as condições de participação</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Introdução -->
+        <section class="content-section">
+            <h2 class="section-title">1. OBJETIVO E ACEITAÇÃO</h2>
+            <div class="highlight-box">
+                <p><strong>ARTIGO FUNDAMENTAL:</strong> Ao participar do Bolão MegaTIP, você declara ter lido, entendido e aceitado integralmente todos os termos deste regulamento.</p>
             </div>
-
-            <h2>1. OBJETIVO DO GRUPO</h2>
             <p>O Bolão MegaTIP tem como objetivo reunir um grupo de pessoas para apostar em conjunto na Mega da Virada, aumentando as chances de ganhar e dividindo os prêmios de forma justa e igualitária entre todos os participantes.</p>
+        </section>
 
-            <h2>2. PARTICIPAÇÃO E PAGAMENTO</h2>
+        <!-- Participação -->
+        <section class="content-section">
+            <h2 class="section-title">2. PARTICIPAÇÃO E PAGAMENTO</h2>
+            
+            <h3 class="subsection-title">2.1. Condições de Participação</h3>
             <ul>
-                <li><strong>2.1.</strong> A participação está condicionada ao pagamento integral da cota no valor de R$ [VALOR] até a data limite de [DATA LIMITE].</li>
-                <li><strong>2.2.</strong> Participantes com pagamento pendente após a data limite estarão automaticamente excluídos do bolão.</li>
-                <li><strong>2.3.</strong> Não serão aceitos reembolsos após a confirmação do pagamento e inclusão no grupo.</li>
+                <li>A participação está condicionada ao pagamento integral da cota no valor de <strong>R$ 6,00</strong></li>
+                <li>O prazo final para pagamento é até o dia <strong>20/12/2025</strong></li>
+                <li>Participantes com pagamento pendente após a data limite estarão automaticamente excluídos do bolão</li>
+                <li>Não serão aceitos reembolsos após a confirmação do pagamento e inclusão no grupo</li>
             </ul>
 
-            <h2>3. PROPRIEDADE DOS NÚMEROS</h2>
-            <div class="destaque">
-                <p><strong>ARTIGO CRUCIAL:</strong> Todos os números apostados são de PROPRIEDADE COLETIVA do grupo. O nome que aparece em cada cartela é meramente administrativo para fins de verificação e não confere qualquer direito especial sobre os prêmios.</p>
+            <h3 class="subsection-title">2.2. Confirmação de Participação</h3>
+            <p>Após o pagamento, o participante deve enviar o comprovante para o WhatsApp (31) 98204-2552 e aguardar a confirmação em até 24 horas.</p>
+        </section>
+
+        <!-- Propriedade dos Números -->
+        <section class="content-section">
+            <h2 class="section-title">3. PROPRIEDADE DOS NÚMEROS</h2>
+            <div class="warning-box">
+                <p><strong>ARTIGO CRÍTICO:</strong> Todos os números apostados são de <strong>PROPRIEDADE COLETIVA</strong> do grupo. O nome que aparece em cada cartela é meramente administrativo para fins de verificação e <strong>NÃO CONFERE QUALQUER DIREITO ESPECIAL</strong> sobre os prêmios.</p>
+            </div>
+            
+            <p>O sistema MegaTIP atribui nomes às cartelas apenas para organização e verificação. Esta atribuição não implica em:</p>
+            <ul>
+                <li>Direito individual sobre os prêmios</li>
+                <li>Privilégios especiais na distribuição</li>
+                <li>Propriedade exclusiva dos números</li>
+            </ul>
+        </section>
+
+        <!-- Distribuição de Prêmios -->
+        <section class="content-section">
+            <h2 class="section-title">4. DISTRIBUIÇÃO DOS PRÊMIOS</h2>
+            
+            <h3 class="subsection-title">4.1. Princípio Fundamental</h3>
+            <div class="success-box">
+                <p><strong>SE UM GANHA, TODOS GANHAM:</strong> Qualquer prêmio obtido será dividido <strong>IGUALMENTE</strong> entre todos os participantes que estiverem com suas cotas quitadas.</p>
             </div>
 
-            <h2>4. DISTRIBUIÇÃO DOS PRÊMIOS</h2>
+            <h3 class="subsection-title">4.2. Método de Divisão</h3>
             <ul>
-                <li><strong>4.1.</strong> Qualquer prêmio obtido será dividido IGUALMENTE entre todos os participantes que estiverem com suas cotas quitadas.</li>
-                <li><strong>4.2.</strong> O valor total do prêmio será dividido pelo número total de participantes regulares.</li>
-                <li><strong>4.3.</strong> O organizador ([NOME DO ORGANIZADOR]) ficará responsável pelo recebimento do prêmio junto à Caixa Econômica Federal.</li>
+                <li>O valor total do prêmio será dividido pelo número total de participantes regulares</li>
+                <li>Cada participante recebe exatamente o mesmo valor</li>
+                <li>O organizador (Gabriel) ficará responsável pelo recebimento do prêmio junto à Caixa Econômica Federal</li>
             </ul>
 
-            <h2>5. TRANSPARÊNCIA E GESTÃO</h2>
+            <h3 class="subsection-title">4.3. Prazo de Distribuição</h3>
+            <p>A distribuição dos valores será realizada em até <strong>30 dias úteis</strong> após o recebimento do prêmio pela Caixa Econômica Federal.</p>
+        </section>
+
+        <!-- Transparência -->
+        <section class="content-section">
+            <h2 class="section-title">5. TRANSPARÊNCIA E GESTÃO</h2>
+            
+            <h3 class="subsection-title">5.1. Acesso à Informação</h3>
             <ul>
-                <li><strong>5.1.</strong> Uma planilha com todos os participantes, números apostados e situação de pagamento será mantida atualizada e disponível para todos.</li>
-                <li><strong>5.2.</strong> Após o sorteio, será disponibilizado relatório completo com a verificação de todos os números.</li>
-                <li><strong>5.3.</strong> A distribuição dos valores será realizada em até 30 dias úteis após o recebimento do prêmio.</li>
+                <li>Uma planilha com todos os participantes, números apostados e situação de pagamento será mantida atualizada</li>
+                <li>Após o sorteio, será disponibilizado relatório completo com a verificação de todos os números</li>
+                <li>Todos os participantes têm direito a acompanhar o processo de recebimento e distribuição</li>
             </ul>
 
-            <h2>6. CASOS ESPECIAIS</h2>
-            <h3>6.1. Desistência ou Saída do Grupo</h3>
-            <p>Em caso de desistência antes do sorteio, os números adquiridos com recursos do grupo permanecem como propriedade coletiva. Não haverá reembolso individual de cotas.</p>
+            <h3 class="subsection-title">5.2. Responsabilidades do Organizador</h3>
+            <p>O organizador compromete-se a:</p>
+            <ul>
+                <li>Manter todos os registros organizados e transparentes</li>
+                <li>Prestar contas de todo o processo</li>
+                <li>Distribuir os valores dentro do prazo estabelecido</li>
+            </ul>
+        </section>
 
-            <h3>6.2. Problemas com Nomes nas Apostas</h3>
+        <!-- Casos Especiais -->
+        <section class="content-section">
+            <h2 class="section-title">6. CASOS ESPECIAIS</h2>
+            
+            <h3 class="subsection-title">6.1. Desistência ou Saída do Grupo</h3>
+            <div class="warning-box">
+                <p>Em caso de desistência antes do sorteio, os números adquiridos com recursos do grupo <strong>PERMANECEM COMO PROPRIEDADE COLETIVA</strong>. Não haverá reembolso individual de cotas.</p>
+            </div>
+
+            <h3 class="subsection-title">6.2. Problemas com Nomes nas Apostas</h3>
             <p>Eventuais erros de grafia em nomes não invalidam a participação, desde que o participante conste na lista oficial do grupo.</p>
 
-            <h2>7. ACEITAÇÃO DO REGULAMENTO</h2>
-            <div class="destaque">
-                <p>Ao confirmar a participação e efetuar o pagamento, o participante declara ter lido, entendido e aceito INTEGRALMENTE todos os termos deste regulamento.</p>
+            <h3 class="subsection-title">6.3. Não Aceitação do Regulamento</h3>
+            <div class="highlight-box">
+                <p>Participantes que se recusarem a aceitar este regulamento <strong>NÃO PODERÃO PARTICIPAR</strong> do bolão. O valor pago será devolvido e a vaga será disponibilizada para outro interessado.</p>
             </div>
+        </section>
 
-            <button class="botao-aceitar" onclick="alert('Regulamento aceito com sucesso! Boa sorte! 🍀')">
-                ✅ LI E ACEITO O REGULAMENTO
-            </button>
-        </div>
+        <!-- Disposições Finais -->
+        <section class="content-section">
+            <h2 class="section-title">7. DISPOSIÇÕES FINAIS</h2>
+            
+            <h3 class="subsection-title">7.1. Alterações no Regulamento</h3>
+            <p>Este regulamento poderá ser alterado a qualquer momento, com comunicação prévia a todos os participantes.</p>
 
-        <!-- Rodapé -->
-        <div class="footer">
-            <p>MegaTIP Bolão • Organizado por [Seu Nome] • Contato: [seu-email]</p>
-            <p>Este é um grupo de amigos - Não nos responsabilizamos por eventuais alterações nas regras da Caixa Econômica Federal.</p>
+            <h3 class="subsection-title">7.2. Dúvidas e Contato</h3>
+            <p>Para esclarecimento de dúvidas, entre em contato através do WhatsApp: <strong>(31) 98204-2552</strong></p>
+
+            <h3 class="subsection-title">7.3. Legislação Aplicável</h3>
+            <p>Este bolão é organizado como um grupo de amigos e segue as disposições legais aplicáveis a apostas esportivas no Brasil.</p>
+        </section>
+
+        <!-- Acceptance Section -->
+        <section class="acceptance-section">
+            <div class="content-section">
+                <h2 class="section-title text-center">CONFIRMAÇÃO DE ACEITAÇÃO</h2>
+                <p class="text-center">Ao clicar no botão abaixo, você declara ter lido, entendido e aceito integralmente todos os termos deste regulamento.</p>
+                
+                <div class="text-center">
+                    <button class="acceptance-btn" onclick="aceitarRegulamento()">
+                        <i class="fas fa-check-circle mr-2"></i>LI E ACEITO O REGULAMENTO
+                    </button>
+                </div>
+                
+                <p class="acceptance-text">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    Esta confirmação é obrigatória para participação no bolão
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="social-links">
+            <a href="https://www.instagram.com/tipgabriel/" class="social-link">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://wa.me/5531982042552" class="social-link">
+                <i class="fab fa-whatsapp"></i>
+            </a>
         </div>
-    </div>
+        
+        <p class="mb-2">MegaTIP - Apostas e Bolão</p>
+        <p class="text-sm opacity-75">
+            &copy; 2025 MegaTIP. Não somos filiados à Caixa Econômica Federal.
+        </p>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const mobileMenu = document.querySelector('.nav-mobile');
+            let isMenuOpen = false;
+
+            mobileMenuBtn.addEventListener('click', function() {
+                isMenuOpen = !isMenuOpen;
+                if (isMenuOpen) {
+                    mobileMenu.classList.add('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-times"></i>';
+                } else {
+                    mobileMenu.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
+
+            // Close menu when clicking on a link
+            const mobileLinks = mobileMenu.querySelectorAll('.nav-link');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                    isMenuOpen = false;
+                });
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (isMenuOpen && !mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                    mobileMenu.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                    isMenuOpen = false;
+                }
+            });
+
+            // Update copyright year
+            document.querySelector('footer p:last-child').innerHTML = `&copy; ${new Date().getFullYear()} MegaTIP. Não somos filiados à Caixa Econômica Federal.`;
+        });
+
+        // Acceptance Function
+        function aceitarRegulamento() {
+            const btn = document.querySelector('.acceptance-btn');
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-check mr-2"></i>REGULAMENTO ACEITO!';
+            btn.style.background = '#10b981';
+            btn.style.transform = 'scale(1.05)';
+            
+            // Show confirmation message
+            const confirmation = document.createElement('div');
+            confirmation.className = 'success-box mt-4';
+            confirmation.innerHTML = `
+                <p><strong>Parabéns!</strong> Você aceitou o regulamento oficial do MegaTIP.</p>
+                <p class="mt-2">Sua participação está confirmada. Boa sorte!</p>
+            `;
+            
+            btn.parentNode.appendChild(confirmation);
+            
+            // Disable button
+            btn.disabled = true;
+            
+            // Optional: Save acceptance in localStorage
+            localStorage.setItem('megaTIP_regulamento_aceito', 'true');
+            
+            setTimeout(() => {
+                btn.style.transform = 'scale(1)';
+            }, 2000);
+        }
+
+        // Check if already accepted
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('megaTIP_regulamento_aceito') === 'true') {
+                const btn = document.querySelector('.acceptance-btn');
+                btn.innerHTML = '<i class="fas fa-check mr-2"></i>REGULAMENTO JÁ ACEITO';
+                btn.style.background = '#10b981';
+                btn.disabled = true;
+            }
+        });
+    </script>
 </body>
 </html>

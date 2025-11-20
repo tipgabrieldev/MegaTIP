@@ -99,7 +99,7 @@
         }
 
         .regulamento-title {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Playfair+Display', serif;
             font-weight: 700;
             color: #d4af37;
             margin-bottom: 30px;
@@ -133,7 +133,7 @@
             margin-bottom: 10px;
         }
 
-        .regulamento-item ul {
+        .regulamento-item ul, .regulamento-item ol {
             padding-left: 20px;
             margin-top: 10px;
         }
@@ -397,6 +397,10 @@
             .admin-controls {
                 flex-direction: column;
             }
+            
+            .regulamento-item ol, .regulamento-item ul {
+                padding-left: 15px;
+            }
         }
     </style>
 </head>
@@ -447,19 +451,19 @@
                 <div class="regulamento-item">
                     <h3><i class="fas fa-info-circle"></i> Sobre o MegaTIP</h3>
                     <p>O MegaTIP é um bolão colaborativo para apostas na Mega-Sena, especialmente na Mega da Virada, onde os participantes se unem para aumentar suas chances de ganhar.</p>
-                    <p>O conceito principal é: <strong>"Se um acerta, todo o grupo ganha"</strong>. Diferente de bolões tradicionais onde o prêmio é dividido, no MegaTIP cada participante recebe seu prêmio individual caso algum bilhete do grupo seja premiado.</p>
+                    <p>O conceito principal é: <strong>"Se um acerta, todo o grupo ganha"</strong>. Diferente de bolões tradicionais onde o prêmio é dividido, no MegaTIP o prêmio é rateado entre todos os participantes do grupo.</p>
                 </div>
 
                 <div class="regulamento-item">
                     <h3><i class="fas fa-user-plus"></i> Participação</h3>
                     <p>Para participar do MegaTIP, é necessário:</p>
-                    <ul>
+                    <ol>
                         <li><strong>Ter 18 anos ou mais</strong> - Apenas maiores de idade podem participar</li>
                         <li><strong>Realizar o pagamento</strong> - Cada bilhete custa R$ 6,00</li>
                         <li><strong>Enviar o comprovante</strong> - Encaminhar o comprovante de pagamento para o WhatsApp (31) 98204-2552</li>
                         <li><strong>Escolher os números</strong> - Selecionar 6 números diferentes entre 01 e 60</li>
                         <li><strong>Aceitar o regulamento</strong> - Concordar com todos os termos deste documento</li>
-                    </ul>
+                    </ol>
                     <div class="regulamento-highlight">
                         <p><strong>Importante:</strong> O prazo final para pagamento e escolha de números é até o dia 20/12/2025.</p>
                     </div>
@@ -469,12 +473,12 @@
                     <h3><i class="fas fa-money-bill-wave"></i> Pagamento e Confirmação</h3>
                     <p>O pagamento deve ser realizado exclusivamente via PIX para a chave: <strong>(31) 98204-2552</strong>.</p>
                     <p>Após o pagamento:</p>
-                    <ul>
+                    <ol>
                         <li>Encaminhe o comprovante para o WhatsApp (31) 98204-2552</li>
                         <li>Seu bilhete será confirmado em até 24 horas</li>
                         <li>Você receberá a confirmação de participação</li>
                         <li>Seu nome será adicionado à lista de participantes no site</li>
-                    </ul>
+                    </ol>
                     <div class="regulamento-warning">
                         <p><strong>Atenção:</strong> Bilhetes não pagos até a data limite serão automaticamente excluídos do bolão.</p>
                     </div>
@@ -482,65 +486,74 @@
 
                 <div class="regulamento-item">
                     <h3><i class="fas fa-trophy"></i> Sistema de Premiação</h3>
-                    <p>O MegaTIP funciona com um sistema diferenciado de premiação:</p>
-                    <ul>
-                        <li><strong>Prêmio Individual:</strong> Cada participante recebe o prêmio completo referente ao seu bilhete</li>
-                        <li><strong>Efeito Multiplicador:</strong> Se mais de um bilhete for premiado, todos os ganhadores recebem seus prêmios individuais</li>
-                        <li><strong>Sem Divisão:</strong> Não há divisão do prêmio entre os participantes</li>
-                    </ul>
+                    <p>O MegaTIP funciona com um sistema de rateio do prêmio entre todos os participantes:</p>
+                    <ol>
+                        <li><strong>Rateio Integral:</strong> Se uma cartela tiver 4, 5 ou 6 acertos (sem outro ganhador externo), o prêmio será dividido igualmente entre todos os participantes do grupo</li>
+                        <li><strong>Multiplicador de Ganhadores:</strong> Se houver mais de um ganhador do nosso grupo (ex: dois com 6 números), o valor total de cada faixa de premiação será multiplicado e dividido para todos do grupo</li>
+                        <li><strong>Divisão Proporcional:</strong> Cada participante recebe uma parte igual do prêmio, independente de quantos acertos seu bilhete individual teve</li>
+                        <li><strong>Sem Acúmulo:</strong> Como a Mega da Virada não acumula, todo o prêmio é rateado entre os participantes</li>
+                    </ol>
                     
                     <table class="regulamento-table">
                         <thead>
                             <tr>
-                                <th>Faixa de Acertos</th>
-                                <th>Prêmio Individual</th>
-                                <th>Condição do Grupo</th>
+                                <th>Cenário de Premiação</th>
+                                <th>Como Funciona</th>
+                                <th>Resultado para os Participantes</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>6 acertos (Sena)</td>
-                                <td>Prêmio principal da Mega-Sena</td>
-                                <td>Todos com 6 acertos ganham o prêmio máximo</td>
+                                <td>1 cartela com 6 acertos</td>
+                                <td>Prêmio principal é rateado entre todos</td>
+                                <td>Todos recebem parte igual do prêmio máximo</td>
                             </tr>
                             <tr>
-                                <td>5 acertos (Quina)</td>
-                                <td>Prêmio da Quina</td>
-                                <td>Todos com 5 acertos ganham o prêmio da Quina</td>
+                                <td>2 cartelas com 6 acertos</td>
+                                <td>Valor da sena é multiplicado por 2 e rateado</td>
+                                <td>Todos recebem o dobro da parte do prêmio principal</td>
                             </tr>
                             <tr>
-                                <td>4 acertos (Quadra)</td>
-                                <td>Prêmio da Quadra</td>
-                                <td>Todos com 4 acertos ganham o prêmio da Quadra</td>
+                                <td>Cartelas com 5 e 6 acertos</td>
+                                <td>Prêmios da quina e sena são somados e rateados</td>
+                                <td>Todos recebem parte da soma de todas as faixas</td>
+                            </tr>
+                            <tr>
+                                <td>Várias cartelas premiadas</td>
+                                <td>Todos os prêmios são somados e divididos igualmente</td>
+                                <td>Rateio proporcional de todo o valor arrecadado</td>
                             </tr>
                         </tbody>
                     </table>
                     
                     <div class="regulamento-success">
-                        <p><strong>Exemplo:</strong> Se 3 bilhetes diferentes acertarem a Sena, cada um dos 3 participantes receberá o prêmio máximo individualmente.</p>
+                        <p><strong>Exemplo Prático:</strong> Se temos 50 participantes e 2 cartelas acertam a sena, o prêmio principal é multiplicado por 2 e dividido entre os 50. Cada participante recebe 2/50 do prêmio da sena.</p>
                     </div>
                 </div>
 
                 <div class="regulamento-item">
                     <h3><i class="fas fa-calendar-alt"></i> Datas e Prazos</h3>
-                    <ul>
+                    <ol>
                         <li><strong>Início das inscrições:</strong> 01/11/2025</li>
                         <li><strong>Prazo final para pagamento:</strong> 20/12/2025</li>
                         <li><strong>Prazo para escolha/alteração de números:</strong> 20/12/2025</li>
                         <li><strong>Data do sorteio:</strong> 31/12/2025</li>
                         <li><strong>Divulgação dos resultados:</strong> 01/01/2026</li>
-                    </ul>
+                        <li><strong>Pagamento dos prêmios:</strong> Até 10 dias após confirmação pela Caixa</li>
+                    </ol>
                 </div>
 
                 <div class="regulamento-item">
                     <h3><i class="fas fa-shield-alt"></i> Transparência e Segurança</h3>
                     <p>O MegaTIP garante total transparência em todas as etapas:</p>
-                    <ul>
+                    <ol>
                         <li>Todos os bilhetes são registrados e publicados no site</li>
                         <li>Os números escolhidos por cada participante são divulgados</li>
                         <li>O processo de verificação dos resultados é aberto e auditável</li>
                         <li>Comprovantes de pagamento são mantidos em arquivo</li>
-                    </ul>
+                        <li>O rateio é calculado com base no número total de participantes</li>
+                        <li>Os valores são repassados integralmente aos ganhadores</li>
+                    </ol>
                     <div class="regulamento-highlight">
                         <p><strong>Garantia:</strong> Caso ocorra qualquer problema técnico, os valores pagos serão integralmente reembolsados.</p>
                     </div>
@@ -550,12 +563,14 @@
                     <h3><i class="fas fa-exclamation-triangle"></i> Responsabilidades e Isenções</h3>
                     <p>O MegaTIP atua como organizador do bolão e não tem qualquer vínculo com a Caixa Econômica Federal ou loterias oficiais.</p>
                     <p>Os participantes declaram estar cientes de que:</p>
-                    <ul>
+                    <ol>
                         <li>A participação é voluntária e consciente</li>
                         <li>Os resultados dependem exclusivamente do sorteio oficial</li>
                         <li>Não há garantia de retorno financeiro</li>
                         <li>O organizador não se responsabiliza por decisões da Caixa Econômica Federal</li>
-                    </ul>
+                        <li>O rateio segue estritamente as regras estabelecidas neste regulamento</li>
+                        <li>O aceite deste regulamento é irrevogável após o sorteio</li>
+                    </ol>
                 </div>
 
                 <!-- Seção de Cláusulas Legais -->
@@ -631,6 +646,14 @@
                             <label for="cessaoDireitos">
                                 Concordo de forma expressa e irrevogável com a cessão de direitos de 
                                 reivindicação de prêmios ao organizador, nos termos da Cláusula 2ª deste regulamento.
+                            </label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="aceiteRateio" required>
+                            <label for="aceiteRateio">
+                                Concordo expressamente com o sistema de rateio estabelecido neste regulamento, 
+                                onde qualquer prêmio será dividido igualmente entre todos os participantes.
                             </label>
                         </div>
                         

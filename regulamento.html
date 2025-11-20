@@ -175,10 +175,11 @@
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
+            font-size: 0.9rem;
         }
 
         .regulamento-table th, .regulamento-table td {
-            padding: 12px 15px;
+            padding: 12px 10px;
             text-align: left;
             border-bottom: 1px solid #374151;
         }
@@ -377,6 +378,12 @@
             border-radius: 0 8px 8px 0;
         }
 
+        /* Estilos responsivos para a tabela */
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
         @media (max-width: 768px) {
             .regulamento-section {
                 padding: 25px 20px;
@@ -387,11 +394,11 @@
             }
             
             .regulamento-table {
-                font-size: 0.85rem;
+                font-size: 0.8rem;
             }
             
             .regulamento-table th, .regulamento-table td {
-                padding: 8px 10px;
+                padding: 8px 6px;
             }
             
             .admin-controls {
@@ -400,6 +407,21 @@
             
             .regulamento-item ol, .regulamento-item ul {
                 padding-left: 15px;
+            }
+            
+            .table-container {
+                margin: 15px -10px;
+                width: calc(100% + 20px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .regulamento-table {
+                font-size: 0.75rem;
+            }
+            
+            .regulamento-table th, .regulamento-table td {
+                padding: 6px 4px;
             }
         }
     </style>
@@ -486,48 +508,55 @@
 
                 <div class="regulamento-item">
                     <h3><i class="fas fa-trophy"></i> Sistema de Premiação</h3>
-                    <p>O MegaTIP funciona com um sistema de rateio do prêmio entre todos os participantes:</p>
+                    <p>O MegaTIP funciona com um sistema de rateio do prêmio entre todos os participantes, seguindo as regras oficiais da Mega da Virada:</p>
                     <ol>
-                        <li><strong>Rateio Integral:</strong> Se uma cartela tiver 4, 5 ou 6 acertos (sem outro ganhador externo), o prêmio será dividido igualmente entre todos os participantes do grupo</li>
-                        <li><strong>Multiplicador de Ganhadores:</strong> Se houver mais de um ganhador do nosso grupo (ex: dois com 6 números), o valor total de cada faixa de premiação será multiplicado e dividido para todos do grupo</li>
-                        <li><strong>Divisão Proporcional:</strong> Cada participante recebe uma parte igual do prêmio, independente de quantos acertos seu bilhete individual teve</li>
-                        <li><strong>Sem Acúmulo:</strong> Como a Mega da Virada não acumula, todo o prêmio é rateado entre os participantes</li>
+                        <li><strong>Premiação Única por Faixa:</strong> Na Mega da Virada, apenas UMA cartela pode ser premiada em cada faixa (6, 5 ou 4 acertos)</li>
+                        <li><strong>Rateio Interno:</strong> Se uma cartela do nosso grupo for premiada com 6, 5 ou 4 acertos, o prêmio será dividido igualmente entre todos os participantes</li>
+                        <li><strong>Múltiplos Ganhadores Internos:</strong> Se duas cartelas do nosso grupo acertarem 6 números, o prêmio total será rateado entre todos os participantes</li>
+                        <li><strong>Ganhadores Externos:</strong> Se houver ganhadores fora do nosso grupo, o prêmio será dividido proporcionalmente entre todos os ganhadores</li>
                     </ol>
                     
-                    <table class="regulamento-table">
-                        <thead>
-                            <tr>
-                                <th>Cenário de Premiação</th>
-                                <th>Como Funciona</th>
-                                <th>Resultado para os Participantes</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1 cartela com 6 acertos</td>
-                                <td>Prêmio principal é rateado entre todos</td>
-                                <td>Todos recebem parte igual do prêmio máximo</td>
-                            </tr>
-                            <tr>
-                                <td>2 cartelas com 6 acertos</td>
-                                <td>Valor da sena é multiplicado por 2 e rateado</td>
-                                <td>Todos recebem o dobro da parte do prêmio principal</td>
-                            </tr>
-                            <tr>
-                                <td>Cartelas com 5 e 6 acertos</td>
-                                <td>Prêmios da quina e sena são somados e rateados</td>
-                                <td>Todos recebem parte da soma de todas as faixas</td>
-                            </tr>
-                            <tr>
-                                <td>Várias cartelas premiadas</td>
-                                <td>Todos os prêmios são somados e divididos igualmente</td>
-                                <td>Rateio proporcional de todo o valor arrecadado</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-container">
+                        <table class="regulamento-table">
+                            <thead>
+                                <tr>
+                                    <th>Cenário</th>
+                                    <th>Como Funciona</th>
+                                    <th>Resultado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1 cartela do grupo com 6 acertos</td>
+                                    <td>Prêmio principal é rateado entre todos do grupo</td>
+                                    <td>Todos recebem parte igual do prêmio máximo</td>
+                                </tr>
+                                <tr>
+                                    <td>2 cartelas do grupo com 6 acertos</td>
+                                    <td>Prêmio principal é rateado entre todos do grupo</td>
+                                    <td>Todos recebem parte igual do prêmio máximo</td>
+                                </tr>
+                                <tr>
+                                    <td>1 cartela do grupo + 1 externa com 6 acertos</td>
+                                    <td>Prêmio é dividido entre os 2 ganhadores (50% cada)</td>
+                                    <td>Nosso grupo recebe 50% do prêmio para rateio interno</td>
+                                </tr>
+                                <tr>
+                                    <td>Nenhum com 6, 1 com 5 acertos no grupo</td>
+                                    <td>Prêmio da quina é rateado entre todos do grupo</td>
+                                    <td>Todos recebem parte igual do prêmio da quina</td>
+                                </tr>
+                                <tr>
+                                    <td>Nenhum com 6 ou 5, 1 com 4 acertos no grupo</td>
+                                    <td>Prêmio da quadra é rateado entre todos do grupo</td>
+                                    <td>Todos recebem parte igual do prêmio da quadra</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     
                     <div class="regulamento-success">
-                        <p><strong>Exemplo Prático:</strong> Se temos 50 participantes e 2 cartelas acertam a sena, o prêmio principal é multiplicado por 2 e dividido entre os 50. Cada participante recebe 2/50 do prêmio da sena.</p>
+                        <p><strong>Exemplo Prático:</strong> Se temos 50 participantes e 1 cartela do grupo acerta os 6 números, o prêmio principal é dividido entre os 50. Cada participante recebe 1/50 do prêmio da sena.</p>
                     </div>
                 </div>
 

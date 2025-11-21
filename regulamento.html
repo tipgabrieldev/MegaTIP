@@ -700,29 +700,6 @@
                         </p>
                     </div>
                 </div>
-
-                <!-- Painel de Administração (Oculto) -->
-                <div id="adminPanel" class="admin-panel hidden">
-                    <div class="admin-header">
-                        <h3 class="admin-title">Painel de Administração</h3>
-                        <div class="admin-controls">
-                            <button id="exportExcel" class="btn-secondary">
-                                <i class="fas fa-file-excel mr-2"></i>Exportar para Excel
-                            </button>
-                            <button id="toggleView" class="btn-secondary">
-                                <i class="fas fa-eye mr-2"></i>Ocultar/Mostrar
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="aceites-list" id="aceitesList">
-                        <!-- Lista de aceites será preenchida aqui -->
-                    </div>
-                    
-                    <div class="mt-4 text-sm text-gray-400">
-                        <p><strong>Total de aceites:</strong> <span id="totalAceites">0</span></p>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -776,21 +753,11 @@
     document.addEventListener('DOMContentLoaded', function() {
         console.log('🚀 MegaTIP - Sistema inicializado com Firebase');
 
-        // ========== VARIÁVEIS GLOBAIS ==========
-        let aceites = [];
-        let isMenuOpen = false;
-        let isAdminPanelVisible = false;
-
         // ========== ELEMENTOS DO DOM ==========
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
         const aceiteForm = document.getElementById('aceiteForm');
         const mensagemSucesso = document.getElementById('mensagemSucesso');
-        const adminPanel = document.getElementById('adminPanel');
-        const aceitesList = document.getElementById('aceitesList');
-        const totalAceites = document.getElementById('totalAceites');
-        const exportExcelBtn = document.getElementById('exportExcel');
-        const toggleViewBtn = document.getElementById('toggleView');
 
         // ========== FIREBASE FUNCTIONS ==========
         async function salvarAceiteFirebase(aceite) {
@@ -803,9 +770,9 @@
                     cpf: aceite.cpf,
                     telefone: aceite.telefone,
                     email: aceite.email,
-                    data: aceite.data,
-                    timestamp: aceite.timestamp,
-                    ip: aceite.ip,
+                    data: new Date().toISOString(),
+                    timestamp: Date.now(),
+                    ip: 'registrado_no_site',
                     status: 'ativo',
                     dataCriacao: new Date().toISOString()
                 });
@@ -818,38 +785,11 @@
             }
         }
 
-        async function carregarAceitesFirebase() {
-            try {
-                const { collection, getDocs, query, orderBy } = window.firebaseModules;
-                const db = window.firebaseDB;
-                
-                const q = query(collection(db, "aceites"), orderBy("timestamp", "desc"));
-                const querySnapshot = await getDocs(q);
-                
-                const aceitesFirebase = [];
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    aceitesFirebase.push({
-                        id: doc.id,
-                        ...data
-                    });
-                });
-                
-                console.log('📥 Aceites carregados do Firebase:', aceitesFirebase.length);
-                return aceitesFirebase;
-            } catch (error) {
-                console.error('❌ Erro ao carregar do Firebase:', error);
-                mostrarNotificacao('Erro ao carregar dados do servidor.', 'error');
-                return [];
-            }
-        }
-
         async function verificarCPFExistente(cpf) {
             try {
                 const { collection, getDocs, query, where } = window.firebaseModules;
                 const db = window.firebaseDB;
                 
-                const cpfLimpo = cpf.replace(/\D/g, '');
                 const q = query(
                     collection(db, "aceites"), 
                     where("cpf", "==", cpf),
@@ -864,67 +804,11 @@
             }
         }
 
-        // ========== SISTEMA DE ARMAZENAMENTO HÍBRIDO ==========
-        async function salvarAceite(aceite) {
-            // Salvar no Firebase (principal)
-            const resultadoFirebase = await salvarAceiteFirebase(aceite);
-            
-            if (resultadoFirebase.success) {
-                // Também salvar localmente para performance
-                aceites.push(aceite);
-                salvarAceitesLocal();
-                return true;
-            } else {
-                // Fallback: salvar apenas localmente
-                console.log('🔄 Usando fallback local');
-                aceites.push(aceite);
-                salvarAceitesLocal();
-                mostrarNotificacao('Dados salvos localmente. Conecte-se à internet para sincronizar.', 'warning');
-                return true;
-            }
-        }
-
-        async function carregarAceites() {
-            // Tentar carregar do Firebase primeiro
-            const aceitesFirebase = await carregarAceitesFirebase();
-            
-            if (aceitesFirebase.length > 0) {
-                aceites = aceitesFirebase;
-                console.log('✅ Dados carregados do Firebase');
-            } else {
-                // Fallback para localStorage
-                carregarAceitesLocal();
-                console.log('🔄 Usando dados locais como fallback');
-            }
-        }
-
-        function salvarAceitesLocal() {
-            try {
-                localStorage.setItem('megatipAceites', JSON.stringify(aceites));
-            } catch (error) {
-                console.error('❌ Erro ao salvar localmente:', error);
-            }
-        }
-
-        function carregarAceitesLocal() {
-            try {
-                const dados = localStorage.getItem('megatipAceites');
-                if (dados) {
-                    aceites = JSON.parse(dados);
-                } else {
-                    aceites = [];
-                }
-            } catch (error) {
-                console.error('❌ Erro ao carregar localmente:', error);
-                aceites = [];
-            }
-        }
-
         // ========== SISTEMA DE MENU MOBILE ==========
         function toggleMobileMenu() {
-            isMenuOpen = !isMenuOpen;
+            const isMenuOpen = mobileMenu.classList.contains('active');
             
-            if (isMenuOpen) {
+            if (!isMenuOpen) {
                 mobileMenu.classList.add('active');
                 mobileMenuButton.innerHTML = '<i class="fas fa-times"></i>';
                 document.body.style.overflow = 'hidden';
@@ -938,7 +822,6 @@
         function closeMobileMenu() {
             mobileMenu.classList.remove('active');
             mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
-            isMenuOpen = false;
             document.body.style.overflow = '';
         }
 
@@ -957,12 +840,14 @@
         });
 
         document.addEventListener('click', function(e) {
+            const isMenuOpen = mobileMenu.classList.contains('active');
             if (isMenuOpen && !mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target)) {
                 closeMobileMenu();
             }
         });
 
         document.addEventListener('keydown', function(e) {
+            const isMenuOpen = mobileMenu.classList.contains('active');
             if (e.key === 'Escape' && isMenuOpen) {
                 closeMobileMenu();
             }
@@ -978,7 +863,7 @@
                 tipo === 'success' ? 'bg-green-600 border-green-500' : 
                 tipo === 'error' ? 'bg-red-600 border-red-500' : 
                 tipo === 'warning' ? 'bg-yellow-600 border-yellow-500' : 'bg-blue-600 border-blue-500'
-            } text-white max-w-sm border`;
+            } text-white max-w-sm border transform translate-x-full`;
             
             notificacao.innerHTML = `
                 <div class="flex items-center">
@@ -989,10 +874,12 @@
             
             document.body.appendChild(notificacao);
             
+            // Animar entrada
             setTimeout(() => {
                 notificacao.style.transform = 'translateX(0)';
             }, 100);
             
+            // Remover após 5 segundos
             setTimeout(() => {
                 notificacao.style.transform = 'translateX(100%)';
                 setTimeout(() => {
@@ -1079,6 +966,7 @@
                 erros.push('E-mail inválido');
             }
 
+            // Validar checkboxes
             const checkboxes = [
                 'aceiteRegulamento',
                 'maiorIdade', 
@@ -1086,64 +974,14 @@
                 'aceiteRateio'
             ];
 
-            checkboxes.forEach(checkboxId => {
+            for (const checkboxId of checkboxes) {
                 if (!document.getElementById(checkboxId).checked) {
                     erros.push('Todos os termos devem ser aceitos');
+                    break; // Só precisa de um erro
                 }
-            });
+            }
 
             return erros;
-        }
-
-        // ========== SISTEMA DE ACEITES ==========
-        function gerarIDUnico() {
-            return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
-        }
-
-        function atualizarListaAceites() {
-            if (!aceitesList) return;
-
-            aceitesList.innerHTML = '';
-            
-            if (aceites.length === 0) {
-                aceitesList.innerHTML = `
-                    <div class="text-center text-gray-400 py-8">
-                        <i class="fas fa-inbox text-4xl mb-2 opacity-50"></i>
-                        <p>Nenhum aceite registrado ainda</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            aceites.sort((a, b) => new Date(b.data) - new Date(a.data));
-            
-            aceites.forEach((aceite, index) => {
-                const aceiteItem = document.createElement('div');
-                aceiteItem.className = 'aceite-item';
-                
-                const dataFormatada = new Date(aceite.data).toLocaleString('pt-BR');
-                const origem = aceite.id && aceite.id.length > 20 ? '🔥 Cloud' : '💾 Local';
-                
-                aceiteItem.innerHTML = `
-                    <div class="aceite-info">
-                        <span class="aceite-name">${aceite.nome} ${origem}</span>
-                        <span class="aceite-details">CPF: ${aceite.cpf} | Tel: ${aceite.telefone}</span>
-                        <span class="aceite-date">${dataFormatada} | ${aceite.email}</span>
-                    </div>
-                    <div class="aceite-status">
-                        <span class="text-xs bg-green-900 text-green-200 px-2 py-1 rounded">Confirmado</span>
-                    </div>
-                `;
-                
-                aceitesList.appendChild(aceiteItem);
-            });
-        }
-
-        function atualizarContador() {
-            if (totalAceites) {
-                totalAceites.textContent = aceites.length;
-            }
-            atualizarListaAceites();
         }
 
         // ========== FORMULÁRIO DE ACEITE ==========
@@ -1179,30 +1017,15 @@
                         return;
                     }
 
-                    // Criar objeto do aceite
-                    const aceite = {
-                        id: gerarIDUnico(),
-                        nome: dadosForm.nome,
-                        cpf: dadosForm.cpf,
-                        telefone: dadosForm.telefone,
-                        email: dadosForm.email,
-                        data: new Date().toISOString(),
-                        ip: 'registrado_no_navegador',
-                        timestamp: Date.now()
-                    };
-
-                    // Salvar no Firebase + local
-                    const salvou = await salvarAceite(aceite);
+                    // Salvar no Firebase
+                    const resultado = await salvarAceiteFirebase(dadosForm);
                     
-                    if (salvou) {
-                        // Atualizar interface
-                        atualizarContador();
-                        
-                        // Mostrar mensagens de sucesso
+                    if (resultado.success) {
+                        // Mostrar mensagem de sucesso
                         if (mensagemSucesso) {
                             mensagemSucesso.classList.remove('hidden');
                         }
-                        mostrarNotificacao('Aceite registrado com sucesso no servidor!', 'success');
+                        mostrarNotificacao('Aceite registrado com sucesso! Seus dados foram armazenados com segurança.', 'success');
                         
                         // Limpar formulário
                         aceiteForm.reset();
@@ -1213,11 +1036,13 @@
                                 mensagemSucesso.classList.add('hidden');
                             }
                         }, 5000);
+                    } else {
+                        throw new Error(resultado.error);
                     }
                     
                 } catch (error) {
                     console.error('❌ Erro no envio do formulário:', error);
-                    mostrarNotificacao('Erro ao processar solicitação.', 'error');
+                    mostrarNotificacao('Erro ao enviar dados. Tente novamente.', 'error');
                 } finally {
                     // Reabilitar botão
                     submitBtn.innerHTML = originalText;
@@ -1226,133 +1051,32 @@
             });
         }
 
-        // ========== SISTEMA DE EXPORTAÇÃO ==========
-        async function exportarParaExcel() {
-            // Recarregar dados do Firebase antes de exportar
-            await carregarAceites();
-            
-            if (aceites.length === 0) {
-                mostrarNotificacao('Não há dados para exportar.', 'error');
-                return;
-            }
-
-            try {
-                const dados = aceites.map(aceite => ({
-                    'ID': aceite.id || 'N/A',
-                    'Nome Completo': aceite.nome,
-                    'CPF': aceite.cpf,
-                    'Telefone': aceite.telefone,
-                    'E-mail': aceite.email,
-                    'Data/Hora': new Date(aceite.data).toLocaleString('pt-BR'),
-                    'Timestamp': aceite.timestamp,
-                    'Origem': aceite.id && aceite.id.length > 20 ? 'Firebase' : 'Local'
-                }));
-
-                const ws = XLSX.utils.json_to_sheet(dados);
-                const wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, ws, 'Aceites MegaTIP');
-
-                const colWidths = [
-                    { wch: 20 }, { wch: 25 }, { wch: 15 }, 
-                    { wch: 15 }, { wch: 25 }, { wch: 20 }, 
-                    { wch: 15 }, { wch: 10 }
-                ];
-                ws['!cols'] = colWidths;
-
-                const dataAtual = new Date().toISOString().split('T')[0];
-                XLSX.writeFile(wb, `aceites_megatip_${dataAtual}.xlsx`);
-                
-                mostrarNotificacao('Planilha exportada com sucesso!', 'success');
-                
-            } catch (error) {
-                console.error('❌ Erro ao exportar para Excel:', error);
-                mostrarNotificacao('Erro ao exportar dados.', 'error');
-            }
-        }
-
-        // ========== PAINEL ADMINISTRATIVO ==========
-        async function toggleAdminPanel() {
-            if (!adminPanel) return;
-            
-            isAdminPanelVisible = !isAdminPanelVisible;
-            adminPanel.classList.toggle('hidden');
-            
-            if (isAdminPanelVisible) {
-                // Recarregar dados do Firebase ao mostrar o painel
-                await carregarAceites();
-                atualizarContador();
-                console.log('👨‍💼 Painel administrativo aberto');
-            }
-        }
-
-        function toggleAceitesList() {
-            if (!aceitesList) return;
-            
-            if (aceitesList.style.display === 'none') {
-                aceitesList.style.display = 'block';
-                if (toggleViewBtn) {
-                    toggleViewBtn.innerHTML = '<i class="fas fa-eye-slash mr-2"></i>Ocultar Lista';
-                }
-            } else {
-                aceitesList.style.display = 'none';
-                if (toggleViewBtn) {
-                    toggleViewBtn.innerHTML = '<i class="fas fa-eye mr-2"></i>Mostrar Lista';
-                }
-            }
-        }
-
-        // Event Listeners para controles administrativos
-        if (exportExcelBtn) {
-            exportExcelBtn.addEventListener('click', exportarParaExcel);
-        }
-
-        if (toggleViewBtn) {
-            toggleViewBtn.addEventListener('click', toggleAceitesList);
-        }
-
-        // ========== ATALHOS DE TECLADO ==========
-        document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && e.altKey && e.key === 'm') {
-                e.preventDefault();
-                toggleAdminPanel();
-            }
-            
-            if (e.ctrlKey && e.altKey && e.key === 'e') {
-                e.preventDefault();
-                exportarParaExcel();
-            }
-            
-            if (e.key === 'Escape' && isMenuOpen) {
-                closeMobileMenu();
-            }
-        });
-
         // ========== INICIALIZAÇÃO ==========
         async function inicializarSistema() {
             console.log('🔧 Inicializando sistema MegaTIP com Firebase...');
             
             // Aguardar Firebase carregar
-            await new Promise(resolve => {
-                const checkFirebase = setInterval(() => {
-                    if (window.firebaseDB) {
-                        clearInterval(checkFirebase);
-                        resolve();
-                    }
-                }, 100);
-            });
+            try {
+                await new Promise((resolve, reject) => {
+                    let tentativas = 0;
+                    const checkFirebase = setInterval(() => {
+                        tentativas++;
+                        if (window.firebaseDB) {
+                            clearInterval(checkFirebase);
+                            resolve();
+                        } else if (tentativas > 50) { // 5 segundos
+                            clearInterval(checkFirebase);
+                            reject(new Error('Firebase não carregou'));
+                        }
+                    }, 100);
+                });
 
-            // Carregar dados
-            await carregarAceites();
-            
-            // Atualizar interface
-            atualizarContador();
-            
-            // Ocultar painel administrativo
-            if (adminPanel) {
-                adminPanel.classList.add('hidden');
+                console.log('✅ Firebase inicializado com sucesso');
+                
+            } catch (error) {
+                console.error('❌ Erro ao inicializar Firebase:', error);
+                mostrarNotificacao('Erro de conexão. Verifique sua internet.', 'error');
             }
-            
-            console.log('✅ Sistema MegaTIP + Firebase inicializado com sucesso');
         }
 
         // Inicializar o sistema

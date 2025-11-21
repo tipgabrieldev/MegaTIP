@@ -745,235 +745,525 @@
         </div>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // ========== MENU MOBILE ==========
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            let isMenuOpen = false;
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🚀 MegaTIP - Sistema inicializado');
 
-            function toggleMobileMenu() {
-                isMenuOpen = !isMenuOpen;
-                
-                if (isMenuOpen) {
-                    mobileMenu.classList.add('active');
-                    mobileMenuButton.innerHTML = '<i class="fas fa-times"></i>';
-                } else {
-                    mobileMenu.classList.remove('active');
-                    mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
-                }
+        // ========== VARIÁVEIS GLOBAIS ==========
+        let aceites = [];
+        let isMenuOpen = false;
+        let isAdminPanelVisible = false;
+
+        // ========== ELEMENTOS DO DOM ==========
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const aceiteForm = document.getElementById('aceiteForm');
+        const mensagemSucesso = document.getElementById('mensagemSucesso');
+        const adminPanel = document.getElementById('adminPanel');
+        const aceitesList = document.getElementById('aceitesList');
+        const totalAceites = document.getElementById('totalAceites');
+        const exportExcelBtn = document.getElementById('exportExcel');
+        const toggleViewBtn = document.getElementById('toggleView');
+
+        // ========== SISTEMA DE MENU MOBILE ==========
+        function toggleMobileMenu() {
+            isMenuOpen = !isMenuOpen;
+            
+            if (isMenuOpen) {
+                mobileMenu.classList.add('active');
+                mobileMenuButton.innerHTML = '<i class="fas fa-times"></i>';
+                document.body.style.overflow = 'hidden';
+            } else {
+                mobileMenu.classList.remove('active');
+                mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
+                document.body.style.overflow = '';
             }
+        }
 
+        function closeMobileMenu() {
+            mobileMenu.classList.remove('active');
+            mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
+            isMenuOpen = false;
+            document.body.style.overflow = '';
+        }
+
+        // Event Listeners para Menu Mobile
+        if (mobileMenuButton) {
             mobileMenuButton.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 toggleMobileMenu();
             });
+        }
 
-            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
-            mobileMenuLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenu.classList.remove('active');
-                    mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
-                    isMenuOpen = false;
-                });
-            });
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
+        });
 
-            document.addEventListener('click', function(e) {
-                if (isMenuOpen && !mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target)) {
-                    mobileMenu.classList.remove('active');
-                    mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
-                    isMenuOpen = false;
+        document.addEventListener('click', function(e) {
+            if (isMenuOpen && !mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target)) {
+                closeMobileMenu();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && isMenuOpen) {
+                closeMobileMenu();
+            }
+        });
+
+        // ========== SISTEMA DE ARMAZENAMENTO ==========
+        function salvarAceites() {
+            try {
+                localStorage.setItem('megatipAceites', JSON.stringify(aceites));
+                console.log('💾 Aceites salvos no localStorage. Total:', aceites.length);
+                return true;
+            } catch (error) {
+                console.error('❌ Erro ao salvar no localStorage:', error);
+                
+                // Fallback para sessionStorage
+                try {
+                    sessionStorage.setItem('megatipAceites', JSON.stringify(aceites));
+                    console.log('📦 Aceites salvos no sessionStorage');
+                    return true;
+                } catch (fallbackError) {
+                    console.error('❌ Erro ao salvar no sessionStorage:', fallbackError);
+                    mostrarNotificacao('Erro ao salvar os dados. Tente novamente.', 'error');
+                    return false;
                 }
-            });
+            }
+        }
 
-            // ========== FORMULÁRIO DE ACEITE ==========
-            // Elementos do DOM
-            const aceiteForm = document.getElementById('aceiteForm');
-            const mensagemSucesso = document.getElementById('mensagemSucesso');
-            const adminPanel = document.getElementById('adminPanel');
-            const aceitesList = document.getElementById('aceitesList');
-            const totalAceites = document.getElementById('totalAceites');
-            const exportExcelBtn = document.getElementById('exportExcel');
-            const toggleViewBtn = document.getElementById('toggleView');
+        function carregarAceites() {
+            try {
+                const dados = localStorage.getItem('megatipAceites');
+                if (dados) {
+                    aceites = JSON.parse(dados);
+                    console.log('📥 Aceites carregados do localStorage:', aceites.length);
+                } else {
+                    aceites = [];
+                    console.log('💡 Nenhum dado encontrado no localStorage');
+                }
+            } catch (error) {
+                console.error('❌ Erro ao carregar do localStorage:', error);
+                
+                // Tentar carregar do sessionStorage
+                try {
+                    const dadosSession = sessionStorage.getItem('megatipAceites');
+                    if (dadosSession) {
+                        aceites = JSON.parse(dadosSession);
+                        console.log('📥 Aceites carregados do sessionStorage');
+                    } else {
+                        aceites = [];
+                    }
+                } catch (fallbackError) {
+                    console.error('❌ Erro ao carregar do sessionStorage:', fallbackError);
+                    aceites = [];
+                mostrarNotificacao('Erro ao carregar dados salvos.', 'error');
+                }
+            }
+        }
+
+        // ========== SISTEMA DE NOTIFICAÇÕES ==========
+        function mostrarNotificacao(mensagem, tipo = 'success') {
+            // Remover notificações existentes
+            const notificacoesExistentes = document.querySelectorAll('.notificacao-megatip');
+            notificacoesExistentes.forEach(notif => notif.remove());
+
+            const notificacao = document.createElement('div');
+            notificacao.className = `notificacao-megatip fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transform transition-transform duration-300 ${
+                tipo === 'success' ? 'bg-green-600 border-green-500' : 
+                tipo === 'error' ? 'bg-red-600 border-red-500' : 'bg-blue-600 border-blue-500'
+            } text-white max-w-sm border`;
             
-            // Array para armazenar os aceites
-            let aceites = JSON.parse(localStorage.getItem('megatipAceites')) || [];
+            notificacao.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-${tipo === 'success' ? 'check' : 'exclamation-triangle'} mr-3"></i>
+                    <span class="text-sm">${mensagem}</span>
+                </div>
+            `;
             
-            // Máscara para CPF
-            const cpfInput = document.getElementById('cpf');
+            document.body.appendChild(notificacao);
+            
+            // Animar entrada
+            setTimeout(() => {
+                notificacao.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Remover após 5 segundos
+            setTimeout(() => {
+                notificacao.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (notificacao.parentNode) {
+                        notificacao.parentNode.removeChild(notificacao);
+                    }
+                }, 300);
+            }, 5000);
+        }
+
+        // ========== FORMATAÇÃO E MÁSCARAS ==========
+        function aplicarMascaraCPF(cpf) {
+            return cpf
+                .replace(/\D/g, '')
+                .replace(/(\d{3})(\d)/, '$1.$2')
+                .replace(/(\d{3})(\d)/, '$1.$2')
+                .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
+                .substring(0, 14);
+        }
+
+        function aplicarMascaraTelefone(telefone) {
+            const numbers = telefone.replace(/\D/g, '');
+            if (numbers.length <= 10) {
+                return numbers
+                    .replace(/(\d{2})(\d)/, '($1) $2')
+                    .replace(/(\d{4})(\d)/, '$1-$2')
+                    .substring(0, 14);
+            } else {
+                return numbers
+                    .replace(/(\d{2})(\d)/, '($1) $2')
+                    .replace(/(\d{5})(\d)/, '$1-$2')
+                    .substring(0, 15);
+            }
+        }
+
+        // Aplicar máscaras nos inputs
+        const cpfInput = document.getElementById('cpf');
+        const telefoneInput = document.getElementById('telefone');
+
+        if (cpfInput) {
             cpfInput.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\D/g, '');
-                if (value.length > 11) value = value.substring(0, 11);
-                
-                if (value.length <= 11) {
-                    value = value.replace(/(\d{3})(\d)/, '$1.$2');
-                    value = value.replace(/(\d{3})(\d)/, '$1.$2');
-                    value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-                }
-                
-                e.target.value = value;
+                e.target.value = aplicarMascaraCPF(e.target.value);
             });
-            
-            // Atualizar contador
-            atualizarContador();
-            
-            // Função para atualizar a lista de aceites
-            function atualizarListaAceites() {
-                aceitesList.innerHTML = '';
-                
-                if (aceites.length === 0) {
-                    aceitesList.innerHTML = '<p class="text-center text-gray-400 py-4">Nenhum aceite registrado ainda.</p>';
-                    return;
+        }
+
+        if (telefoneInput) {
+            telefoneInput.addEventListener('input', function(e) {
+                e.target.value = aplicarMascaraTelefone(e.target.value);
+            });
+        }
+
+        // ========== VALIDAÇÕES ==========
+        function validarCPF(cpf) {
+            const cpfLimpo = cpf.replace(/\D/g, '');
+            return cpfLimpo.length === 11;
+        }
+
+        function validarEmail(email) {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return regex.test(email);
+        }
+
+        function validarTelefone(telefone) {
+            const telefoneLimpo = telefone.replace(/\D/g, '');
+            return telefoneLimpo.length >= 10 && telefoneLimpo.length <= 11;
+        }
+
+        function validarFormulario(dados) {
+            const erros = [];
+
+            if (!dados.nome || dados.nome.trim().length < 3) {
+                erros.push('Nome deve ter pelo menos 3 caracteres');
+            }
+
+            if (!validarCPF(dados.cpf)) {
+                erros.push('CPF inválido (deve ter 11 dígitos)');
+            }
+
+            if (!validarTelefone(dados.telefone)) {
+                erros.push('Telefone inválido');
+            }
+
+            if (!validarEmail(dados.email)) {
+                erros.push('E-mail inválido');
+            }
+
+            // Validar checkboxes
+            const checkboxes = [
+                'aceiteRegulamento',
+                'maiorIdade', 
+                'cessaoDireitos',
+                'aceiteRateio'
+            ];
+
+            checkboxes.forEach(checkboxId => {
+                if (!document.getElementById(checkboxId).checked) {
+                    erros.push('Todos os termos devem ser aceitos');
                 }
-                
-                // Ordenar por data (mais recente primeiro)
-                aceites.sort((a, b) => new Date(b.data) - new Date(a.data));
-                
-                aceites.forEach((aceite, index) => {
-                    const aceiteItem = document.createElement('div');
-                    aceiteItem.className = 'aceite-item';
-                    
-                    const dataFormatada = new Date(aceite.data).toLocaleString('pt-BR');
-                    
-                    aceiteItem.innerHTML = `
-                        <div class="aceite-info">
-                            <span class="aceite-name">${aceite.nome} - CPF: ${aceite.cpf}</span>
-                            <span class="aceite-date">${dataFormatada} - ${aceite.telefone} - ${aceite.email}</span>
-                        </div>
-                        <div>
-                            <span class="text-xs bg-green-900 text-green-200 px-2 py-1 rounded">Confirmado</span>
-                        </div>
-                    `;
-                    
-                    aceitesList.appendChild(aceiteItem);
-                });
+            });
+
+            return erros;
+        }
+
+        // ========== SISTEMA DE ACEITES ==========
+        function gerarIDUnico() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+        }
+
+        function atualizarListaAceites() {
+            if (!aceitesList) return;
+
+            aceitesList.innerHTML = '';
+            
+            if (aceites.length === 0) {
+                aceitesList.innerHTML = `
+                    <div class="text-center text-gray-400 py-8">
+                        <i class="fas fa-inbox text-4xl mb-2 opacity-50"></i>
+                        <p>Nenhum aceite registrado ainda</p>
+                    </div>
+                `;
+                return;
             }
             
-            // Função para atualizar o contador
-            function atualizarContador() {
+            // Ordenar por data (mais recente primeiro)
+            aceites.sort((a, b) => new Date(b.data) - new Date(a.data));
+            
+            aceites.forEach((aceite, index) => {
+                const aceiteItem = document.createElement('div');
+                aceiteItem.className = 'aceite-item';
+                
+                const dataFormatada = new Date(aceite.data).toLocaleString('pt-BR');
+                
+                aceiteItem.innerHTML = `
+                    <div class="aceite-info">
+                        <span class="aceite-name">${aceite.nome}</span>
+                        <span class="aceite-details">CPF: ${aceite.cpf} | Tel: ${aceite.telefone}</span>
+                        <span class="aceite-date">${dataFormatada} | ${aceite.email}</span>
+                    </div>
+                    <div class="aceite-status">
+                        <span class="text-xs bg-green-900 text-green-200 px-2 py-1 rounded">Confirmado</span>
+                    </div>
+                `;
+                
+                aceitesList.appendChild(aceiteItem);
+            });
+        }
+
+        function atualizarContador() {
+            if (totalAceites) {
                 totalAceites.textContent = aceites.length;
-                atualizarListaAceites();
+                console.log('🔢 Contador atualizado:', aceites.length);
             }
-            
-            // Função para gerar hash único
-            function gerarHash() {
-                return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-            }
-            
-            // Evento de envio do formulário
+            atualizarListaAceites();
+        }
+
+        // ========== FORMULÁRIO DE ACEITE ==========
+        if (aceiteForm) {
             aceiteForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
-                const nome = document.getElementById('nome').value;
-                const cpf = document.getElementById('cpf').value;
-                const telefone = document.getElementById('telefone').value;
-                const email = document.getElementById('email').value;
-                
-                // Validar CPF
-                if (cpf.replace(/\D/g, '').length !== 11) {
-                    alert('Por favor, insira um CPF válido com 11 dígitos.');
+                const dadosForm = {
+                    nome: document.getElementById('nome').value.trim(),
+                    cpf: document.getElementById('cpf').value,
+                    telefone: document.getElementById('telefone').value,
+                    email: document.getElementById('email').value.trim()
+                };
+
+                // Validar formulário
+                const erros = validarFormulario(dadosForm);
+                if (erros.length > 0) {
+                    mostrarNotificacao(erros[0], 'error');
                     return;
                 }
+
+                // Verificar se CPF já existe
+                const cpfExistente = aceites.find(aceite => 
+                    aceite.cpf.replace(/\D/g, '') === dadosForm.cpf.replace(/\D/g, '')
+                );
                 
+                if (cpfExistente) {
+                    mostrarNotificacao('Este CPF já está registrado no sistema.', 'error');
+                    return;
+                }
+
                 // Criar objeto do aceite
                 const aceite = {
-                    id: gerarHash(),
-                    nome: nome,
-                    cpf: cpf,
-                    telefone: telefone,
-                    email: email,
+                    id: gerarIDUnico(),
+                    nome: dadosForm.nome,
+                    cpf: dadosForm.cpf,
+                    telefone: dadosForm.telefone,
+                    email: dadosForm.email,
                     data: new Date().toISOString(),
-                    ip: 'registrado_no_navegador' // Em um ambiente real, isso viria do servidor
+                    ip: 'registrado_no_navegador',
+                    timestamp: Date.now()
                 };
-                
+
                 // Adicionar ao array
                 aceites.push(aceite);
-                
-                // Salvar no localStorage
-                localStorage.setItem('megatipAceites', JSON.stringify(aceites));
-                
-                // Atualizar interface
-                atualizarContador();
-                
-                // Simular envio de e-mail de confirmação
-                console.log(`E-mail de confirmação enviado para: ${email}`);
-                
-                // Mostrar mensagem de sucesso
-                mensagemSucesso.classList.remove('hidden');
-                
-                // Limpar formulário
-                aceiteForm.reset();
-                
-                // Ocultar mensagem após 5 segundos
-                setTimeout(() => {
-                    mensagemSucesso.classList.add('hidden');
-                }, 5000);
-            });
-            
-            // Função para exportar para Excel
-            function exportarParaExcel() {
-                if (aceites.length === 0) {
-                    alert('Não há dados para exportar.');
-                    return;
+
+                // CORREÇÃO: Salvar no localStorage com verificação
+                if (salvarAceites()) {
+                    // Atualizar interface
+                    atualizarContador();
+                    
+                    // Mostrar mensagens de sucesso
+                    if (mensagemSucesso) {
+                        mensagemSucesso.classList.remove('hidden');
+                    }
+                    mostrarNotificacao('Aceite registrado com sucesso!', 'success');
+                    
+                    // Limpar formulário
+                    aceiteForm.reset();
+                    
+                    // Ocultar mensagem após 5 segundos
+                    setTimeout(() => {
+                        if (mensagemSucesso) {
+                            mensagemSucesso.classList.add('hidden');
+                        }
+                    }, 5000);
+                    
+                    console.log('✅ Novo aceite registrado:', aceite);
                 }
-                
+            });
+        }
+
+        // ========== SISTEMA DE EXPORTAÇÃO ==========
+        function exportarParaExcel() {
+            // CORREÇÃO: Recarregar dados do localStorage antes de exportar
+            carregarAceites();
+            
+            if (aceites.length === 0) {
+                mostrarNotificacao('Não há dados para exportar.', 'error');
+                return;
+            }
+
+            try {
                 // Preparar dados para a planilha
                 const dados = aceites.map(aceite => ({
                     'ID': aceite.id,
-                    'Nome': aceite.nome,
+                    'Nome Completo': aceite.nome,
                     'CPF': aceite.cpf,
                     'Telefone': aceite.telefone,
                     'E-mail': aceite.email,
                     'Data/Hora': new Date(aceite.data).toLocaleString('pt-BR'),
+                    'Timestamp': aceite.timestamp,
                     'IP': aceite.ip
                 }));
-                
+
                 // Criar planilha
                 const ws = XLSX.utils.json_to_sheet(dados);
                 const wb = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(wb, ws, 'Aceites MegaTIP');
-                
+
+                // Ajustar largura das colunas
+                const colWidths = [
+                    { wch: 15 }, // ID
+                    { wch: 25 }, // Nome
+                    { wch: 15 }, // CPF
+                    { wch: 15 }, // Telefone
+                    { wch: 25 }, // E-mail
+                    { wch: 20 }, // Data/Hora
+                    { wch: 15 }, // Timestamp
+                    { wch: 15 }  // IP
+                ];
+                ws['!cols'] = colWidths;
+
                 // Gerar arquivo e fazer download
-                XLSX.writeFile(wb, `aceites_megatip_${new Date().toISOString().split('T')[0]}.xlsx`);
+                const dataAtual = new Date().toISOString().split('T')[0];
+                XLSX.writeFile(wb, `aceites_megatip_${dataAtual}.xlsx`);
+                
+                mostrarNotificacao('Planilha exportada com sucesso!', 'success');
+                console.log('📊 Planilha exportada com', aceites.length, 'registros');
+                
+            } catch (error) {
+                console.error('❌ Erro ao exportar para Excel:', error);
+                mostrarNotificacao('Erro ao exportar dados.', 'error');
+            }
+        }
+
+        // ========== PAINEL ADMINISTRATIVO ==========
+        function toggleAdminPanel() {
+            if (!adminPanel) return;
+            
+            isAdminPanelVisible = !isAdminPanelVisible;
+            adminPanel.classList.toggle('hidden');
+            
+            if (isAdminPanelVisible) {
+                // Recarregar dados ao mostrar o painel
+                carregarAceites();
+                atualizarContador();
+                console.log('👨‍💼 Painel administrativo aberto');
+            }
+        }
+
+        function toggleAceitesList() {
+            if (!aceitesList) return;
+            
+            if (aceitesList.style.display === 'none') {
+                aceitesList.style.display = 'block';
+                if (toggleViewBtn) {
+                    toggleViewBtn.innerHTML = '<i class="fas fa-eye-slash mr-2"></i>Ocultar Lista';
+                }
+            } else {
+                aceitesList.style.display = 'none';
+                if (toggleViewBtn) {
+                    toggleViewBtn.innerHTML = '<i class="fas fa-eye mr-2"></i>Mostrar Lista';
+                }
+            }
+        }
+
+        // Event Listeners para controles administrativos
+        if (exportExcelBtn) {
+            exportExcelBtn.addEventListener('click', exportarParaExcel);
+        }
+
+        if (toggleViewBtn) {
+            toggleViewBtn.addEventListener('click', toggleAceitesList);
+        }
+
+        // ========== ATALHOS DE TECLADO ==========
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+Alt+M para mostrar/ocultar o painel administrativo
+            if (e.ctrlKey && e.altKey && e.key === 'm') {
+                e.preventDefault();
+                toggleAdminPanel();
             }
             
-            // Evento do botão de exportação
-            exportExcelBtn.addEventListener('click', exportarParaExcel);
+            // Ctrl+Alt+E para exportar para Excel
+            if (e.ctrlKey && e.altKey && e.key === 'e') {
+                e.preventDefault();
+                exportarParaExcel();
+            }
             
-            // Evento do botão de ocultar/mostrar
-            toggleViewBtn.addEventListener('click', function() {
-                if (aceitesList.style.display === 'none') {
-                    aceitesList.style.display = 'block';
-                    toggleViewBtn.innerHTML = '<i class="fas fa-eye-slash mr-2"></i>Ocultar';
-                } else {
-                    aceitesList.style.display = 'none';
-                    toggleViewBtn.innerHTML = '<i class="fas fa-eye mr-2"></i>Mostrar';
-                }
-            });
-            
-            // Atalhos de teclado para o painel administrativo
-            document.addEventListener('keydown', function(e) {
-                // Ctrl+Alt+M para mostrar/ocultar o painel administrativo
-                if (e.ctrlKey && e.altKey && e.key === 'm') {
-                    e.preventDefault();
-                    adminPanel.classList.toggle('hidden');
-                    
-                    if (!adminPanel.classList.contains('hidden')) {
-                        atualizarListaAceites();
-                    }
-                }
-                
-                // Ctrl+Alt+E para exportar para Excel
-                if (e.ctrlKey && e.altKey && e.key === 'e') {
-                    e.preventDefault();
-                    exportarParaExcel();
-                }
-            });
-            
-            // Inicializar a lista de aceites
-            atualizarListaAceites();
+            // ESC para fechar menu mobile
+            if (e.key === 'Escape' && isMenuOpen) {
+                closeMobileMenu();
+            }
         });
-    </script>
+
+        // ========== INICIALIZAÇÃO ==========
+        function inicializarSistema() {
+            console.log('🔧 Inicializando sistema MegaTIP...');
+            
+            // Carregar dados salvos
+            carregarAceites();
+            
+            // Atualizar interface
+            atualizarContador();
+            
+            // Ocultar painel administrativo inicialmente
+            if (adminPanel) {
+                adminPanel.classList.add('hidden');
+            }
+            
+            console.log('✅ Sistema MegaTIP inicializado com sucesso');
+            console.log('📋 Atalhos disponíveis:');
+            console.log('   Ctrl+Alt+M - Painel Administrativo');
+            console.log('   Ctrl+Alt+E - Exportar para Excel');
+            console.log('   ESC - Fechar Menu Mobile');
+        }
+
+        // Inicializar o sistema
+        inicializarSistema();
+
+        // ========== BACKUP AUTOMÁTICO ==========
+        setInterval(() => {
+            if (aceites.length > 0) {
+                salvarAceites();
+            }
+        }, 30000); // Backup a cada 30 segundos
+
+    });
+</script>
 </body>
 </html>

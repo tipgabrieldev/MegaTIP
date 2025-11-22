@@ -7,6 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- Cloudflare Turnstile -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
 
@@ -378,6 +380,16 @@
             border-radius: 0 8px 8px 0;
         }
 
+        /* Estilos para o Turnstile */
+        .cf-turnstile {
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .cf-turnstile iframe {
+            border-radius: 8px;
+        }
+
         /* Estilos responsivos para a tabela */
         .table-container {
             overflow-x: auto;
@@ -656,6 +668,14 @@
                             <input type="email" id="email" class="form-input" placeholder="E-mail Válido" required>
                         </div>
                         
+                        <!-- TURNSTILE WIDGET -->
+                        <div class="cf-turnstile mb-4" 
+                             data-sitekey="0x4AAAAAACCX9qU8z6iy-7Yy" 
+                             data-callback="onTurnstileSuccess"
+                             data-error-callback="onTurnstileError"
+                             data-expired-callback="onTurnstileExpired">
+                        </div>
+                        
                         <div class="checkbox-group">
                             <input type="checkbox" id="aceiteRegulamento" required>
                             <label for="aceiteRegulamento">
@@ -688,8 +708,8 @@
                             </label>
                         </div>
                         
-                        <button type="submit" class="btn-primary">
-                            <i class="fas fa-file-signature mr-2"></i>Concordar e Participar Irrevogavelmente
+                        <button type="submit" id="submitBtn" class="btn-primary" disabled>
+                            <i class="fas fa-file-signature mr-2"></i>Validando segurança...
                         </button>
                     </form>
                     
@@ -753,6 +773,53 @@
     document.addEventListener('DOMContentLoaded', function() {
         console.log('🚀 MegaTIP - Sistema inicializado com Firebase');
 
+        // ========== TURNSTILE VARIÁVEIS ==========
+        let turnstileToken = null;
+        let isTurnstileReady = false;
+
+        // ========== TURNSTILE CALLBACKS ==========
+        window.onTurnstileSuccess = function(token) {
+            console.log('✅ Turnstile validado com sucesso!');
+            turnstileToken = token;
+            isTurnstileReady = true;
+            document.getElementById('submitBtn').disabled = false;
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-file-signature mr-2"></i>Concordar e Participar Irrevogavelmente';
+        };
+
+        window.onTurnstileError = function() {
+            console.log('❌ Erro no Turnstile');
+            mostrarNotificacao('Erro na verificação de segurança. Recarregue a página.', 'error');
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i>Erro de segurança';
+        };
+
+        window.onTurnstileExpired = function() {
+            console.log('⚠️ Turnstile expirado');
+            turnstileToken = null;
+            isTurnstileReady = false;
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-file-signature mr-2"></i>Validando segurança...';
+        };
+
+        // ========== VALIDAÇÃO TURNSTILE ==========
+        async function validarTurnstile(token) {
+            try {
+                const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `secret=0x4AAAAAACCX9hrLeLPTWBmirS9wB1rJx0k&response=${token}`
+                });
+                
+                const data = await response.json();
+                return data.success;
+            } catch (error) {
+                console.error('❌ Erro na validação do Turnstile:', error);
+                return false;
+            }
+        }
+
         // ========== ELEMENTOS DO DOM ==========
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -770,6 +837,7 @@
                     cpf: aceite.cpf,
                     telefone: aceite.telefone,
                     email: aceite.email,
+                    turnstileToken: aceite.turnstileToken,
                     data: new Date().toISOString(),
                     timestamp: Date.now(),
                     ip: 'registrado_no_site',
@@ -989,18 +1057,32 @@
             aceiteForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
+                // Validar Turnstile primeiro
+                if (!isTurnstileReady || !turnstileToken) {
+                    mostrarNotificacao('Complete a verificação de segurança primeiro.', 'error');
+                    return;
+                }
+
                 // Desabilitar botão para evitar múltiplos envios
                 const submitBtn = aceiteForm.querySelector('button[type="submit"]');
                 const originalText = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Enviando...';
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Validando segurança...';
                 submitBtn.disabled = true;
                 
                 try {
+                    // Validar Turnstile no backend do Cloudflare
+                    const isTurnstileValid = await validarTurnstile(turnstileToken);
+                    if (!isTurnstileValid) {
+                        mostrarNotificacao('Falha na verificação de segurança. Tente novamente.', 'error');
+                        return;
+                    }
+
                     const dadosForm = {
                         nome: document.getElementById('nome').value.trim(),
                         cpf: document.getElementById('cpf').value,
                         telefone: document.getElementById('telefone').value,
-                        email: document.getElementById('email').value.trim()
+                        email: document.getElementById('email').value.trim(),
+                        turnstileToken: turnstileToken
                     };
 
                     // Validar formulário
@@ -1029,6 +1111,12 @@
                         
                         // Limpar formulário
                         aceiteForm.reset();
+                        
+                        // Resetar Turnstile
+                        turnstileToken = null;
+                        isTurnstileReady = false;
+                        document.getElementById('submitBtn').disabled = true;
+                        document.getElementById('submitBtn').innerHTML = '<i class="fas fa-file-signature mr-2"></i>Validando segurança...';
                         
                         // Ocultar mensagem após 5 segundos
                         setTimeout(() => {
